@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - Shanti Yuwa Club{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="display-4">About Us</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-white">Home</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">About Us</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Story Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h2 class="mb-4">Our Story</h2>
+                <p>Shanti Yuwa Club was founded in 2015 by a group of passionate young individuals who wanted to make a positive impact in their community. The name "Shanti Yuwa" translates to "Peace Youth" in English, reflecting our commitment to promoting peace, harmony, and positive social change through youth-led initiatives.</p>
+                <p>Since our inception, we have been dedicated to addressing various social issues in Biratnagar and surrounding areas through community development projects, awareness campaigns, educational initiatives, and environmental conservation efforts.</p>
+                <p>Our organization is entirely youth-led, with members ranging from high school students to young professionals united by their desire to create a better society and empower other youth to become agents of change.</p>
+            </div>
+            <div class="col-lg-6">
+                <img src="{% static 'images/about-story.jpg' %}?v={% now 'U' %}" alt="Our Story" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mission & Vision Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div class="card h-100 border-0 shadow-sm p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="feature-icon me-3">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3>Our Mission</h3>
+                    </div>
+                    <p>To empower youth to become catalysts for positive social change by providing them with the platforms, resources, and skills needed to address community challenges and foster sustainable development.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="feature-icon me-3">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Our Vision</h3>
+                    </div>
+                    <p>A society where young people are actively engaged in community development, social awareness, and peacebuilding, creating a more equitable, sustainable, and harmonious future for all.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Values -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Our Core Values</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center">
+                    <div class="feature-icon mb-3 mx-auto">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h4>Compassion</h4>
+                    <p>We approach all our work with empathy and understanding, recognizing the diverse needs and challenges within our community.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center">
+                    <div class="feature-icon mb-3 mx-auto">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Inclusivity</h4>
+                    <p>We believe in creating equal opportunities for all, regardless of gender, religion, caste, ethnicity, or socioeconomic background.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center">
+                    <div class="feature-icon mb-3 mx-auto">
+                        <i class="fas fa-globe-asia"></i>
+                    </div>
+                    <h4>Sustainability</h4>
+                    <p>We are committed to implementing programs and initiatives that have lasting impact and can be sustained by the community in the long term.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center">
+                    <div class="feature-icon mb-3 mx-auto">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h4>Innovation</h4>
+                    <p>We encourage creative thinking and novel approaches to address social issues and community needs.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center">
+                    <div class="feature-icon mb-3 mx-auto">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h4>Collaboration</h4>
+                    <p>We believe in the power of partnerships and working together with other organizations, government bodies, and community stakeholders.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center">
+                    <div class="feature-icon mb-3 mx-auto">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h4>Integrity</h4>
+                    <p>We uphold the highest standards of honesty, transparency, and accountability in all our activities and operations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>Our Team</h2>
+            <p class="lead">Meet the dedicated individuals driving our mission forward</p>
+        </div>
+        <div class="row">
+            {% if team_members %}
+                {% for member in team_members %}
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 team-member-card">
+                        <img src="{{ member.image.url }}" class="card-img-top team-member-image" alt="{{ member.name }}">
+                        <div class="card-body text-center">
+                            <h5 class="card-title mb-1">{{ member.name }}</h5>
+                            <p class="card-text text-muted mb-3">{{ member.position }}</p>
+                            <p class="card-text small">{{ member.bio|truncatewords:25 }}</p>
+                            <div class="social-links mt-3">
+                                {% if member.facebook %}
+                                <a href="{{ member.facebook }}" target="_blank" class="me-2 text-dark"><i class="fab fa-facebook-f"></i></a>
+                                {% endif %}
+                                {% if member.instagram %}
+                                <a href="{{ member.instagram }}" target="_blank" class="me-2 text-dark"><i class="fab fa-instagram"></i></a>
+                                {% endif %}
+                                {% if member.twitter %}
+                                <a href="{{ member.twitter }}" target="_blank" class="text-dark"><i class="fab fa-twitter"></i></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center">
+                    <p>Team information coming soon!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Join Us Section -->
+<section class="py-5 bg-primary text-white text-center">
+    <div class="container">
+        <h2 class="mb-4">Join Our Mission</h2>
+        <p class="lead mb-4">Become a part of our team and help us create positive change in our community.</p>
+        <a href="{% url 'contact' %}" class="btn btn-light btn-lg">Get Involved</a>
+    </div>
+</section>
+{% endblock %}
