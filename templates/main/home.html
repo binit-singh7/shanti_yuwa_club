@@ -5,7 +5,7 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-section" style="background-image: url('{% static 'images/hero-bg.jpg' %}?v={% now 'U' %}');">
+<section class="hero-section" style="background-image: url('{% static 'images/hero-bg.jpg' %}?v={% now 'U' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 100vh; display: flex; align-items: center;">
     <div class="container hero-content">
         <div class="row">
             <div class="col-md-8 col-lg-7">
@@ -29,7 +29,7 @@
             </div>
             <div class="col-md-6">
                 <h2 class="mb-4">About Shanti Yuwa Club</h2>
-                <p>Shanti Yuwa Club is dedicated to empowering youth and creating positive change in our community. Founded in 2015, our organization works on various social issues and community development projects in Biratnagar and surrounding areas.</p>
+                <p>Shanti Yuwa Club is dedicated to empowering youth and creating positive change in our community. Founded in 2020, our organization works on various social issues and community development projects in Biratnagar and surrounding areas.</p>
                 <p>Our mission is to promote peace, social awareness, and youth empowerment through various initiatives and programs designed to address local needs and create sustainable impact.</p>
                 <a href="{% url 'about' %}" class="btn btn-primary">Learn More About Us</a>
             </div>
@@ -143,6 +143,115 @@
         </div>
     </div>
 </section>
+
+<!-- Life at Shanti Yuwa Club Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="mb-3">Life at Shanti Yuwa Club</h2>
+            <p class="lead">Experience what it's like to be part of our vibrant community</p>
+        </div>
+        
+        <!-- Feature Cards with Images -->
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="{% static 'images/life-community.jpg' %}?v={% now 'U' %}" class="card-img-top" alt="Community Meeting">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-users fa-2x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Supportive Community</h5>
+                        <p class="card-text">Join a family of like-minded individuals passionate about creating positive change. We support each other's growth and celebrate our collective achievements.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="{% static 'images/life-skills.jpg' %}?v={% now 'U' %}" class="card-img-top" alt="Skills Workshop">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-lightbulb fa-2x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Skills Development</h5>
+                        <p class="card-text">Enhance your leadership, communication, and project management skills through hands-on experience with community initiatives and training opportunities.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="{% static 'images/life-impact.jpg' %}?v={% now 'U' %}" class="card-img-top" alt="Community Impact">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-handshake fa-2x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Meaningful Impact</h5>
+                        <p class="card-text">Experience the fulfillment that comes from making a real difference in people's lives and contributing to positive change in your community.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Club Life Gallery -->
+        <div class="mt-5 mb-5">
+            <h4 class="text-center mb-4">Moments From Club Activities</h4>
+            <div class="row g-3">
+                <div class="col-md-3 col-6">
+                    <img src="{% static 'images/club-life-1.jpg' %}?v={% now 'U' %}" alt="Club Activity" class="img-fluid rounded shadow-sm">
+                </div>
+                <div class="col-md-3 col-6">
+                    <img src="{% static 'images/club-life-2.jpg' %}?v={% now 'U' %}" alt="Team Building" class="img-fluid rounded shadow-sm">
+                </div>
+                <div class="col-md-3 col-6">
+                    <img src="{% static 'images/club-life-3.jpg' %}?v={% now 'U' %}" alt="Community Service" class="img-fluid rounded shadow-sm">
+                </div>
+                <div class="col-md-3 col-6">
+                    <img src="{% static 'images/club-life-4.jpg' %}?v={% now 'U' %}" alt="Club Celebration" class="img-fluid rounded shadow-sm">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Testimonials -->
+        <div class="mt-5">
+            <h4 class="text-center mb-4">What Our Members Say</h4>
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <div class="testimonial p-4 bg-white rounded shadow-sm">
+                        <p class="fst-italic">"Being part of Shanti Yuwa Club has been transformative. I've developed skills I never knew I had and made lifelong friends while serving our community."</p>
+                        <div class="d-flex align-items-center mt-3">
+                            <div class="testimonial-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                <span class="fw-bold">RS</span>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="mb-0">Ram Sharma</h6>
+                                <small class="text-muted">Member since 2021</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="testimonial p-4 bg-white rounded shadow-sm">
+                        <p class="fst-italic">"The support and encouragement I've received at Shanti Yuwa Club have helped me grow both personally and professionally. The work we do here truly matters."</p>
+                        <div class="d-flex align-items-center mt-3">
+                            <div class="testimonial-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                <span class="fw-bold">SP</span>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="mb-0">Sita Poudel</h6>
+                                <small class="text-muted">Volunteer since 2022</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="{% url 'contact' %}" class="btn btn-primary">Join Our Community</a>
+        </div>
+    </div>
+</section>
+
 
 <!-- Call to Action Section -->
 <section class="py-5 bg-primary text-white">

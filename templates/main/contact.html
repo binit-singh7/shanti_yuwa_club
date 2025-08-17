@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Contact Us - Shanti Yuwa Club{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="display-4">Contact Us</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-white">Home</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">Contact Us</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="card h-100 contact-info-card">
+                    <div class="card-body text-center">
+                        <div class="contact-info-icon mb-3">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h4>Our Location</h4>
+                        <p class="mb-0">Biratnagar, Nepal</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="card h-100 contact-info-card">
+                    <div class="card-body text-center">
+                        <div class="contact-info-icon mb-3">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h4>Phone Number</h4>
+                        <p class="mb-0">+977 9816751342</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 contact-info-card">
+                    <div class="card-body text-center">
+                        <div class="contact-info-icon mb-3">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h4>Email Address</h4>
+                        <p class="mb-0">info@shantiyuwaclub.org.np</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <h3 class="mb-4">Send Us a Message</h3>
+                        
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="mb-4">Connect With Us</h3>
+                        <p>Thank you for your interest in Shanti Yuwa Club. We'd love to hear from you! Whether you have questions about our programs, want to get involved as a volunteer, or are interested in supporting our initiatives, please don't hesitate to reach out.</p>
+                        
+                        <h5 class="mt-4">Follow Us</h5>
+                        <div class="social-links mt-3">
+                            <a href="https://www.facebook.com/peaceyouthclub123" target="_blank" class="me-3 fs-4"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.instagram.com/shantiyuwa/" class="me-3 fs-4"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Google Map -->
+<section class="mb-5">
+    <div class="container">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+                <div class="embed-responsive embed-responsive-21by9">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3571.6708427320846!2d87.26455491504678!3d26.45572878329956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ef750ba6867719%3A0xe1200247cc735379!2sShanti%20Yuwa%20Club%20(%20%E0%A4%B6%E0%A4%BE%E0%A4%A8%E0%A5%8D%E0%A4%A4%E0%A4%BF%20%E0%A4%AF%E0%A5%81%E0%A4%B5%E0%A4%BE%20%E0%A4%95%E0%A5%8D%E0%A4%B2%E0%A4%AC)!5e0!3m2!1sen!2sus!4v1627920325016!5m2!1sen!2sus" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

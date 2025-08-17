@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Programs - Shanti Yuwa Club{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="display-4">Our Programs</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-white">Home</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">Programs</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Programs Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-lg-8 mx-auto text-center">
+                <p class="lead">Explore our various initiatives aimed at community development, youth empowerment, and social awareness.</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            {% if programs %}
+                {% for program in programs %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 program-card">
+                        <img src="{{ program.image.url }}" class="card-img-top" alt="{{ program.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ program.title }}</h5>
+                            <p class="card-text">{{ program.short_description }}</p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <a href="{% url 'program_detail' program.slug %}" class="btn btn-outline-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center py-5">
+                    <p>No programs available at the moment. Check back soon!</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if programs.has_other_pages %}
+        <div class="row mt-4">
+            <div class="col-12">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {% if programs.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ programs.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-hidden="true">&laquo;</span>
+                            </li>
+                        {% endif %}
+                        
+                        {% for num in programs.paginator.page_range %}
+                            {% if programs.number == num %}
+                                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if programs.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ programs.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-hidden="true">&raquo;</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-light">
+    <div class="container text-center">
+        <h2 class="mb-4">Want to Support Our Programs?</h2>
+        <p class="lead mb-4">We're always looking for volunteers, partners, and supporters to help expand our impact.</p>
+        <a href="{% url 'contact' %}" class="btn btn-primary btn-lg">Get Involved</a>
+    </div>
+</section>
+{% endblock %}
