@@ -1,116 +1,246 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load crispy_forms_tags %}
 
 {% block title %}Contact Us - Shanti Yuwa Club{% endblock %}
 
 {% block content %}
 <!-- Page Header -->
-<section class="bg-primary text-white py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <h1 class="display-4">Contact Us</h1>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-white">Home</a></li>
-                        <li class="breadcrumb-item active text-white" aria-current="page">Contact Us</li>
-                    </ol>
-                </nav>
+<section class="relative py-24 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <defs>
+                <pattern id="dots" width="5" height="5" patternUnits="userSpaceOnUse">
+                    <circle cx="2.5" cy="2.5" r="1" fill="white"/>
+                </pattern>
+            </defs>
+            <rect width="100" height="100" fill="url(#dots)"/>
+        </svg>
+    </div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+            <nav class="flex items-center text-sm text-primary-200 mb-6">
+                <a href="{% url 'home' %}" class="hover:text-white transition-colors duration-200">Home</a>
+                <i class="fas fa-chevron-right mx-3 text-xs"></i>
+                <span class="text-white">Contact Us</span>
+            </nav>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
+                Get In Touch
+            </h1>
+            <p class="text-xl text-primary-100">
+                Have questions or want to get involved? We'd love to hear from you!
+            </p>
+        </div>
+    </div>
+    
+    <!-- Decorative Shapes -->
+    <div class="absolute bottom-0 right-0 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl -mb-48 -mr-48"></div>
+</section>
+
+<!-- Contact Info Cards -->
+<section class="relative -mt-16 z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Location Card -->
+            <div class="bg-white rounded-2xl shadow-xl p-8 text-center hover:shadow-2xl transition-shadow duration-300 hover:-translate-y-1 transform transition-transform">
+                <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
+                    <i class="fas fa-map-marker-alt text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Our Location</h3>
+                <a href="https://maps.google.com/?q=Biratnagar,Nepal" target="_blank" class="inline-flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors duration-200">
+                    <i class="fas fa-external-link-alt text-xs"></i>
+                    Biratnagar, Nepal
+                </a>
+                <p class="text-gray-400 text-sm mt-2">Click to view on map</p>
+            </div>
+
+            <!-- Phone/WhatsApp Card -->
+            <div class="bg-white rounded-2xl shadow-xl p-8 text-center hover:shadow-2xl transition-shadow duration-300 hover:-translate-y-1 transform transition-transform">
+                <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
+                    <i class="fab fa-whatsapp text-3xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">WhatsApp / Call</h3>
+                <a href="https://wa.me/9779816751342" target="_blank" class="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium transition-colors duration-200">
+                    <i class="fab fa-whatsapp"></i>
+                    +977 9816751342
+                </a>
+                <p class="text-gray-400 text-sm mt-2">Click to chat on WhatsApp</p>
+            </div>
+
+            <!-- Email Card -->
+            <div class="bg-white rounded-2xl shadow-xl p-8 text-center hover:shadow-2xl transition-shadow duration-300 hover:-translate-y-1 transform transition-transform">
+                <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center">
+                    <i class="fas fa-envelope text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Email Address</h3>
+                <a href="mailto:info@shantiyuwaclub.org.np" class="text-gray-600 hover:text-primary-600 transition-colors duration-200">info@shantiyuwaclub.org.np</a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Contact Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="row mb-5">
-            <div class="col-md-4 mb-4 mb-md-0">
-                <div class="card h-100 contact-info-card">
-                    <div class="card-body text-center">
-                        <div class="contact-info-icon mb-3">
-                            <i class="fas fa-map-marker-alt"></i>
+<!-- Contact Form & Info Section -->
+<section class="py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12">
+            <!-- Contact Form -->
+            <div class="bg-white rounded-3xl shadow-xl p-8 lg:p-10">
+                <div class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
+                    <i class="fas fa-paper-plane mr-2"></i>
+                    Send a Message
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">We'd Love to Hear From You</h2>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="mb-6 p-4 rounded-xl bg-green-50 border border-green-200 flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-0.5 mr-3"></i>
+                        <div>
+                            <p class="text-green-800">{{ message }}</p>
                         </div>
-                        <h4>Our Location</h4>
-                        <p class="mb-0">Biratnagar, Nepal</p>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div>
+                            <label for="id_name" class="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
+                            <input type="text" name="name" id="id_name" required
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all duration-200"
+                                placeholder="Your name">
+                        </div>
+                        <div>
+                            <label for="id_email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                            <input type="email" name="email" id="id_email" required
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all duration-200"
+                                placeholder="your@email.com">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="id_subject" class="block text-sm font-semibold text-gray-700 mb-2">Subject</label>
+                        <input type="text" name="subject" id="id_subject" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all duration-200"
+                            placeholder="What is this about?">
+                    </div>
+
+                    <div>
+                        <label for="id_message" class="block text-sm font-semibold text-gray-700 mb-2">Message</label>
+                        <textarea name="message" id="id_message" rows="5" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all duration-200 resize-none"
+                            placeholder="Tell us what's on your mind..."></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold shadow-lg hover:shadow-primary-500/25 transition-all duration-300 hover:scale-105">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Send Message
+                    </button>
+                </form>
+            </div>
+
+            <!-- Connect With Us -->
+            <div class="space-y-8">
+                <!-- Social Connect -->
+                <div class="bg-white rounded-3xl shadow-xl p-8 lg:p-10">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
+                        <i class="fas fa-share-alt mr-2"></i>
+                        Connect With Us
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Follow Our Journey</h2>
+                    <p class="text-gray-600 mb-8">
+                        Stay connected with us on social media to get updates about our programs, events, and community activities.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/peaceyouthclub123" target="_blank" rel="noopener noreferrer" class="w-14 h-14 rounded-2xl bg-blue-600 hover:bg-blue-700 flex items-center justify-center text-white transition-all duration-300 hover:scale-110 shadow-lg" aria-label="Facebook">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/shantiyuwa/" target="_blank" rel="noopener noreferrer" class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 flex items-center justify-center text-white transition-all duration-300 hover:scale-110 shadow-lg" aria-label="Instagram">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="mailto:info@shantiyuwaclub.org.np" class="w-14 h-14 rounded-2xl bg-gray-700 hover:bg-gray-800 flex items-center justify-center text-white transition-all duration-300 hover:scale-110 shadow-lg" aria-label="Email">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- FAQ -->
+                <div class="bg-gradient-to-br from-primary-600 to-primary-800 rounded-3xl shadow-xl p-8 lg:p-10 text-white">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-primary-100 text-sm font-medium mb-6">
+                        <i class="fas fa-question-circle mr-2"></i>
+                        Quick Info
+                    </div>
+                    <h2 class="text-2xl font-bold mb-6">Frequently Asked</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                            <h4 class="font-semibold mb-2">How can I volunteer?</h4>
+                            <p class="text-primary-100 text-sm">Fill out the contact form or reach out via email. We'll get back to you with opportunities!</p>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                            <h4 class="font-semibold mb-2">What programs can I join?</h4>
+                            <p class="text-primary-100 text-sm">Visit our Programs page to see current initiatives and how you can participate.</p>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                            <h4 class="font-semibold mb-2">How can I support your cause?</h4>
+                            <p class="text-primary-100 text-sm">You can volunteer, spread the word, or partner with us on community projects.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-4 mb-md-0">
-                <div class="card h-100 contact-info-card">
-                    <div class="card-body text-center">
-                        <div class="contact-info-icon mb-3">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <h4>Phone Number</h4>
-                        <p class="mb-0">+977 9816751342</p>
-                    </div>
-                </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
+                <i class="fas fa-map mr-2"></i>
+                Find Us
             </div>
-            <div class="col-md-4">
-                <div class="card h-100 contact-info-card">
-                    <div class="card-body text-center">
-                        <div class="contact-info-icon mb-3">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <h4>Email Address</h4>
-                        <p class="mb-0">info@shantiyuwaclub.org.np</p>
-                    </div>
-                </div>
-            </div>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Location</h2>
+            <p class="text-gray-600 text-lg">Visit us at our office in Biratnagar, Nepal</p>
         </div>
         
-        <div class="row">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body p-4">
-                        <h3 class="mb-4">Send Us a Message</h3>
-                        
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    {{ message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                        
-                        <form method="post">
-                            {% csrf_token %}
-                            {{ form|crispy }}
-                            <button type="submit" class="btn btn-primary">Send Message</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-4">
-                        <h3 class="mb-4">Connect With Us</h3>
-                        <p>Thank you for your interest in Shanti Yuwa Club. We'd love to hear from you! Whether you have questions about our programs, want to get involved as a volunteer, or are interested in supporting our initiatives, please don't hesitate to reach out.</p>
-                        
-                        <h5 class="mt-4">Follow Us</h5>
-                        <div class="social-links mt-3">
-                            <a href="https://www.facebook.com/peaceyouthclub123" target="_blank" class="me-3 fs-4"><i class="fab fa-facebook-f"></i></a>
-                            <a href="https://www.instagram.com/shantiyuwa/" class="me-3 fs-4"><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="rounded-3xl overflow-hidden shadow-2xl">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3571.6708427320846!2d87.26455491504678!3d26.45572878329956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ef750ba6867719%3A0xe1200247cc735379!2sShanti%20Yuwa%20Club%20(%20%E0%A4%B6%E0%A4%BE%E0%A4%A8%E0%A5%8D%E0%A4%A4%E0%A4%BF%20%E0%A4%AF%E0%A5%81%E0%A4%B5%E0%A4%BE%20%E0%A4%95%E0%A5%8D%E0%A4%B2%E0%A4%AC)!5e0!3m2!1sen!2sus!4v1627920325016!5m2!1sen!2sus" 
+                width="100%" 
+                height="450" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade" 
+                title="Shanti Yuwa Club Location Map"
+                class="w-full">
+            </iframe>
         </div>
     </div>
 </section>
 
-<!-- Google Map -->
-<section class="mb-5">
-    <div class="container">
-        <div class="card border-0 shadow-sm">
-            <div class="card-body p-0">
-                <div class="embed-responsive embed-responsive-21by9">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3571.6708427320846!2d87.26455491504678!3d26.45572878329956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ef750ba6867719%3A0xe1200247cc735379!2sShanti%20Yuwa%20Club%20(%20%E0%A4%B6%E0%A4%BE%E0%A4%A8%E0%A5%8D%E0%A4%A4%E0%A4%BF%20%E0%A4%AF%E0%A5%81%E0%A4%B5%E0%A4%BE%20%E0%A4%95%E0%A5%8D%E0%A4%B2%E0%A4%AC)!5e0!3m2!1sen!2sus!4v1627920325016!5m2!1sen!2sus" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-            </div>
+<!-- CTA Section -->
+<section class="py-20 bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-white mb-6">
+            Ready to Make a Difference?
+        </h2>
+        <p class="text-gray-400 text-lg max-w-2xl mx-auto mb-10">
+            Join us in creating positive change. Together, we can build a better community.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'programs' %}" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-lg hover:shadow-primary-500/25 transition-all duration-300 hover:scale-105">
+                <i class="fas fa-project-diagram mr-2"></i>
+                Explore Programs
+            </a>
+            <a href="{% url 'about' %}" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold hover:bg-white/20 transition-all duration-300">
+                <i class="fas fa-users mr-2"></i>
+                Learn About Us
+            </a>
         </div>
     </div>
 </section>

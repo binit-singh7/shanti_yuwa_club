@@ -1,94 +1,321 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Shanti Yuwa Club{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        secondary: {
+                            50: '#fefce8',
+                            100: '#fef9c3',
+                            200: '#fef08a',
+                            300: '#fde047',
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                            700: '#a16207',
+                            800: '#854d0e',
+                            900: '#713f12',
+                        },
+                        accent: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            200: '#fecaca',
+                            300: '#fca5a5',
+                            400: '#f87171',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                            800: '#991b1b',
+                            900: '#7f1d1d',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'slide-down': 'slideDown 0.3s ease-out',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideDown: {
+                            '0%': { transform: 'translateY(-10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body class="font-sans antialiased text-gray-800 bg-gray-50">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">
-                <img src="{% static 'images/logo.png' %}?v={% now 'U' %}" alt="Shanti Yuwa Club Logo" height="40" class="d-inline-block align-text-top me-2">
-                Shanti Yuwa Club
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if 'about' in request.path %}active{% endif %}" href="{% url 'about' %}">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if 'programs' in request.path %}active{% endif %}" href="{% url 'programs' %}">Programs</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if 'gallery' in request.path %}active{% endif %}" href="{% url 'gallery' %}">Gallery</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if 'contact' in request.path %}active{% endif %}" href="{% url 'contact' %}">Contact Us</a>
-                    </li>
-                </ul>
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-lg transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="{% url 'home' %}" class="flex items-center space-x-3 group">
+                    <img src="{% static 'images/logo.png' %}?v={% now 'U' %}" alt="Shanti Yuwa Club Logo" class="h-12 w-auto transition-transform duration-300 group-hover:scale-105">
+                    <div class="hidden sm:block">
+                        <span class="text-xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">Shanti Yuwa Club</span>
+                        <p class="text-xs text-gray-500">Youth Led Community Organization</p>
+                    </div>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center space-x-1">
+                    <a href="{% url 'home' %}" class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 {% if request.path == '/' %}bg-primary-600 text-white shadow-md{% else %}text-gray-700 hover:bg-primary-50 hover:text-primary-600{% endif %}">
+                        Home
+                    </a>
+                    <a href="{% url 'about' %}" class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 {% if 'about' in request.path %}bg-primary-600 text-white shadow-md{% else %}text-gray-700 hover:bg-primary-50 hover:text-primary-600{% endif %}">
+                        About Us
+                    </a>
+                    <a href="{% url 'programs' %}" class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 {% if 'programs' in request.path %}bg-primary-600 text-white shadow-md{% else %}text-gray-700 hover:bg-primary-50 hover:text-primary-600{% endif %}">
+                        Programs
+                    </a>
+                    <a href="{% url 'gallery' %}" class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 {% if 'gallery' in request.path %}bg-primary-600 text-white shadow-md{% else %}text-gray-700 hover:bg-primary-50 hover:text-primary-600{% endif %}">
+                        Gallery
+                    </a>
+                    <a href="{% url 'contact' %}" class="ml-2 px-6 py-2.5 rounded-full text-sm font-semibold bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-md hover:shadow-lg hover:from-primary-700 hover:to-primary-800 transition-all duration-200 {% if 'contact' in request.path %}ring-2 ring-primary-300{% endif %}">
+                        Contact Us
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button type="button" class="lg:hidden inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200" id="mobile-menu-btn" aria-expanded="false">
+                    <span class="sr-only">Open menu</span>
+                    <svg class="h-6 w-6" id="menu-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <svg class="h-6 w-6 hidden" id="close-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="lg:hidden hidden" id="mobile-menu">
+            <div class="px-4 pt-2 pb-6 space-y-2 bg-white border-t border-gray-100 shadow-lg">
+                <a href="{% url 'home' %}" class="block px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 {% if request.path == '/' %}bg-primary-600 text-white{% else %}text-gray-700 hover:bg-primary-50 hover:text-primary-600{% endif %}">
+                    <i class="fas fa-home mr-3"></i>Home
+                </a>
+                <a href="{% url 'about' %}" class="block px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 {% if 'about' in request.path %}bg-primary-600 text-white{% else %}text-gray-700 hover:bg-primary-50 hover:text-primary-600{% endif %}">
+                    <i class="fas fa-users mr-3"></i>About Us
+                </a>
+                <a href="{% url 'programs' %}" class="block px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 {% if 'programs' in request.path %}bg-primary-600 text-white{% else %}text-gray-700 hover:bg-primary-50 hover:text-primary-600{% endif %}">
+                    <i class="fas fa-project-diagram mr-3"></i>Programs
+                </a>
+                <a href="{% url 'gallery' %}" class="block px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 {% if 'gallery' in request.path %}bg-primary-600 text-white{% else %}text-gray-700 hover:bg-primary-50 hover:text-primary-600{% endif %}">
+                    <i class="fas fa-images mr-3"></i>Gallery
+                </a>
+                <a href="{% url 'contact' %}" class="block px-4 py-3 rounded-xl text-base font-medium bg-gradient-to-r from-primary-600 to-primary-700 text-white text-center mt-4">
+                    <i class="fas fa-envelope mr-3"></i>Contact Us
+                </a>
             </div>
         </div>
     </nav>
 
+    <!-- Spacer for fixed navbar -->
+    <div class="h-20"></div>
+
     <!-- Main Content -->
-    <main class="py-4">
+    <main>
         {% block content %}{% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-light py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5>Shanti Yuwa Club</h5>
-                    <p>A youth-led, community-based organization in Biratnagar, Nepal working on social awareness, empowerment, and local outreach.</p>
-                    <div class="social-links mt-3">
-                        <a href="https://www.facebook.com/peaceyouthclub123" target="_blank" class="me-2 text-light"><i class="fab fa-facebook-f fa-lg"></i></a>
-                        <a href="https://www.instagram.com/shantiyuwa/" target="_blank" class="me-2 text-light"><i class="fab fa-instagram fa-lg"></i></a>
+    <footer class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-300">
+        <!-- Main Footer Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <!-- Brand Section -->
+                <div class="lg:col-span-1">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <img src="{% static 'images/logo.png' %}?v={% now 'U' %}" alt="Logo" class="h-12 w-auto brightness-0 invert">
+                        <span class="text-xl font-bold text-white">Shanti Yuwa Club</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        A youth-led, community-based organization in Biratnagar, Nepal working on social awareness, empowerment, and local outreach.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/peaceyouthclub123" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-700 hover:bg-primary-600 flex items-center justify-center transition-all duration-300 hover:scale-110" aria-label="Facebook">
+                            <i class="fab fa-facebook-f text-white"></i>
+                        </a>
+                        <a href="https://www.instagram.com/shantiyuwa/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 flex items-center justify-center transition-all duration-300 hover:scale-110" aria-label="Instagram">
+                            <i class="fab fa-instagram text-white"></i>
+                        </a>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="{% url 'home' %}" class="text-light">Home</a></li>
-                        <li><a href="{% url 'about' %}" class="text-light">About Us</a></li>
-                        <li><a href="{% url 'programs' %}" class="text-light">Programs</a></li>
-                        <li><a href="{% url 'gallery' %}" class="text-light">Gallery</a></li>
-                        <li><a href="{% url 'contact' %}" class="text-light">Contact Us</a></li>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-white font-semibold text-lg mb-6 relative">
+                        Quick Links
+                        <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-primary-500 -mb-2"></span>
+                    </h3>
+                    <ul class="space-y-3">
+                        <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i>Home</a></li>
+                        <li><a href="{% url 'about' %}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i>About Us</a></li>
+                        <li><a href="{% url 'programs' %}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i>Programs</a></li>
+                        <li><a href="{% url 'gallery' %}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i>Gallery</a></li>
+                        <li><a href="{% url 'contact' %}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i>Contact Us</a></li>
                     </ul>
                 </div>
-                <div class="col-md-4">
-                    <h5>Contact Info</h5>
-                    <address>
-                        <p><i class="fas fa-map-marker-alt me-2"></i> Biratnagar, Nepal</p>
-                        <p><i class="fas fa-phone me-2"></i> +977 9816751342</p>
-                        <p><i class="fas fa-envelope me-2"></i> info@shantiyuwaclub.org.np</p>
-                    </address>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-white font-semibold text-lg mb-6 relative">
+                        Contact Info
+                        <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-primary-500 -mb-2"></span>
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start space-x-3">
+                            <a href="https://maps.google.com/?q=Biratnagar,Nepal" target="_blank" class="flex items-center space-x-3 group">
+                                <div class="w-8 h-8 rounded-lg bg-primary-600/20 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-primary-600/40 transition-colors">
+                                    <i class="fas fa-map-marker-alt text-primary-400 text-sm"></i>
+                                </div>
+                                <span class="text-gray-400 text-sm group-hover:text-primary-400 transition-colors">Biratnagar, Nepal</span>
+                            </a>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <a href="https://wa.me/9779816751342" target="_blank" class="flex items-center space-x-3 group">
+                                <div class="w-8 h-8 rounded-lg bg-green-600/20 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-green-600/40 transition-colors">
+                                    <i class="fab fa-whatsapp text-green-400 text-sm"></i>
+                                </div>
+                                <span class="text-gray-400 text-sm group-hover:text-green-400 transition-colors">+977 9816751342</span>
+                            </a>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <div class="w-8 h-8 rounded-lg bg-primary-600/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="fas fa-envelope text-primary-400 text-sm"></i>
+                            </div>
+                            <span class="text-gray-400 text-sm">info@shantiyuwaclub.org.np</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h3 class="text-white font-semibold text-lg mb-6 relative">
+                        Stay Updated
+                        <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-primary-500 -mb-2"></span>
+                    </h3>
+                    <p class="text-gray-400 text-sm mb-4">Get updates about our programs and events.</p>
+                    <form class="space-y-3">
+                        <input type="email" placeholder="Enter your email" class="w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                        <button type="submit" class="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-primary-600 to-primary-700 text-white font-medium hover:from-primary-700 hover:to-primary-800 transition-all duration-200 shadow-lg hover:shadow-primary-500/25">
+                            Subscribe
+                        </button>
+                    </form>
                 </div>
             </div>
-            <hr class="my-3">
-            <div class="text-center">
-                <p>&copy; {% now "Y" %} Shanti Yuwa Club. All rights reserved.</p>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="border-t border-gray-700/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <p class="text-gray-500 text-sm">
+                        &copy; {% now "Y" %} Shanti Yuwa Club. All rights reserved.
+                    </p>
+                    <p class="text-gray-500 text-sm">
+                        Made with <i class="fas fa-heart text-red-500 mx-1"></i> for the community
+                    </p>
+                </div>
             </div>
         </div>
     </footer>
 
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-primary-600 text-white shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-primary-700 hover:scale-110 z-40">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-xl', 'bg-white');
+                navbar.classList.remove('bg-white/95');
+            } else {
+                navbar.classList.remove('shadow-xl', 'bg-white');
+                navbar.classList.add('bg-white/95');
+            }
+        });
+
+        // Back to top button
+        const backToTop = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.remove('opacity-0', 'invisible');
+                backToTop.classList.add('opacity-100', 'visible');
+            } else {
+                backToTop.classList.add('opacity-0', 'invisible');
+                backToTop.classList.remove('opacity-100', 'visible');
+            }
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

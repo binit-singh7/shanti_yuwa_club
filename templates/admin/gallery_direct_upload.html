@@ -1,79 +1,10 @@
 {% extends "admin/base_site.html" %}
 {% load i18n admin_urls static %}
 
+{% block page_title %}Direct Upload - Drag & Drop{% endblock %}
+
 {% block extrahead %}
     {{ block.super }}
-    <style>
-        .help-text {
-            color: #666;
-            font-size: 13px;
-            margin-top: 4px;
-        }
-        .file-upload-container {
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-        .alert-info {
-            background-color: #d9edf7;
-            border-color: #bce8f1;
-            color: #31708f;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid transparent;
-            border-radius: 4px;
-        }
-        .image-preview {
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: 10px;
-            gap: 10px;
-        }
-        .image-item {
-            width: 120px;
-            height: 120px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .image-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .upload-drop-zone {
-            height: 200px;
-            border: 3px dashed #ccc;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            cursor: pointer;
-        }
-        .upload-drop-zone.highlight {
-            border-color: #007bff;
-            background-color: rgba(0, 123, 255, 0.1);
-        }
-        .drag-text {
-            text-align: center;
-            padding: 15px;
-        }
-        .file-select-button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .upload-info {
-            margin-top: 20px;
-            text-align: center;
-        }
-    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const dropZone = document.getElementById('upload-drop-zone');
@@ -81,8 +12,16 @@
             const previewContainer = document.getElementById('image-preview');
             const selectedCount = document.getElementById('selected-count');
             const uploadForm = document.getElementById('upload-form');
+            const progressBar = document.getElementById('upload-progress');
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
             
-            // Prevent default behavior for drag and drop events
+            // Prevent default behavior for drag and drop events on document
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            // Prevent default behavior for drag and drop events on drop zone
             ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
                 dropZone.addEventListener(eventName, preventDefaults, false);
             });
@@ -94,30 +33,25 @@
             
             // Highlight drop zone when dragging over it
             ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, highlight, false);
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.add('border-indigo-500', 'bg-indigo-50', 'scale-102');
+                    dropZone.classList.remove('border-gray-300');
+                });
             });
             
             ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, unhighlight, false);
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.remove('border-indigo-500', 'bg-indigo-50', 'scale-102');
+                    dropZone.classList.add('border-gray-300');
+                });
             });
             
-            function highlight() {
-                dropZone.classList.add('highlight');
-            }
-            
-            function unhighlight() {
-                dropZone.classList.remove('highlight');
-            }
-            
             // Handle dropped files
-            dropZone.addEventListener('drop', handleDrop, false);
-            
-            function handleDrop(e) {
+            dropZone.addEventListener('drop', function(e) {
                 const dt = e.dataTransfer;
-                const files = dt.files;
-                fileInput.files = files;
-                updateImagePreview(files);
-            }
+                fileInput.files = dt.files;
+                updateImagePreview(dt.files);
+            });
             
             // Handle file input change
             fileInput.addEventListener('change', function() {
@@ -133,95 +67,258 @@
                 previewContainer.innerHTML = '';
                 
                 if (files.length > 0) {
-                    selectedCount.textContent = `${files.length} file(s) selected`;
+                    selectedCount.innerHTML = `
+                        <div class="flex items-center justify-center">
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-check text-green-500"></i>
+                            </div>
+                            <div>
+                                <span class="text-green-600 font-bold text-lg">${files.length}</span>
+                                <span class="text-gray-600 ml-1">file(s) ready to upload</span>
+                            </div>
+                        </div>
+                    `;
                     
-                    for (let i = 0; i < Math.min(files.length, 12); i++) {
+                    for (let i = 0; i < Math.min(files.length, 16); i++) {
                         const file = files[i];
                         if (!file.type.startsWith('image/')) continue;
                         
                         const reader = new FileReader();
                         const imageItem = document.createElement('div');
-                        imageItem.className = 'image-item';
+                        imageItem.className = 'relative group animate-fade-in';
                         
                         reader.onload = function(e) {
-                            const img = document.createElement('img');
-                            img.src = e.target.result;
-                            imageItem.appendChild(img);
+                            const size = (file.size / 1024).toFixed(1);
+                            imageItem.innerHTML = `
+                                <div class="w-28 h-28 rounded-2xl overflow-hidden shadow-lg border-2 border-white group-hover:border-indigo-400 transition-all group-hover:scale-105">
+                                    <img src="${e.target.result}" class="w-full h-full object-cover">
+                                </div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl flex flex-col justify-end p-2">
+                                    <span class="text-white text-xs font-medium truncate">${file.name}</span>
+                                    <span class="text-white/70 text-xs">${size} KB</span>
+                                </div>
+                            `;
                         };
                         
                         reader.readAsDataURL(file);
                         previewContainer.appendChild(imageItem);
                     }
                     
-                    if (files.length > 12) {
-                        const moreText = document.createElement('div');
-                        moreText.textContent = `+ ${files.length - 12} more`;
-                        moreText.className = 'image-item';
-                        moreText.style.display = 'flex';
-                        moreText.style.alignItems = 'center';
-                        moreText.style.justifyContent = 'center';
-                        previewContainer.appendChild(moreText);
+                    if (files.length > 16) {
+                        const moreItem = document.createElement('div');
+                        moreItem.className = 'w-28 h-28 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex flex-col items-center justify-center shadow-lg';
+                        moreItem.innerHTML = `
+                            <span class="text-white font-bold text-2xl">+${files.length - 16}</span>
+                            <span class="text-white/80 text-xs">more files</span>
+                        `;
+                        previewContainer.appendChild(moreItem);
                     }
                 } else {
-                    selectedCount.textContent = 'No files selected';
+                    selectedCount.innerHTML = `
+                        <div class="flex items-center justify-center text-gray-400">
+                            <i class="fas fa-images mr-2"></i>
+                            <span>No files selected</span>
+                        </div>
+                    `;
                 }
             }
+            
+            // Form submit with progress simulation
+            uploadForm.addEventListener('submit', function() {
+                if (fileInput.files.length > 0) {
+                    progressBar.classList.remove('hidden');
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += Math.random() * 15;
+                        if (progress >= 90) {
+                            progress = 90;
+                            clearInterval(interval);
+                        }
+                        progressFill.style.width = progress + '%';
+                        progressText.textContent = Math.round(progress) + '%';
+                    }, 200);
+                }
+            });
         });
     </script>
-{% endblock %}
-
-{% block breadcrumbs %}
-<div class="breadcrumbs">
-<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-&rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
-&rsaquo; <a href="{% url 'admin:main_galleryimage_changelist' %}">Gallery Images</a>
-&rsaquo; Upload Multiple Images
-</div>
+    <style>
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.3s ease-out forwards;
+        }
+        .scale-102 {
+            transform: scale(1.02);
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-<div id="content-main">
-    <div class="alert-info">
-        <p><strong>Instructions:</strong> Use this form to upload multiple gallery images at once. All images will be assigned to the selected category and given sequential names based on the title prefix you provide.</p>
-        <p><strong>To upload multiple images:</strong> Drag and drop multiple files onto the upload zone OR click the upload zone and select multiple files by holding Ctrl (or Command on Mac) while selecting.</p>
+<!-- Header -->
+<div class="flex items-center justify-between mb-8">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900 mb-2 flex items-center">
+            <span class="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center mr-4">
+                <i class="fas fa-magic text-2xl text-white"></i>
+            </span>
+            Direct Upload
+        </h1>
+        <nav class="flex items-center space-x-2 text-sm ml-16">
+            <a href="{% url 'admin:index' %}" class="text-gray-500 hover:text-indigo-600">
+                <i class="fas fa-home"></i>
+            </a>
+            <i class="fas fa-chevron-right text-gray-300"></i>
+            <a href="{% url 'admin:main_galleryimage_changelist' %}" class="text-gray-500 hover:text-indigo-600">Gallery Images</a>
+            <i class="fas fa-chevron-right text-gray-300"></i>
+            <span class="text-indigo-600 font-medium">Direct Upload</span>
+        </nav>
+    </div>
+</div>
+
+<!-- Instructions Card -->
+<div class="bg-gradient-to-r from-violet-50 to-purple-50 border border-violet-200 rounded-2xl p-6 mb-8">
+    <div class="flex items-start">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center mr-4 flex-shrink-0">
+            <i class="fas fa-lightbulb text-2xl text-white"></i>
+        </div>
+        <div>
+            <h3 class="font-semibold text-violet-900 mb-2">Drag & Drop Upload</h3>
+            <p class="text-sm text-violet-800 mb-3">The easiest way to upload multiple images at once!</p>
+            <ul class="text-sm text-violet-700 space-y-1">
+                <li><i class="fas fa-hand-pointer mr-2 text-violet-500"></i>Simply drag images from your computer and drop them in the zone below</li>
+                <li><i class="fas fa-mouse mr-2 text-violet-500"></i>Or click the upload zone to browse and select files</li>
+                <li><i class="fas fa-tags mr-2 text-violet-500"></i>Select a category and add optional title prefix before uploading</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Form -->
+<form method="post" enctype="multipart/form-data" id="upload-form" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    {% csrf_token %}
+    
+    <div class="p-6 border-b border-gray-100">
+        <h2 class="text-lg font-bold text-gray-900 flex items-center">
+            <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-500 flex items-center justify-center mr-3">
+                <i class="fas fa-cog text-white"></i>
+            </span>
+            Upload Settings
+        </h2>
     </div>
     
-    <form method="post" enctype="multipart/form-data" id="upload-form">
-        {% csrf_token %}
-        <fieldset class="module aligned">
-            {% for field in form %}
-                <div class="form-row">
-                    <div class="field-box">
-                        {{ field.errors }}
-                        {{ field.label_tag }}
-                        {{ field }}
-                        {% if field.help_text %}
-                            <div class="help-text">{{ field.help_text }}</div>
-                        {% endif %}
+    <div class="p-6 space-y-6">
+        <!-- Form Fields -->
+        {% for field in form %}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+            <label for="{{ field.id_for_label }}" class="text-sm font-semibold text-gray-700 pt-3">
+                {{ field.label }}
+                {% if field.field.required %}<span class="text-red-500">*</span>{% endif %}
+            </label>
+            <div class="md:col-span-2">
+                {% if field.name == 'category' %}
+                <div class="relative">
+                    <select name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all appearance-none bg-white">
+                        {% for choice in field.field.choices %}
+                        <option value="{{ choice.0 }}" {% if choice.0 == field.value %}selected{% endif %}>{{ choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                        <i class="fas fa-chevron-down text-gray-400"></i>
                     </div>
                 </div>
-            {% endfor %}
+                {% else %}
+                <input type="text" name="{{ field.name }}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}"
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                    placeholder="{{ field.help_text }}">
+                {% endif %}
+                {% if field.help_text %}
+                <p class="mt-2 text-sm text-gray-500">{{ field.help_text }}</p>
+                {% endif %}
+                {% if field.errors %}
+                <p class="mt-2 text-sm text-red-500">
+                    <i class="fas fa-exclamation-circle mr-1"></i>{{ field.errors.0 }}
+                </p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        
+        <!-- Drag & Drop Upload Zone -->
+        <div class="pt-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-4">
+                <i class="fas fa-images mr-2 text-indigo-500"></i>
+                Select Images
+            </label>
             
-            <!-- Custom file upload zone -->
-            <div class="form-row">
-                <div class="field-box">
-                    <label>Images:</label>
-                    <div id="upload-drop-zone" class="upload-drop-zone">
-                        <div class="drag-text">
-                            <h3>Drag & Drop Images Here</h3>
-                            <p>or click to select files</p>
-                        </div>
+            <div id="upload-drop-zone" 
+                class="border-3 border-dashed border-gray-300 rounded-3xl p-12 text-center cursor-pointer transition-all duration-300 hover:border-indigo-400 hover:bg-indigo-50/30 relative overflow-hidden"
+                style="min-height: 280px;">
+                
+                <!-- Background Pattern -->
+                <div class="absolute inset-0 opacity-5">
+                    <div class="absolute top-4 left-4 w-16 h-16 rounded-2xl bg-indigo-500 transform rotate-12"></div>
+                    <div class="absolute bottom-8 right-8 w-24 h-24 rounded-full bg-purple-500"></div>
+                    <div class="absolute top-1/2 right-1/4 w-12 h-12 rounded-xl bg-pink-500 transform -rotate-6"></div>
+                </div>
+                
+                <!-- Upload Icon -->
+                <div class="relative z-10">
+                    <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-indigo-500/30 animate-bounce">
+                        <i class="fas fa-cloud-upload-alt text-5xl text-white"></i>
                     </div>
-                    <input type="file" id="id_images" name="images" multiple accept="image/*" style="display: none;">
-                    <div id="selected-count" class="upload-info">No files selected</div>
-                    <div id="image-preview" class="image-preview"></div>
+                    
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Drag & Drop Images Here</h3>
+                    <p class="text-gray-500 mb-6">Support: JPG, PNG, GIF, WebP • Max size: 10MB per file</p>
+                    
+                    <div class="flex items-center justify-center space-x-4">
+                        <span class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-xl transition-all">
+                            <i class="fas fa-folder-open mr-2"></i>
+                            Browse Files
+                        </span>
+                        <span class="text-gray-400">or drag files here</span>
+                    </div>
+                </div>
+                
+                <input type="file" id="id_images" name="images" multiple accept="image/*" class="hidden">
+            </div>
+            
+            <!-- Selected Files Info -->
+            <div id="selected-count" class="mt-6 p-4 bg-gray-50 rounded-xl">
+                <div class="flex items-center justify-center text-gray-400">
+                    <i class="fas fa-images mr-2"></i>
+                    <span>No files selected</span>
                 </div>
             </div>
-        </fieldset>
-        
-        <div class="submit-row">
-            <input type="submit" value="Upload Images" class="default" name="_save">
+            
+            <!-- Image Preview Grid -->
+            <div id="image-preview" class="flex flex-wrap gap-4 mt-6 justify-center"></div>
+            
+            <!-- Upload Progress -->
+            <div id="upload-progress" class="hidden mt-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-gray-700">Uploading images...</span>
+                    <span id="progress-text" class="text-sm font-bold text-indigo-600">0%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                    <div id="progress-fill" class="bg-gradient-to-r from-indigo-500 to-purple-500 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
         </div>
-    </form>
-</div>
+    </div>
+    
+    <!-- Submit Section -->
+    <div class="bg-gray-50 px-6 py-4 flex items-center justify-between border-t border-gray-100">
+        <a href="{% url 'admin:main_galleryimage_changelist' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+            <i class="fas fa-arrow-left mr-2"></i>Back to Gallery
+        </a>
+        <button type="submit" 
+            class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-bold rounded-xl hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 transition-all shadow-xl shadow-purple-500/30 hover:shadow-2xl hover:shadow-purple-500/40 hover:-translate-y-1">
+            <i class="fas fa-cloud-upload-alt mr-3 text-xl"></i>
+            Upload All Images
+        </button>
+    </div>
+</form>
 {% endblock %}

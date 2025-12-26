@@ -2,27 +2,128 @@ from django.contrib import admin
 from django.shortcuts import render, redirect
 from django.urls import path
 from django.contrib import messages
+from django.utils.html import format_html
+from django.db.models import Count
+from django.utils import timezone
 from .models import Program, GalleryCategory, GalleryImage, TeamMember, Event, ContactMessage
 from .forms import MultipleImageUploadForm
+
+# Custom Admin Site Configuration
+admin.site.site_header = "Shanti Yuwa Club Administration"
+admin.site.site_title = "Shanti Yuwa Club Admin"
+admin.site.index_title = "Welcome to Shanti Yuwa Club Admin Portal"
 
 # Register your models here.
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
-    list_display = ('title', 'is_active', 'created_at')
-    list_filter = ('is_active', 'created_at')
-    search_fields = ('title', 'short_description')
+    list_display = ('title', 'is_active', 'image_preview', 'created_at', 'updated_at')
+    list_filter = ('is_active', 'created_at', 'updated_at')
+    search_fields = ('title', 'short_description', 'content')
     prepopulated_fields = {'slug': ('title',)}
+    readonly_fields = ('created_at', 'updated_at', 'image_preview')
+    list_editable = ('is_active',)
+    list_per_page = 20
+    date_hierarchy = 'created_at'
+    
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'slug', 'short_description', 'is_active')
+        }),
+        ('Content', {
+            'fields': ('content',),
+            'classes': ('wide',),
+        }),
+        ('Media', {
+            'fields': ('image', 'image_preview'),
+        }),
+        ('Metadata', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height: 100px; max-width: 150px; border-radius: 8px;" />', obj.image.url)
+        return "No Image"
+    image_preview.short_description = "Preview"
+    
+    actions = ['activate_programs', 'deactivate_programs']
+    
+    def activate_programs(self, request, queryset):
+        updated = queryset.update(is_active=True)
+        self.message_user(request, f'{updated} program(s) successfully activated.', messages.SUCCESS)
+    activate_programs.short_description = "Activate selected programs"
+    
+    def deactivate_programs(self, request, queryset):
+        updated = queryset.update(is_active=False)
+        self.message_user(request, f'{updated} program(s) successfully deactivated.', messages.SUCCESS)
+    deactivate_programs.short_description = "Deactivate selected programs"
+
 
 @admin.register(GalleryCategory)
 class GalleryCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'image_count', 'get_latest_image')
+    search_fields = ('name',)
+    
+    def image_count(self, obj):
+        count = obj.galleryimage_set.count()
+        return format_html('<span style="font-weight: bold; color: #007bff;">{}</span>', count)
+    image_count.short_description = "Total Images"
+    
+    def get_latest_image(self, obj):
+        latest = obj.galleryimage_set.first()
+        if latest and latest.image:
+            return format_html('<img src="{}" style="max-height: 60px; max-width: 80px; border-radius: 4px;" />', latest.image.url)
+        return "No Images"
+    get_latest_image.short_description = "Latest Image"
+
 
 @admin.register(GalleryImage)
 class GalleryImageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'created_at')
+    list_display = ('title', 'category', 'image_thumbnail', 'created_at')
     list_filter = ('category', 'created_at')
     search_fields = ('title', 'description')
+    readonly_fields = ('created_at', 'image_preview')
+    list_per_page = 30
+    date_hierarchy = 'created_at'
     change_list_template = 'admin/gallery_image_changelist.html'
+    
+    fieldsets = (
+        ('Image Information', {
+            'fields': ('title', 'category', 'description')
+        }),
+        ('Image', {
+            'fields': ('image', 'image_preview'),
+        }),
+        ('Metadata', {
+            'fields': ('created_at',),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def image_thumbnail(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height: 60px; max-width: 80px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" />', obj.image.url)
+        return "No Image"
+    image_thumbnail.short_description = "Thumbnail"
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height: 300px; max-width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />', obj.image.url)
+        return "No Image"
+    image_preview.short_description = "Full Preview"
+    
+    actions = ['duplicate_images']
+    
+    def duplicate_images(self, request, queryset):
+        for obj in queryset:
+            obj.pk = None
+            obj.title = f"{obj.title} (Copy)"
+            obj.save()
+        self.message_user(request, f'{queryset.count()} image(s) successfully duplicated.', messages.SUCCESS)
+    duplicate_images.short_description = "Duplicate selected images"
+
     
     def get_urls(self):
         urls = super().get_urls()
@@ -134,19 +235,190 @@ class GalleryImageAdmin(admin.ModelAdmin):
 
 @admin.register(TeamMember)
 class TeamMemberAdmin(admin.ModelAdmin):
-    list_display = ('name', 'position', 'is_active', 'display_order')
+    list_display = ('name', 'position', 'image_thumbnail', 'is_active', 'display_order', 'social_links')
     list_filter = ('is_active', 'position')
     search_fields = ('name', 'position', 'bio')
+    list_editable = ('is_active', 'display_order')
+    readonly_fields = ('image_preview',)
+    list_per_page = 20
+    
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('name', 'position', 'bio', 'is_active', 'display_order')
+        }),
+        ('Image', {
+            'fields': ('image', 'image_preview'),
+        }),
+        ('Social Media', {
+            'fields': ('facebook', 'instagram', 'twitter'),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def image_thumbnail(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height: 60px; max-width: 60px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" />', obj.image.url)
+        return "No Image"
+    image_thumbnail.short_description = "Photo"
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height: 200px; max-width: 200px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />', obj.image.url)
+        return "No Image"
+    image_preview.short_description = "Full Preview"
+    
+    def social_links(self, obj):
+        links = []
+        if obj.facebook:
+            links.append('<i class="fab fa-facebook" style="color: #1877f2;"></i>')
+        if obj.instagram:
+            links.append('<i class="fab fa-instagram" style="color: #e4405f;"></i>')
+        if obj.twitter:
+            links.append('<i class="fab fa-twitter" style="color: #1da1f2;"></i>')
+        return format_html(' '.join(links)) if links else "—"
+    social_links.short_description = "Social Media"
+    
+    actions = ['activate_members', 'deactivate_members']
+    
+    def activate_members(self, request, queryset):
+        updated = queryset.update(is_active=True)
+        self.message_user(request, f'{updated} team member(s) successfully activated.', messages.SUCCESS)
+    activate_members.short_description = "Activate selected members"
+    
+    def deactivate_members(self, request, queryset):
+        updated = queryset.update(is_active=False)
+        self.message_user(request, f'{updated} team member(s) successfully deactivated.', messages.SUCCESS)
+    deactivate_members.short_description = "Deactivate selected members"
+
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date', 'location', 'is_active')
+    list_display = ('title', 'date', 'location', 'image_thumbnail', 'is_active', 'days_until_event')
     list_filter = ('is_active', 'date')
     search_fields = ('title', 'location', 'description')
+    readonly_fields = ('created_at', 'image_preview')
+    list_editable = ('is_active',)
+    list_per_page = 20
+    date_hierarchy = 'date'
+    
+    fieldsets = (
+        ('Event Information', {
+            'fields': ('title', 'date', 'location', 'is_active')
+        }),
+        ('Description', {
+            'fields': ('description',),
+            'classes': ('wide',),
+        }),
+        ('Image', {
+            'fields': ('image', 'image_preview'),
+        }),
+        ('Metadata', {
+            'fields': ('created_at',),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def image_thumbnail(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height: 60px; max-width: 80px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" />', obj.image.url)
+        return "No Image"
+    image_thumbnail.short_description = "Thumbnail"
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height: 300px; max-width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />', obj.image.url)
+        return "No Image"
+    image_preview.short_description = "Full Preview"
+    
+    def days_until_event(self, obj):
+        today = timezone.now()
+        delta = (obj.date - today).days
+        if delta < 0:
+            return format_html('<span style="color: #dc3545;">Past Event</span>')
+        elif delta == 0:
+            return format_html('<span style="color: #28a745; font-weight: bold;">Today!</span>')
+        elif delta <= 7:
+            return format_html('<span style="color: #ffc107; font-weight: bold;">In {} days</span>', delta)
+        else:
+            return format_html('<span style="color: #007bff;">In {} days</span>', delta)
+    days_until_event.short_description = "Status"
+    
+    actions = ['activate_events', 'deactivate_events']
+    
+    def activate_events(self, request, queryset):
+        updated = queryset.update(is_active=True)
+        self.message_user(request, f'{updated} event(s) successfully activated.', messages.SUCCESS)
+    activate_events.short_description = "Activate selected events"
+    
+    def deactivate_events(self, request, queryset):
+        updated = queryset.update(is_active=False)
+        self.message_user(request, f'{updated} event(s) successfully deactivated.', messages.SUCCESS)
+    deactivate_events.short_description = "Deactivate selected events"
+
 
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'subject', 'created_at', 'is_read')
+    list_display = ('name', 'email', 'subject', 'created_at', 'read_status', 'message_preview')
     list_filter = ('is_read', 'created_at')
     search_fields = ('name', 'email', 'subject', 'message')
-    readonly_fields = ('name', 'email', 'subject', 'message', 'created_at')
+    readonly_fields = ('name', 'email', 'subject', 'message', 'created_at', 'formatted_message')
+    list_per_page = 30
+    date_hierarchy = 'created_at'
+    
+    fieldsets = (
+        ('Sender Information', {
+            'fields': ('name', 'email', 'created_at')
+        }),
+        ('Message Details', {
+            'fields': ('subject', 'formatted_message', 'is_read'),
+            'classes': ('wide',),
+        }),
+    )
+    
+    def read_status(self, obj):
+        if obj.is_read:
+            return format_html('<span style="color: #28a745;">✓ Read</span>')
+        return format_html('<span style="color: #dc3545; font-weight: bold;">✉ Unread</span>')
+    read_status.short_description = "Status"
+    
+    def message_preview(self, obj):
+        preview = obj.message[:50] + '...' if len(obj.message) > 50 else obj.message
+        return format_html('<span style="color: #6c757d; font-style: italic;">{}</span>', preview)
+    message_preview.short_description = "Preview"
+    
+    def formatted_message(self, obj):
+        return format_html('<div style="background: #f8f9fa; padding: 15px; border-radius: 4px; white-space: pre-wrap;">{}</div>', obj.message)
+    formatted_message.short_description = "Full Message"
+    
+    actions = ['mark_as_read', 'mark_as_unread']
+    
+    def mark_as_read(self, request, queryset):
+        updated = queryset.update(is_read=True)
+        self.message_user(request, f'{updated} message(s) marked as read.', messages.SUCCESS)
+    mark_as_read.short_description = "Mark as read"
+    
+    def mark_as_unread(self, request, queryset):
+        updated = queryset.update(is_read=False)
+        self.message_user(request, f'{updated} message(s) marked as unread.', messages.SUCCESS)
+    mark_as_unread.short_description = "Mark as unread"
+
+
+# Custom Admin Site with Dashboard
+from django.contrib.admin import AdminSite
+from .admin_dashboard import DashboardStats
+
+class CustomAdminSite(AdminSite):
+    site_header = "Shanti Yuwa Club Administration"
+    site_title = "Shanti Yuwa Club Admin"
+    index_title = "Welcome to Shanti Yuwa Club Admin Portal"
+    
+    def index(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['stats'] = DashboardStats.get_stats()
+        extra_context['recent_activity'] = DashboardStats.get_recent_activity()
+        self.index_template = 'admin/custom/dashboard.html'
+        return super().index(request, extra_context)
+
+# Create custom admin site instance
+# Note: To use this, you'll need to update your urls.py to use this custom admin site
+# For now, we'll keep using the default admin site with enhanced models

@@ -11,8 +11,9 @@ def home(request):
     """View for homepage"""
     programs = Program.objects.filter(is_active=True)[:3]
     team_members = TeamMember.objects.filter(is_active=True)[:4]
-    events = Event.objects.filter(is_active=True)[:3]
-    gallery_images = GalleryImage.objects.all()[:6]
+    # Order events by date to show upcoming events first
+    events = Event.objects.filter(is_active=True).order_by('date')[:3]
+    gallery_images = GalleryImage.objects.select_related('category').all()[:6]
     
     context = {
         'programs': programs,
@@ -47,7 +48,8 @@ def programs(request):
 def program_detail(request, slug):
     """View for individual program details"""
     program = get_object_or_404(Program, slug=slug, is_active=True)
-    related_programs = Program.objects.filter(is_active=True).exclude(id=program.id)[:3]
+    # Get related programs, ordered by newest first
+    related_programs = Program.objects.filter(is_active=True).exclude(id=program.id).order_by('-created_at')[:3]
     
     context = {
         'program': program,
@@ -60,10 +62,11 @@ def gallery(request):
     categories = GalleryCategory.objects.all()
     selected_category = request.GET.get('category')
     
+    # Use select_related to optimize database queries
     if selected_category:
-        images = GalleryImage.objects.filter(category__name=selected_category)
+        images = GalleryImage.objects.select_related('category').filter(category__name=selected_category)
     else:
-        images = GalleryImage.objects.all()
+        images = GalleryImage.objects.select_related('category').all()
         
     paginator = Paginator(images, 12)  # Show 12 images per page
     page_number = request.GET.get('page')

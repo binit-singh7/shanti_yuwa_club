@@ -5,260 +5,510 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-section" style="background-image: url('{% static 'images/hero-bg.jpg' %}?v={% now 'U' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 100vh; display: flex; align-items: center;">
-    <div class="container hero-content">
-        <div class="row">
-            <div class="col-md-8 col-lg-7">
-                <h1 class="display-4 fw-bold mb-4">Empowering Youth, Building Community</h1>
-                <p class="lead mb-4">Shanti Yuwa Club is a youth-led, community-based organization in Biratnagar, Nepal working on social awareness, empowerment, and local outreach.</p>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                    <a href="{% url 'about' %}" class="btn btn-primary btn-lg px-4 me-md-2">Learn More</a>
-                    <a href="{% url 'contact' %}" class="btn btn-outline-light btn-lg px-4">Get Involved</a>
-                </div>
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 z-0">
+        <img src="{% static 'images/hero-bg.jpg' %}?v={% now 'U' %}" alt="Hero Background" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/70 to-gray-900/50"></div>
+    </div>
+    
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 z-0 overflow-hidden">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-primary-500/10 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-secondary-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 1s;"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+        <div class="max-w-3xl">
+            <!-- Badge -->
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm mb-8 animate-fade-in">
+                <span class="w-2 h-2 rounded-full bg-green-400 mr-2 animate-pulse"></span>
+                Youth-Led Community Organization
+            </div>
+            
+            <!-- Heading -->
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 animate-slide-up">
+                Empowering Youth,
+                <span class="bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Building Community</span>
+            </h1>
+            
+            <!-- Description -->
+            <p class="text-lg sm:text-xl text-gray-300 mb-10 leading-relaxed animate-slide-up" style="animation-delay: 0.1s;">
+                Shanti Yuwa Club is a youth-led, community-based organization in Biratnagar, Nepal working on social awareness, empowerment, and local outreach.
+            </p>
+            
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 animate-slide-up" style="animation-delay: 0.2s;">
+                <a href="{% url 'about' %}" class="group inline-flex items-center justify-center px-8 py-4 rounded-full bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold shadow-lg hover:shadow-primary-500/25 transition-all duration-300 hover:scale-105">
+                    Learn More
+                    <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                </a>
+                <a href="{% url 'contact' %}" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold hover:bg-white/20 transition-all duration-300">
+                    <i class="fas fa-hands-helping mr-2"></i>
+                    Get Involved
+                </a>
             </div>
         </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
+        <a href="#about" class="flex flex-col items-center text-white/60 hover:text-white transition-colors duration-200">
+            <span class="text-xs mb-2">Scroll Down</span>
+            <i class="fas fa-chevron-down"></i>
+        </a>
     </div>
 </section>
 
 <!-- About Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-6 mb-4 mb-md-0">
-                <img src="{% static 'images/about-home.jpg' %}?v={% now 'U' %}" alt="Shanti Yuwa Club Team" class="img-fluid rounded shadow">
+<section id="about" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <!-- Image Side -->
+            <div class="relative">
+                <div class="relative z-10">
+                    <img src="{% static 'images/about-home.jpg' %}?v={% now 'U' %}" alt="Shanti Yuwa Club Team" class="w-full rounded-2xl shadow-2xl">
+                </div>
+                <!-- Decorative Elements -->
+                <div class="absolute -bottom-6 -right-6 w-full h-full bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl -z-10"></div>
+                <div class="absolute -top-4 -left-4 w-24 h-24 bg-secondary-400 rounded-2xl -z-10"></div>
+                
+                <!-- Stats Card -->
+                <div class="absolute -bottom-8 -left-8 bg-white rounded-2xl shadow-xl p-6 z-20">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-14 h-14 rounded-full bg-primary-100 flex items-center justify-center">
+                            <i class="fas fa-users text-2xl text-primary-600"></i>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-bold text-gray-900">5+</p>
+                            <p class="text-gray-500 text-sm">Years of Impact</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6">
-                <h2 class="mb-4">About Shanti Yuwa Club</h2>
-                <p>Shanti Yuwa Club is dedicated to empowering youth and creating positive change in our community. Founded in 2020, our organization works on various social issues and community development projects in Biratnagar and surrounding areas.</p>
-                <p>Our mission is to promote peace, social awareness, and youth empowerment through various initiatives and programs designed to address local needs and create sustainable impact.</p>
-                <a href="{% url 'about' %}" class="btn btn-primary">Learn More About Us</a>
+
+            <!-- Content Side -->
+            <div>
+                <div class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    About Us
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+                    Creating Positive Change Through 
+                    <span class="text-primary-600">Youth Leadership</span>
+                </h2>
+                <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                    Shanti Yuwa Club is dedicated to empowering youth and creating positive change in our community. Founded in 2020, our organization works on various social issues and community development projects in Biratnagar and surrounding areas.
+                </p>
+                <p class="text-gray-600 text-lg leading-relaxed mb-8">
+                    Our mission is to promote peace, social awareness, and youth empowerment through various initiatives and programs designed to address local needs and create sustainable impact.
+                </p>
+                
+                <!-- Features List -->
+                <div class="grid sm:grid-cols-2 gap-4 mb-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-green-600"></i>
+                        </div>
+                        <span class="text-gray-700 font-medium">Youth Empowerment</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-green-600"></i>
+                        </div>
+                        <span class="text-gray-700 font-medium">Community Development</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-green-600"></i>
+                        </div>
+                        <span class="text-gray-700 font-medium">Social Awareness</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-green-600"></i>
+                        </div>
+                        <span class="text-gray-700 font-medium">Environmental Action</span>
+                    </div>
+                </div>
+
+                <a href="{% url 'about' %}" class="group inline-flex items-center px-6 py-3 rounded-full bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-all duration-300 shadow-lg hover:shadow-primary-500/25">
+                    Learn More About Us
+                    <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                </a>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Programs Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="mb-3">Our Programs</h2>
-            <p class="lead">Explore our initiatives and see how we're making a difference in the community</p>
+<section class="py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
+                <i class="fas fa-project-diagram mr-2"></i>
+                Our Programs
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+                Initiatives That Make a 
+                <span class="text-primary-600">Difference</span>
+            </h2>
+            <p class="text-gray-600 text-lg">
+                Explore our initiatives and see how we're making a difference in the community through various programs and activities.
+            </p>
         </div>
-        
-        <div class="row">
+
+        <!-- Programs Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {% if programs %}
                 {% for program in programs %}
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 feature-card">
-                        <img src="{{ program.image.url }}" class="card-img-top" alt="{{ program.title }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ program.title }}</h5>
-                            <p class="card-text">{{ program.short_description }}</p>
-                            <a href="{% url 'program_detail' program.slug %}" class="btn btn-sm btn-outline-primary">Learn More</a>
-                        </div>
+                <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="{{ program.image.url }}" alt="{{ program.title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors duration-200">{{ program.title }}</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-2">{{ program.short_description }}</p>
+                        <a href="{% url 'program_detail' program.slug %}" class="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 transition-colors duration-200">
+                            Learn More
+                            <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                        </a>
                     </div>
                 </div>
                 {% endfor %}
             {% else %}
-                <div class="col-12 text-center">
-                    <p>No programs available at the moment. Check back later!</p>
+                <div class="col-span-full text-center py-12">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
+                        <i class="fas fa-folder-open text-3xl text-gray-400"></i>
+                    </div>
+                    <p class="text-gray-500 text-lg">No programs available at the moment. Check back later!</p>
                 </div>
             {% endif %}
         </div>
-        <div class="text-center mt-4">
-            <a href="{% url 'programs' %}" class="btn btn-primary">View All Programs</a>
+
+        <!-- View All Button -->
+        <div class="text-center mt-12">
+            <a href="{% url 'programs' %}" class="inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold shadow-lg hover:shadow-primary-500/25 transition-all duration-300 hover:scale-105">
+                View All Programs
+                <i class="fas fa-arrow-right ml-2"></i>
+            </a>
         </div>
     </div>
 </section>
 
 <!-- Team Members Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="mb-3">Our Team</h2>
-            <p class="lead">Meet the passionate individuals behind Shanti Yuwa Club</p>
+<section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
+                <i class="fas fa-users mr-2"></i>
+                Our Team
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+                Meet the <span class="text-primary-600">Passionate People</span>
+            </h2>
+            <p class="text-gray-600 text-lg">
+                The dedicated individuals behind Shanti Yuwa Club working tirelessly to create positive change.
+            </p>
         </div>
-        
-        <div class="row">
+
+        <!-- Team Grid -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {% if team_members %}
                 {% for member in team_members %}
-                <div class="col-md-3 mb-4">
-                    <div class="card h-100 team-member-card">
-                        <img src="{{ member.image.url }}" class="card-img-top team-member-image" alt="{{ member.name }}">
-                        <div class="card-body text-center">
-                            <h5 class="card-title mb-1">{{ member.name }}</h5>
-                            <p class="card-text text-muted mb-3">{{ member.position }}</p>
-                            <div class="social-links">
-                                {% if member.facebook %}
-                                <a href="{{ member.facebook }}" target="_blank" class="me-2 text-dark"><i class="fab fa-facebook-f"></i></a>
-                                {% endif %}
-                                {% if member.instagram %}
-                                <a href="{{ member.instagram }}" target="_blank" class="me-2 text-dark"><i class="fab fa-instagram"></i></a>
-                                {% endif %}
-                                {% if member.twitter %}
-                                <a href="{{ member.twitter }}" target="_blank" class="text-dark"><i class="fab fa-twitter"></i></a>
-                                {% endif %}
-                            </div>
-                        </div>
+                <div class="group text-center">
+                    <div class="relative mb-6 mx-auto w-48 h-48">
+                        <div class="absolute inset-0 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-105"></div>
+                        <img src="{{ member.image.url }}" alt="{{ member.name }}" class="relative w-full h-full rounded-full object-cover border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-1">{{ member.name }}</h3>
+                    <p class="text-primary-600 font-medium mb-4">{{ member.position }}</p>
+                    <div class="flex justify-center space-x-3">
+                        {% if member.facebook %}
+                        <a href="{{ member.facebook }}" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-100 hover:bg-primary-600 flex items-center justify-center text-gray-600 hover:text-white transition-all duration-300" aria-label="{{ member.name }}'s Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        {% endif %}
+                        {% if member.instagram %}
+                        <a href="{{ member.instagram }}" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-100 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 flex items-center justify-center text-gray-600 hover:text-white transition-all duration-300" aria-label="{{ member.name }}'s Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        {% endif %}
+                        {% if member.twitter %}
+                        <a href="{{ member.twitter }}" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-100 hover:bg-sky-500 flex items-center justify-center text-gray-600 hover:text-white transition-all duration-300" aria-label="{{ member.name }}'s Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
             {% else %}
-                <div class="col-12 text-center">
-                    <p>Team information coming soon!</p>
+                <div class="col-span-full text-center py-12">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
+                        <i class="fas fa-users text-3xl text-gray-400"></i>
+                    </div>
+                    <p class="text-gray-500 text-lg">Team information coming soon!</p>
                 </div>
             {% endif %}
         </div>
-        <div class="text-center mt-4">
-            <a href="{% url 'about' %}" class="btn btn-primary">View All Team Members</a>
+
+        <!-- View All Button -->
+        <div class="text-center mt-12">
+            <a href="{% url 'about' %}" class="inline-flex items-center px-8 py-4 rounded-full border-2 border-primary-600 text-primary-600 font-semibold hover:bg-primary-600 hover:text-white transition-all duration-300">
+                View All Team Members
+                <i class="fas fa-arrow-right ml-2"></i>
+            </a>
         </div>
     </div>
 </section>
 
 <!-- Gallery Preview Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="mb-3">Gallery</h2>
-            <p class="lead">Glimpses of our activities and events</p>
+<section class="py-24 bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <a href="{% url 'gallery' %}" class="inline-flex items-center px-4 py-2 rounded-full bg-white/10 text-primary-400 text-sm font-medium mb-6 hover:bg-white/20 transition-colors duration-300">
+                <i class="fas fa-images mr-2"></i>
+                Photo Gallery
+            </a>
+            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6">
+                Glimpses of Our <span class="text-primary-400">Journey</span>
+            </h2>
+            <p class="text-gray-400 text-lg">
+                Capturing moments from our activities, events, and community engagement.
+            </p>
         </div>
-        
-        <div class="row">
+
+        <!-- Gallery Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
             {% if gallery_images %}
                 {% for image in gallery_images %}
-                <div class="col-md-4 mb-4">
-                    <div class="gallery-item">
-                        <img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-fluid">
+                <div class="group relative overflow-hidden rounded-2xl aspect-square">
+                    <img src="{{ image.image.url }}" alt="{{ image.title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                        <h4 class="text-white font-semibold">{{ image.title }}</h4>
                     </div>
                 </div>
                 {% endfor %}
             {% else %}
-                <div class="col-12 text-center">
-                    <p>Gallery images coming soon!</p>
+                <div class="col-span-full text-center py-12">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gray-800 flex items-center justify-center">
+                        <i class="fas fa-images text-3xl text-gray-600"></i>
+                    </div>
+                    <p class="text-gray-500 text-lg">Gallery images coming soon!</p>
                 </div>
             {% endif %}
         </div>
-        <div class="text-center mt-4">
-            <a href="{% url 'gallery' %}" class="btn btn-primary">View Full Gallery</a>
+
+        <!-- View All Button -->
+        <div class="text-center mt-12">
+            <a href="{% url 'gallery' %}" class="inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold shadow-lg hover:shadow-primary-500/25 transition-all duration-300 hover:scale-105">
+                View Full Gallery
+                <i class="fas fa-arrow-right ml-2"></i>
+            </a>
         </div>
     </div>
 </section>
 
 <!-- Life at Shanti Yuwa Club Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="mb-3">Life at Shanti Yuwa Club</h2>
-            <p class="lead">Experience what it's like to be part of our vibrant community</p>
+<section class="py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
+                <i class="fas fa-heart mr-2"></i>
+                Life at SYC
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+                Experience What It's Like to Be 
+                <span class="text-primary-600">Part of Our Family</span>
+            </h2>
+            <p class="text-gray-600 text-lg">
+                Join our vibrant community and discover the joy of making a difference together.
+            </p>
         </div>
-        
-        <!-- Feature Cards with Images -->
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <img src="{% static 'images/life-community.jpg' %}?v={% now 'U' %}" class="card-img-top" alt="Community Meeting">
-                    <div class="card-body text-center">
-                        <div class="mb-3">
-                            <i class="fas fa-users fa-2x text-primary"></i>
+
+        <!-- Feature Cards -->
+        <div class="grid md:grid-cols-3 gap-8 mb-16">
+            <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="{% static 'images/life-community.jpg' %}?v={% now 'U' %}" alt="Community Meeting" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary-600/80 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4">
+                        <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                            <i class="fas fa-users text-2xl text-white"></i>
                         </div>
-                        <h5 class="card-title">Supportive Community</h5>
-                        <p class="card-text">Join a family of like-minded individuals passionate about creating positive change. We support each other's growth and celebrate our collective achievements.</p>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <img src="{% static 'images/life-skills.jpg' %}?v={% now 'U' %}" class="card-img-top" alt="Skills Workshop">
-                    <div class="card-body text-center">
-                        <div class="mb-3">
-                            <i class="fas fa-lightbulb fa-2x text-primary"></i>
-                        </div>
-                        <h5 class="card-title">Skills Development</h5>
-                        <p class="card-text">Enhance your leadership, communication, and project management skills through hands-on experience with community initiatives and training opportunities.</p>
-                    </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Supportive Community</h3>
+                    <p class="text-gray-600">Join a family of like-minded individuals passionate about creating positive change. We support each other's growth and celebrate our collective achievements.</p>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <img src="{% static 'images/life-impact.jpg' %}?v={% now 'U' %}" class="card-img-top" alt="Community Impact">
-                    <div class="card-body text-center">
-                        <div class="mb-3">
-                            <i class="fas fa-handshake fa-2x text-primary"></i>
+
+            <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="{% static 'images/life-skills.jpg' %}?v={% now 'U' %}" alt="Skills Workshop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-secondary-600/80 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4">
+                        <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                            <i class="fas fa-lightbulb text-2xl text-white"></i>
                         </div>
-                        <h5 class="card-title">Meaningful Impact</h5>
-                        <p class="card-text">Experience the fulfillment that comes from making a real difference in people's lives and contributing to positive change in your community.</p>
                     </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Skills Development</h3>
+                    <p class="text-gray-600">Enhance your leadership, communication, and project management skills through hands-on experience with community initiatives and training opportunities.</p>
+                </div>
+            </div>
+
+            <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="{% static 'images/life-impact.jpg' %}?v={% now 'U' %}" alt="Community Impact" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-accent-600/80 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4">
+                        <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                            <i class="fas fa-handshake text-2xl text-white"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Meaningful Impact</h3>
+                    <p class="text-gray-600">Experience the fulfillment that comes from making a real difference in people's lives and contributing to positive change in your community.</p>
                 </div>
             </div>
         </div>
-        
+
         <!-- Club Life Gallery -->
-        <div class="mt-5 mb-5">
-            <h4 class="text-center mb-4">Moments From Club Activities</h4>
-            <div class="row g-3">
-                <div class="col-md-3 col-6">
-                    <img src="{% static 'images/club-life-1.jpg' %}?v={% now 'U' %}" alt="Club Activity" class="img-fluid rounded shadow-sm">
+        <div class="bg-white rounded-3xl shadow-xl p-8">
+            <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Moments From Club Activities</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="aspect-square rounded-2xl overflow-hidden">
+                    <img src="{% static 'images/club-life-1.jpg' %}?v={% now 'U' %}" alt="Club Activity" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                 </div>
-                <div class="col-md-3 col-6">
-                    <img src="{% static 'images/club-life-2.jpg' %}?v={% now 'U' %}" alt="Team Building" class="img-fluid rounded shadow-sm">
+                <div class="aspect-square rounded-2xl overflow-hidden">
+                    <img src="{% static 'images/club-life-2.jpg' %}?v={% now 'U' %}" alt="Club Activity" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                 </div>
-                <div class="col-md-3 col-6">
-                    <img src="{% static 'images/club-life-3.jpg' %}?v={% now 'U' %}" alt="Community Service" class="img-fluid rounded shadow-sm">
+                <div class="aspect-square rounded-2xl overflow-hidden">
+                    <img src="{% static 'images/club-life-3.jpg' %}?v={% now 'U' %}" alt="Club Activity" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                 </div>
-                <div class="col-md-3 col-6">
-                    <img src="{% static 'images/club-life-4.jpg' %}?v={% now 'U' %}" alt="Club Celebration" class="img-fluid rounded shadow-sm">
+                <div class="aspect-square rounded-2xl overflow-hidden">
+                    <img src="{% static 'images/club-life-4.jpg' %}?v={% now 'U' %}" alt="Club Activity" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                 </div>
             </div>
         </div>
-        
+
         <!-- Testimonials -->
-        <div class="mt-5">
-            <h4 class="text-center mb-4">What Our Members Say</h4>
-            <div class="row align-items-center">
-                <div class="col-md-6 mb-4 mb-md-0">
-                    <div class="testimonial p-4 bg-white rounded shadow-sm">
-                        <p class="fst-italic">"Being part of Shanti Yuwa Club has been transformative. I've developed skills I never knew I had and made lifelong friends while serving our community."</p>
-                        <div class="d-flex align-items-center mt-3">
-                            <div class="testimonial-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                <span class="fw-bold">RS</span>
-                            </div>
-                            <div class="ms-3">
-                                <h6 class="mb-0">Ram Sharma</h6>
-                                <small class="text-muted">Member since 2021</small>
-                            </div>
+        <div class="mt-16">
+            <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">What Our Members Say</h3>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-quote-left text-3xl text-primary-200"></i>
+                    </div>
+                    <p class="text-gray-600 text-lg italic mb-6">"Being part of Shanti Yuwa Club has been transformative. I've developed skills I never knew I had and made lifelong friends while serving our community."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white font-bold">RS</div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-gray-900">Ram Sharma</h4>
+                            <p class="text-gray-500 text-sm">Member since 2021</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="testimonial p-4 bg-white rounded shadow-sm">
-                        <p class="fst-italic">"The support and encouragement I've received at Shanti Yuwa Club have helped me grow both personally and professionally. The work we do here truly matters."</p>
-                        <div class="d-flex align-items-center mt-3">
-                            <div class="testimonial-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                <span class="fw-bold">SP</span>
-                            </div>
-                            <div class="ms-3">
-                                <h6 class="mb-0">Sita Poudel</h6>
-                                <small class="text-muted">Volunteer since 2022</small>
-                            </div>
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-quote-left text-3xl text-primary-200"></i>
+                    </div>
+                    <p class="text-gray-600 text-lg italic mb-6">"The support and encouragement I've received at Shanti Yuwa Club have helped me grow both personally and professionally. The work we do here truly matters."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center text-white font-bold">SP</div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-gray-900">Sita Poudel</h4>
+                            <p class="text-gray-500 text-sm">Volunteer since 2022</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="text-center mt-5">
-            <a href="{% url 'contact' %}" class="btn btn-primary">Join Our Community</a>
         </div>
     </div>
 </section>
 
+<!-- Stats Section -->
+<section class="py-20 bg-gradient-to-r from-primary-600 to-primary-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/10 flex items-center justify-center">
+                    <i class="fas fa-calendar-check text-3xl text-white"></i>
+                </div>
+                <p class="text-4xl font-bold text-white mb-2">5+</p>
+                <p class="text-primary-200">Years Active</p>
+            </div>
+            <div class="text-center">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/10 flex items-center justify-center">
+                    <i class="fas fa-users text-3xl text-white"></i>
+                </div>
+                <p class="text-4xl font-bold text-white mb-2">50+</p>
+                <p class="text-primary-200">Members</p>
+            </div>
+            <div class="text-center">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/10 flex items-center justify-center">
+                    <i class="fas fa-project-diagram text-3xl text-white"></i>
+                </div>
+                <p class="text-4xl font-bold text-white mb-2">20+</p>
+                <p class="text-primary-200">Projects</p>
+            </div>
+            <div class="text-center">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/10 flex items-center justify-center">
+                    <i class="fas fa-heart text-3xl text-white"></i>
+                </div>
+                <p class="text-4xl font-bold text-white mb-2">1000+</p>
+                <p class="text-primary-200">Lives Impacted</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-<!-- Call to Action Section -->
-<section class="py-5 bg-primary text-white">
-    <div class="container text-center">
-        <h2 class="mb-4">Join Us in Making a Difference</h2>
-        <p class="lead mb-4">Whether you want to volunteer, donate, or collaborate, there are many ways to support our cause.</p>
-        <a href="{% url 'contact' %}" class="btn btn-light btn-lg">Get Involved Today</a>
+<!-- CTA Section -->
+<section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl overflow-hidden">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-10">
+                <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <defs>
+                        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100" height="100" fill="url(#grid)"/>
+                </svg>
+            </div>
+            
+            <div class="relative px-8 py-16 md:px-16 md:py-20 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                    Ready to Make a Difference?
+                </h2>
+                <p class="text-gray-300 text-lg max-w-2xl mx-auto mb-10">
+                    Join Shanti Yuwa Club and become part of a movement that's changing lives and building a better community for everyone.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{% url 'contact' %}" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-lg hover:shadow-primary-500/25 transition-all duration-300 hover:scale-105">
+                        <i class="fas fa-envelope mr-2"></i>
+                        Contact Us
+                    </a>
+                    <a href="{% url 'programs' %}" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold hover:bg-white/20 transition-all duration-300">
+                        <i class="fas fa-eye mr-2"></i>
+                        Explore Programs
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}

@@ -5,81 +5,133 @@
 
 {% block content %}
 <!-- Page Header -->
-<section class="bg-primary text-white py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <h1 class="display-4">{{ program.title }}</h1>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-white">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{% url 'programs' %}" class="text-white">Programs</a></li>
-                        <li class="breadcrumb-item active text-white" aria-current="page">{{ program.title }}</li>
-                    </ol>
-                </nav>
-            </div>
+<section class="relative py-24 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <defs>
+                <pattern id="dots" width="5" height="5" patternUnits="userSpaceOnUse">
+                    <circle cx="2.5" cy="2.5" r="1" fill="white"/>
+                </pattern>
+            </defs>
+            <rect width="100" height="100" fill="url(#dots)"/>
+        </svg>
+    </div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+            <nav class="flex items-center text-sm text-primary-200 mb-6">
+                <a href="{% url 'home' %}" class="hover:text-white transition-colors duration-200">Home</a>
+                <i class="fas fa-chevron-right mx-3 text-xs"></i>
+                <a href="{% url 'programs' %}" class="hover:text-white transition-colors duration-200">Programs</a>
+                <i class="fas fa-chevron-right mx-3 text-xs"></i>
+                <span class="text-white">{{ program.title }}</span>
+            </nav>
+            <h1 class="text-4xl sm:text-5xl font-bold text-white mb-6">
+                {{ program.title }}
+            </h1>
         </div>
     </div>
+    
+    <!-- Decorative Shapes -->
+    <div class="absolute bottom-0 right-0 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl -mb-48 -mr-48"></div>
 </section>
 
 <!-- Program Detail Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-3 gap-12">
+            <!-- Main Content -->
+            <div class="lg:col-span-2">
                 <!-- Featured Image -->
-                <img src="{{ program.image.url }}" alt="{{ program.title }}" class="img-fluid rounded mb-4 shadow">
-                
+                <div class="relative rounded-2xl overflow-hidden shadow-2xl mb-8">
+                    <img src="{{ program.image.url }}" alt="{{ program.title }}" class="w-full h-auto">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/30 to-transparent"></div>
+                </div>
+
                 <!-- Program Content -->
-                <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-body">
-                        <h2 class="mb-4">{{ program.title }}</h2>
-                        <div class="mb-4">
+                <div class="bg-white rounded-2xl shadow-lg p-8 lg:p-10">
+                    <div class="prose prose-lg max-w-none">
+                        <div class="text-gray-700 leading-relaxed">
                             {{ program.content|safe }}
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Sidebar -->
-            <div class="col-lg-4">
+            <div class="lg:col-span-1 space-y-8">
                 <!-- Related Programs -->
-                <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-header bg-light">
-                        <h5 class="card-title mb-0">Related Programs</h5>
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-4">
+                        <h3 class="text-lg font-bold text-white flex items-center">
+                            <i class="fas fa-folder-open mr-3"></i>
+                            Related Programs
+                        </h3>
                     </div>
-                    <div class="card-body">
+                    <div class="p-6">
                         {% if related_programs %}
-                            <ul class="list-group list-group-flush">
-                                {% for related in related_programs %}
-                                <li class="list-group-item px-0">
-                                    <a href="{% url 'program_detail' related.slug %}" class="text-decoration-none">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-shrink-0">
-                                                <img src="{{ related.image.url }}" alt="{{ related.title }}" width="60" height="60" class="rounded">
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-0">{{ related.title }}</h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                {% endfor %}
-                            </ul>
+                        <div class="space-y-4">
+                            {% for related in related_programs %}
+                            <a href="{% url 'program_detail' related.slug %}" class="group flex items-center space-x-4 p-3 rounded-xl hover:bg-gray-50 transition-colors duration-200">
+                                <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
+                                    <img src="{{ related.image.url }}" alt="{{ related.title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="text-gray-900 font-semibold group-hover:text-primary-600 transition-colors duration-200 truncate">{{ related.title }}</h4>
+                                    <p class="text-gray-500 text-sm line-clamp-1">{{ related.short_description }}</p>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400 group-hover:text-primary-600 group-hover:translate-x-1 transition-all duration-200"></i>
+                            </a>
+                            {% endfor %}
+                        </div>
                         {% else %}
-                            <p>No related programs available.</p>
+                        <div class="text-center py-6">
+                            <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+                                <i class="fas fa-folder text-gray-400"></i>
+                            </div>
+                            <p class="text-gray-500">No related programs available.</p>
+                        </div>
                         {% endif %}
                     </div>
                 </div>
-                
-                <!-- Get Involved -->
-                <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="card-title mb-0">Get Involved</h5>
+
+                <!-- Get Involved Card -->
+                <div class="bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-8 text-center">
+                        <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-white/10 flex items-center justify-center">
+                            <i class="fas fa-hands-helping text-3xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4">Get Involved</h3>
+                        <p class="text-primary-100 mb-6">
+                            Interested in supporting this program or getting involved as a volunteer? Contact us to learn more!
+                        </p>
+                        <a href="{% url 'contact' %}" class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-white text-primary-600 font-semibold hover:bg-primary-50 transition-all duration-300">
+                            <i class="fas fa-envelope mr-2"></i>
+                            Contact Us
+                        </a>
                     </div>
-                    <div class="card-body">
-                        <p>Interested in supporting this program or getting involved as a volunteer? Contact us to learn more about how you can contribute.</p>
-                        <a href="{% url 'contact' %}" class="btn btn-primary">Contact Us</a>
+                </div>
+
+                <!-- Share Card -->
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-share-alt mr-3 text-primary-600"></i>
+                        Share This Program
+                    </h3>
+                    <div class="flex space-x-3">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-xl bg-blue-600 hover:bg-blue-700 flex items-center justify-center text-white transition-colors duration-200">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ program.title }}" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-xl bg-sky-500 hover:bg-sky-600 flex items-center justify-center text-white transition-colors duration-200">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://wa.me/?text={{ program.title }}%20{{ request.build_absolute_uri }}" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-xl bg-green-500 hover:bg-green-600 flex items-center justify-center text-white transition-colors duration-200">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="mailto:?subject={{ program.title }}&body={{ request.build_absolute_uri }}" class="w-12 h-12 rounded-xl bg-gray-600 hover:bg-gray-700 flex items-center justify-center text-white transition-colors duration-200">
+                            <i class="fas fa-envelope"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -87,12 +139,19 @@
     </div>
 </section>
 
-<!-- Call to Action -->
-<section class="py-5 bg-light">
-    <div class="container text-center">
-        <h2 class="mb-4">Explore More Programs</h2>
-        <p class="lead mb-4">Check out our other initiatives and see how we're working to create positive change.</p>
-        <a href="{% url 'programs' %}" class="btn btn-primary btn-lg">View All Programs</a>
+<!-- CTA Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">
+            Explore More Programs
+        </h2>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto mb-10">
+            Check out our other initiatives and see how we're working to create positive change in our community.
+        </p>
+        <a href="{% url 'programs' %}" class="inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold shadow-lg hover:shadow-primary-500/25 transition-all duration-300 hover:scale-105">
+            View All Programs
+            <i class="fas fa-arrow-right ml-2"></i>
+        </a>
     </div>
 </section>
 {% endblock %}

@@ -1,0 +1,450 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ title }} | Shanti Yuwa Club Admin{% endblock %}</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        admin: {
+                            primary: '#4338ca',
+                            secondary: '#7c3aed',
+                            dark: '#0f172a',
+                            surface: '#0b1220'
+                        }
+                    },
+                    boxShadow: {
+                        glow: '0 10px 50px -20px rgba(67, 56, 202, 0.55)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Django Admin CSS -->
+    <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
+
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        /* Hide default admin header & breadcrumbs */
+        #header, .breadcrumbs {
+            display: none !important;
+        }
+
+        #content {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        /* Tables */
+        table {
+            border-radius: 0.75rem !important;
+            overflow: hidden !important;
+            background: white !important;
+        }
+
+        #result_list th {
+            background: linear-gradient(135deg, #4338ca 0%, #7c3aed 100%) !important;
+            color: white !important;
+            padding: 1rem !important;
+            border: none !important;
+        }
+
+        #result_list tbody tr:hover {
+            background-color: #f8fafc !important;
+        }
+
+        .paginator {
+            background: white !important;
+            padding: 1rem !important;
+            border-radius: 0.75rem !important;
+            margin-top: 1rem !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+
+        /* Forms */
+        input[type="text"], input[type="password"], input[type="email"],
+        input[type="url"], input[type="number"], textarea, select {
+            border-radius: 0.6rem !important;
+            border: 1px solid #e5e7eb !important;
+            padding: 0.65rem 0.85rem !important;
+            transition: all 0.2s !important;
+            background-color: #fff !important;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus,
+        input[type="url"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+            border-color: #4338ca !important;
+            box-shadow: 0 0 0 4px rgba(67, 56, 202, 0.12) !important;
+            outline: none !important;
+        }
+
+        /* Form modules */
+        .module caption, .inline-group h2 {
+            background: linear-gradient(135deg, #4338ca 0%, #7c3aed 100%) !important;
+            color: white !important;
+            border-radius: 0.75rem 0.75rem 0 0 !important;
+            padding: 14px 18px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.01em;
+        }
+
+        .module {
+            border-radius: 0.75rem !important;
+            overflow: hidden !important;
+            box-shadow: 0 15px 40px -24px rgba(15, 23, 42, 0.35) !important;
+            margin-bottom: 1.25rem !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+
+        /* Buttons */
+        .submit-row input[type="submit"], .submit-row input[type="button"],
+        input[type="submit"].default, a.button {
+            background: linear-gradient(135deg, #4338ca 0%, #7c3aed 100%) !important;
+            border: none !important;
+            border-radius: 0.6rem !important;
+            padding: 0.8rem 1.6rem !important;
+            font-weight: 700 !important;
+            color: white !important;
+            cursor: pointer !important;
+            transition: all 0.2s !important;
+            box-shadow: 0 10px 40px -18px rgba(67, 56, 202, 0.6) !important;
+        }
+
+        .submit-row input[type="submit"]:hover, input[type="submit"].default:hover, a.button:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 12px 45px -15px rgba(67, 56, 202, 0.75) !important;
+        }
+
+        .deletelink, a.deletelink {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+            border-radius: 0.6rem !important;
+            padding: 0.6rem 1.1rem !important;
+            color: white !important;
+            font-weight: 600 !important;
+        }
+
+        /* Messages */
+        .messagelist li {
+            border-radius: 0.75rem !important;
+            padding: 1rem 1.25rem !important;
+            margin-bottom: 0.75rem !important;
+        }
+
+        .messagelist li.success {
+            background: #ecfdf3 !important;
+            color: #166534 !important;
+            border: 1px solid #bbf7d0 !important;
+        }
+
+        .messagelist li.error {
+            background: #fef2f2 !important;
+            color: #b91c1c !important;
+            border: 1px solid #fecaca !important;
+        }
+
+        .messagelist li.warning {
+            background: #fffbeb !important;
+            color: #b45309 !important;
+            border: 1px solid #fde68a !important;
+        }
+
+        /* CKEditor */
+        .django-ckeditor-widget {
+            border-radius: 0.75rem !important;
+            overflow: hidden !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+    </style>
+
+    {% block extrahead %}{% endblock %}
+</head>
+<body class="min-h-screen bg-slate-100 font-sans antialiased">
+    {% with current_name=request.resolver_match.url_name|default:'' %}
+    <div class="min-h-screen bg-[radial-gradient(circle_at_20%_20%,#e0e7ff,transparent_35%),radial-gradient(circle_at_80%_0%,#f5d0fe,transparent_30%),#f8fafc]">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 z-40 w-72 h-screen transition-transform -translate-x-full lg:translate-x-0">
+            <div class="h-full px-4 py-6 overflow-y-auto bg-slate-900 text-slate-100 border-r border-slate-800 shadow-2xl shadow-indigo-900/20">
+                <!-- Logo -->
+                <a href="{% url 'admin:index' %}" class="flex items-center mb-10 px-2">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mr-4 shadow-glow">
+                        <i class="fas fa-hands-helping text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold text-white">SYC Admin</span>
+                        <p class="text-xs text-slate-400 font-medium">Control Panel</p>
+                    </div>
+                </a>
+
+                <p class="px-3 mb-3 text-[11px] font-semibold text-slate-400 uppercase tracking-[0.18em]">Main Menu</p>
+
+                <!-- Navigation -->
+                <nav class="space-y-1 text-sm">
+                    <a href="{% url 'admin:index' %}" class="flex items-center px-4 py-3 rounded-xl transition-all border border-transparent {% if current_name == 'index' %}bg-white/10 text-white border-white/10 shadow-glow{% else %}text-slate-200 hover:bg-white/5 hover:text-white{% endif %}">
+                        <span class="w-10 h-10 rounded-xl flex items-center justify-center mr-3 bg-white/10 text-indigo-200">
+                            <i class="fas fa-home"></i>
+                        </span>
+                        <span class="font-semibold">Dashboard</span>
+                    </a>
+
+                    <a href="{% url 'admin:main_program_changelist' %}" class="flex items-center px-4 py-3 rounded-xl transition-all border border-transparent {% if 'program' in current_name %}bg-purple-500/20 text-white border-purple-500/30 shadow-glow{% else %}text-slate-200 hover:bg-purple-500/10 hover:text-white{% endif %}">
+                        <span class="w-10 h-10 rounded-xl flex items-center justify-center mr-3 bg-purple-500/20 text-purple-100">
+                            <i class="fas fa-project-diagram"></i>
+                        </span>
+                        <span class="font-semibold">Programs</span>
+                    </a>
+
+                    <a href="{% url 'admin:main_event_changelist' %}" class="flex items-center px-4 py-3 rounded-xl transition-all border border-transparent {% if 'event' in current_name %}bg-emerald-500/20 text-white border-emerald-500/30 shadow-glow{% else %}text-slate-200 hover:bg-emerald-500/10 hover:text-white{% endif %}">
+                        <span class="w-10 h-10 rounded-xl flex items-center justify-center mr-3 bg-emerald-500/20 text-emerald-100">
+                            <i class="fas fa-calendar-alt"></i>
+                        </span>
+                        <span class="font-semibold">Events</span>
+                    </a>
+
+                    <a href="{% url 'admin:main_galleryimage_changelist' %}" class="flex items-center px-4 py-3 rounded-xl transition-all border border-transparent {% if 'galleryimage' in current_name %}bg-pink-500/20 text-white border-pink-500/30 shadow-glow{% else %}text-slate-200 hover:bg-pink-500/10 hover:text-white{% endif %}">
+                        <span class="w-10 h-10 rounded-xl flex items-center justify-center mr-3 bg-pink-500/20 text-pink-100">
+                            <i class="fas fa-images"></i>
+                        </span>
+                        <span class="font-semibold">Gallery</span>
+                    </a>
+
+                    <a href="{% url 'admin:main_teammember_changelist' %}" class="flex items-center px-4 py-3 rounded-xl transition-all border border-transparent {% if 'teammember' in current_name %}bg-cyan-500/20 text-white border-cyan-500/30 shadow-glow{% else %}text-slate-200 hover:bg-cyan-500/10 hover:text-white{% endif %}">
+                        <span class="w-10 h-10 rounded-xl flex items-center justify-center mr-3 bg-cyan-500/20 text-cyan-100">
+                            <i class="fas fa-users"></i>
+                        </span>
+                        <span class="font-semibold">Team Members</span>
+                    </a>
+
+                    <a href="{% url 'admin:main_contactmessage_changelist' %}" class="flex items-center px-4 py-3 rounded-xl transition-all border border-transparent {% if 'contactmessage' in current_name %}bg-orange-500/20 text-white border-orange-500/30 shadow-glow{% else %}text-slate-200 hover:bg-orange-500/10 hover:text-white{% endif %}">
+                        <span class="w-10 h-10 rounded-xl flex items-center justify-center mr-3 bg-orange-500/20 text-orange-100">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <span class="font-semibold">Messages</span>
+                        {% if unread_messages_count %}
+                        <span class="ml-auto inline-flex items-center justify-center min-w-[1.5rem] px-2 py-1 rounded-full bg-red-500 text-white text-[11px] font-bold">{{ unread_messages_count }}</span>
+                        {% endif %}
+                    </a>
+
+                    <a href="{% url 'admin:main_gallerycategory_changelist' %}" class="flex items-center px-4 py-3 rounded-xl transition-all border border-transparent {% if 'gallerycategory' in current_name %}bg-amber-500/20 text-white border-amber-500/30 shadow-glow{% else %}text-slate-200 hover:bg-amber-500/10 hover:text-white{% endif %}">
+                        <span class="w-10 h-10 rounded-xl flex items-center justify-center mr-3 bg-amber-500/20 text-amber-100">
+                            <i class="fas fa-folder"></i>
+                        </span>
+                        <span class="font-semibold">Categories</span>
+                    </a>
+                </nav>
+
+                <div class="mt-10 pt-6 border-t border-slate-800/80">
+                    <p class="px-3 mb-3 text-[11px] font-semibold text-slate-400 uppercase tracking-[0.18em]">Quick Links</p>
+
+                    <a href="{% url 'home' %}" target="_blank" class="flex items-center px-4 py-3 rounded-xl text-slate-200 hover:text-white hover:bg-white/5 transition-all">
+                        <span class="w-10 h-10 rounded-xl flex items-center justify-center mr-3 bg-white/10 text-slate-200">
+                            <i class="fas fa-external-link-alt"></i>
+                        </span>
+                        <span class="font-semibold">View Website</span>
+                    </a>
+
+                    <a href="{% url 'admin:logout' %}" class="flex items-center px-4 py-3 rounded-xl text-rose-200 hover:text-white hover:bg-rose-500/15 transition-all mt-2">
+                        <span class="w-10 h-10 rounded-xl flex items-center justify-center mr-3 bg-rose-500/20 text-rose-100">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </span>
+                        <span class="font-semibold">Logout</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="sidebar-toggle" class="lg:hidden fixed top-4 left-4 z-50 w-11 h-11 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-xl shadow-slate-900/30 border border-white/10">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Main Content -->
+        <div class="lg:pl-72">
+            <!-- Top Bar -->
+            <header class="sticky top-0 z-30 backdrop-blur bg-white/80 border-b border-slate-200">
+                <div class="px-4 sm:px-6 lg:px-10 py-4 flex items-center justify-between">
+                    <div class="space-y-1">
+                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Admin Panel</p>
+                        <div class="flex items-center gap-3">
+                            <h1 class="text-2xl font-bold text-slate-900">{% block page_title %}Dashboard{% endblock %}</h1>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">{{ user.username }}</span>
+                        </div>
+                        <nav class="flex items-center text-sm text-slate-500 gap-2">
+                            {% block custom_breadcrumbs %}
+                            <a href="{% url 'admin:index' %}" class="hover:text-admin-primary transition-colors">Home</a>
+                            {% endblock %}
+                        </nav>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <div class="hidden md:flex items-center bg-white border border-slate-200 rounded-xl px-3 py-2 shadow-sm">
+                            <i class="fas fa-search text-slate-400 mr-2"></i>
+                            <input type="text" placeholder="Search admin" class="w-56 bg-transparent border-none focus:ring-0 focus:outline-none text-sm text-slate-700" aria-label="Search admin">
+                        </div>
+                        
+                        <!-- User Info Dropdown -->
+                        <div class="relative" x-data="{ open: false }">
+                            <button onclick="toggleUserMenu()" class="flex items-center gap-3 bg-slate-900 text-white px-3 py-2 rounded-xl shadow-glow hover:bg-slate-800 transition-colors cursor-pointer">
+                                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-bold uppercase tracking-wide">
+                                    {{ user.username|slice:":1"|upper }}
+                                </div>
+                                <div class="hidden sm:block leading-tight text-left">
+                                    <p class="text-sm font-semibold">{{ user.username }}</p>
+                                    <p class="text-xs text-slate-200/80">Administrator</p>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs text-slate-400 ml-1 hidden sm:block"></i>
+                            </button>
+                            
+                            <!-- Dropdown Menu -->
+                            <div id="userMenu" class="hidden absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50">
+                                <!-- User Info Header -->
+                                <div class="bg-gradient-to-br from-slate-900 to-slate-800 px-5 py-6 text-white">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-2xl font-bold shadow-lg">
+                                            {{ user.username|slice:":1"|upper }}
+                                        </div>
+                                        <div>
+                                            <p class="text-lg font-bold">{{ user.username }}</p>
+                                            <p class="text-sm text-slate-300">{{ user.email|default:"No email set" }}</p>
+                                            <span class="inline-flex items-center px-2 py-0.5 mt-1 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-300">
+                                                <i class="fas fa-shield-alt mr-1"></i> 
+                                                {% if user.is_superuser %}Super Admin{% else %}Staff{% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Account Details -->
+                                <div class="p-4 border-b border-slate-100">
+                                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Account Details</p>
+                                    <div class="space-y-2 text-sm">
+                                        <div class="flex items-center justify-between text-slate-600">
+                                            <span class="flex items-center gap-2">
+                                                <i class="fas fa-user text-slate-400 w-4"></i> Username
+                                            </span>
+                                            <span class="font-medium text-slate-900">{{ user.username }}</span>
+                                        </div>
+                                        <div class="flex items-center justify-between text-slate-600">
+                                            <span class="flex items-center gap-2">
+                                                <i class="fas fa-envelope text-slate-400 w-4"></i> Email
+                                            </span>
+                                            <span class="font-medium text-slate-900">{{ user.email|default:"Not set" }}</span>
+                                        </div>
+                                        <div class="flex items-center justify-between text-slate-600">
+                                            <span class="flex items-center gap-2">
+                                                <i class="fas fa-calendar text-slate-400 w-4"></i> Joined
+                                            </span>
+                                            <span class="font-medium text-slate-900">{{ user.date_joined|date:"M d, Y" }}</span>
+                                        </div>
+                                        <div class="flex items-center justify-between text-slate-600">
+                                            <span class="flex items-center gap-2">
+                                                <i class="fas fa-clock text-slate-400 w-4"></i> Last Login
+                                            </span>
+                                            <span class="font-medium text-slate-900">{{ user.last_login|date:"M d, Y H:i"|default:"Never" }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Quick Actions -->
+                                <div class="p-2">
+                                    <a href="{% url 'admin:auth_user_change' user.pk %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 transition-colors">
+                                        <div class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
+                                            <i class="fas fa-user-edit text-indigo-600 text-sm"></i>
+                                        </div>
+                                        <span class="font-medium">Edit Profile</span>
+                                    </a>
+                                    <a href="{% url 'admin:password_change' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-700 hover:bg-slate-100 transition-colors">
+                                        <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
+                                            <i class="fas fa-key text-amber-600 text-sm"></i>
+                                        </div>
+                                        <span class="font-medium">Change Password</span>
+                                    </a>
+                                    <hr class="my-2 border-slate-100">
+                                    <a href="{% url 'admin:logout' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-colors">
+                                        <div class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
+                                            <i class="fas fa-sign-out-alt text-red-600 text-sm"></i>
+                                        </div>
+                                        <span class="font-medium">Sign Out</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="p-4 sm:p-6 lg:p-10">
+                {% if messages %}
+                <div class="mb-6 space-y-3">
+                    {% for message in messages %}
+                    <div class="flex items-center p-4 rounded-xl border {% if message.tags == 'success' %}bg-green-50 text-green-800 border-green-200{% elif message.tags == 'error' %}bg-red-50 text-red-800 border-red-200{% elif message.tags == 'warning' %}bg-yellow-50 text-yellow-800 border-yellow-200{% else %}bg-blue-50 text-blue-800 border-blue-200{% endif %}">
+                        <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} mr-3"></i>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 p-4 sm:p-6 lg:p-8">
+                    {% block content %}{% endblock %}
+                </div>
+            </main>
+        </div>
+    </div>
+    {% endwith %}
+
+    <!-- Scripts -->
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('sidebar-toggle');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth < 1024) {
+                if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            }
+        });
+        
+        // User Menu Toggle
+        function toggleUserMenu() {
+            const menu = document.getElementById('userMenu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // Close user menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const userMenu = document.getElementById('userMenu');
+            const userButton = e.target.closest('[onclick="toggleUserMenu()"]');
+            if (!userButton && !userMenu.contains(e.target)) {
+                userMenu.classList.add('hidden');
+            }
+        });
+    </script>
+
+    {% block extrajs %}{% endblock %}
+</body>
+</html>
