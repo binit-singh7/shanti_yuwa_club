@@ -1,6 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 from django.utils.text import slugify
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 class Program(models.Model):
@@ -98,3 +101,100 @@ class ContactMessage(models.Model):
     
     class Meta:
         ordering = ['-created_at']
+
+
+# ========================
+# MEMBER PORTAL MODELS
+# ========================
+
+class MemberProfile(models.Model):
+    """Extended profile for club members"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='member_profile')
+    phone = models.CharField(max_length=20, blank=True)
+    address = models.TextField(blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
+    profile_picture = models.ImageField(upload_to='members/', blank=True, null=True)
+    bio = models.TextField(blank=True, help_text="Short bio about yourself")
+    joined_date = models.DateField(auto_now_add=True)
+    is_verified = models.BooleanField(default=False, help_text="Verified by admin")
+    
+    MEMBERSHIP_CHOICES = [
+        ('regular', 'Regular Member'),
+        ('active', 'Active Member'),
+        ('executive', 'Executive Member'),
+    ]
+    membership_type = models.CharField(max_length=20, choices=MEMBERSHIP_CHOICES, default='regular')
+    
+    def __str__(self):
+        return f"{self.user.get_full_name() or self.user.username}'s Profile"
+    
+    @property
+    def total_events_attended(self):
+        return self.event_attendances.filter(status='attended').count()
+    
+    @property
+    def total_programs_participated(self):
+        return self.program_participations.count()
+
+
+class EventAttendance(models.Model):
+    """Track member attendance at events"""
+    member = models.ForeignKey(MemberProfile, on_delete=models.CASCADE, related_name='event_attendances')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='attendances')
+    registered_at = models.DateTimeField(auto_now_add=True)
+    
+    STATUS_CHOICES = [
+        ('registered', 'Registered'),
+        ('attended', 'Attended'),
+        ('absent', 'Absent'),
+        ('cancelled', 'Cancelled'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='registered')
+    notes = models.TextField(blank=True)
+    
+    class Meta:
+        unique_together = ['member', 'event']
+        ordering = ['-registered_at']
+    
+    def __str__(self):
+        return f"{self.member.user.username} - {self.event.title}"
+
+
+class ProgramParticipation(models.Model):
+    """Track member participation in programs"""
+    member = models.ForeignKey(MemberProfile, on_delete=models.CASCADE, related_name='program_participations')
+    program = models.ForeignKey(Program, on_delete=models.CASCADE, related_name='participations')
+    enrolled_at = models.DateTimeField(auto_now_add=True)
+    
+    ROLE_CHOICES = [
+        ('participant', 'Participant'),
+        ('volunteer', 'Volunteer'),
+        ('coordinator', 'Coordinator'),
+        ('lead', 'Program Lead'),
+    ]
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='participant')
+    
+    STATUS_CHOICES = [
+        ('active', 'Active'),
+        ('completed', 'Completed'),
+        ('dropped', 'Dropped'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
+    certificate_issued = models.BooleanField(default=False)
+    feedback = models.TextField(blank=True)
+    
+    class Meta:
+        unique_together = ['member', 'program']
+        ordering = ['-enrolled_at']
+    
+    def __str__(self):
+        return f"{self.member.user.username} - {self.program.title}"
+
+
+# Signal to create MemberProfile when a new User is created
+@receiver(post_save, sender=User)
+def create_member_profile(sender, instance, created, **kwargs):
+    """Create a MemberProfile for new users (non-staff only)"""
+    if created and not instance.is_staff:
+        MemberProfile.objects.create(user=instance)
+

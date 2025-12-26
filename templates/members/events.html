@@ -1,0 +1,164 @@
+{% extends 'members/base_member.html' %}
+
+{% block member_title %}Events{% endblock %}
+
+{% block member_content %}
+<div class="mb-8">
+    <h1 class="text-2xl font-bold text-gray-900">Events</h1>
+    <p class="text-gray-600">Browse and register for club events</p>
+</div>
+
+<!-- Tabs -->
+<div class="mb-6 border-b border-gray-200">
+    <nav class="flex space-x-8">
+        <button onclick="showTab('upcoming')" id="tab-upcoming" class="tab-btn py-4 px-1 border-b-2 border-primary-500 text-primary-600 font-medium text-sm">
+            Upcoming Events
+        </button>
+        <button onclick="showTab('registered')" id="tab-registered" class="tab-btn py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm">
+            My Registrations
+        </button>
+    </nav>
+</div>
+
+<!-- Upcoming Events Tab -->
+<div id="content-upcoming" class="tab-content">
+    {% if upcoming_events %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for event in upcoming_events %}
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+                {% if event.image %}
+                <div class="h-48 bg-gray-100">
+                    <img src="{{ event.image.url }}" alt="{{ event.title }}" class="w-full h-full object-cover">
+                </div>
+                {% else %}
+                <div class="h-48 bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
+                    <i class="fas fa-calendar-alt text-white text-5xl opacity-50"></i>
+                </div>
+                {% endif %}
+                <div class="p-6">
+                    <div class="flex items-center space-x-2 mb-3">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-700">
+                            {{ event.date|date:"M d, Y" }}
+                        </span>
+                        {% if event.time %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                            {{ event.time|time:"g:i A" }}
+                        </span>
+                        {% endif %}
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ event.title }}</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ event.description|striptags|truncatewords:25 }}</p>
+                    
+                    {% if event.location %}
+                    <p class="text-sm text-gray-500 mb-4">
+                        <i class="fas fa-map-marker-alt mr-2 text-primary-500"></i>{{ event.location }}
+                    </p>
+                    {% endif %}
+                    
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                        {% if event.id in registered_event_ids %}
+                            <span class="inline-flex items-center text-green-600 text-sm font-medium">
+                                <i class="fas fa-check-circle mr-1"></i>Registered
+                            </span>
+                            <form method="post" action="{% url 'cancel_event_registration' event.id %}" onsubmit="return confirm('Are you sure you want to cancel your registration?');">
+                                {% csrf_token %}
+                                <button type="submit" class="text-red-600 hover:text-red-700 text-sm font-medium">Cancel</button>
+                            </form>
+                        {% else %}
+                            <form method="post" action="{% url 'register_for_event' event.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="px-4 py-2 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 transition-colors">
+                                    Register Now
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-16 bg-white rounded-2xl border border-gray-100">
+            <div class="w-20 h-20 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-calendar text-gray-400 text-3xl"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">No Upcoming Events</h3>
+            <p class="text-gray-500">Check back later for new events!</p>
+        </div>
+    {% endif %}
+</div>
+
+<!-- My Registrations Tab -->
+<div id="content-registered" class="tab-content hidden">
+    {% if event_history %}
+        <div class="space-y-4">
+            {% for registration in event_history %}
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-16 h-16 bg-primary-100 rounded-xl flex flex-col items-center justify-center">
+                            <span class="text-xs font-bold text-primary-600">{{ registration.event.date|date:"M" }}</span>
+                            <span class="text-xl font-bold text-primary-700">{{ registration.event.date|date:"d" }}</span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">{{ registration.event.title }}</h3>
+                            <p class="text-sm text-gray-500">{{ registration.event.location }}</p>
+                            <div class="mt-2 flex items-center space-x-3">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
+                                    {% if registration.status == 'registered' %}bg-blue-100 text-blue-700
+                                    {% elif registration.status == 'attended' %}bg-green-100 text-green-700
+                                    {% elif registration.status == 'cancelled' %}bg-red-100 text-red-700
+                                    {% else %}bg-gray-100 text-gray-700{% endif %}">
+                                    {{ registration.get_status_display }}
+                                </span>
+                                <span class="text-xs text-gray-400">Registered {{ registration.registered_at|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% if registration.status == 'registered' %}
+                    <div class="mt-4 md:mt-0">
+                        <form method="post" action="{% url 'cancel_event_registration' registration.event.id %}" onsubmit="return confirm('Are you sure you want to cancel your registration?');">
+                            {% csrf_token %}
+                            <button type="submit" class="text-red-600 hover:text-red-700 text-sm font-medium">
+                                Cancel Registration
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-16 bg-white rounded-2xl border border-gray-100">
+            <div class="w-20 h-20 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-ticket-alt text-gray-400 text-3xl"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">No Registrations</h3>
+            <p class="text-gray-500">You haven't registered for any events yet.</p>
+            <button onclick="showTab('upcoming')" class="mt-4 text-primary-600 hover:text-primary-700 font-medium">
+                Browse Upcoming Events
+            </button>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+function showTab(tabName) {
+    // Hide all content
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    // Remove active from all tabs
+    document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('border-primary-500', 'text-primary-600');
+        el.classList.add('border-transparent', 'text-gray-500');
+    });
+    
+    // Show selected content
+    document.getElementById('content-' + tabName).classList.remove('hidden');
+    // Activate selected tab
+    const activeTab = document.getElementById('tab-' + tabName);
+    activeTab.classList.add('border-primary-500', 'text-primary-600');
+    activeTab.classList.remove('border-transparent', 'text-gray-500');
+}
+</script>
+{% endblock %}

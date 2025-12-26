@@ -44,7 +44,7 @@
                     Learn More
                     <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
                 </a>
-                <a href="{% url 'contact' %}" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold hover:bg-white/20 transition-all duration-300">
+                <a href="{% url 'member_register' %}" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold hover:bg-white/20 transition-all duration-300">
                     <i class="fas fa-hands-helping mr-2"></i>
                     Get Involved
                 </a>
@@ -168,14 +168,38 @@
                     <div class="relative h-56 overflow-hidden">
                         <img src="{{ program.image.url }}" alt="{{ program.title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
+                        {% if program.id in enrolled_program_ids %}
+                        <div class="absolute top-4 right-4">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-500 text-white shadow-lg">
+                                <i class="fas fa-check-circle mr-1"></i>Enrolled
+                            </span>
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors duration-200">{{ program.title }}</h3>
                         <p class="text-gray-600 mb-4 line-clamp-2">{{ program.short_description }}</p>
-                        <a href="{% url 'program_detail' program.slug %}" class="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 transition-colors duration-200">
-                            Learn More
-                            <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
-                        </a>
+                        <div class="flex items-center justify-between">
+                            <a href="{% url 'program_detail' program.slug %}" class="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 transition-colors duration-200">
+                                Learn More
+                                <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                            </a>
+                            {% if user.is_authenticated %}
+                                {% if program.id in enrolled_program_ids %}
+                                <span class="text-sm text-green-600 font-medium">
+                                    <i class="fas fa-user-check mr-1"></i>Member
+                                </span>
+                                {% else %}
+                                <a href="{% url 'enroll_in_program' program.id %}" class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-primary-100 text-primary-700 hover:bg-primary-200 transition-colors">
+                                    <i class="fas fa-plus mr-1"></i>Enroll
+                                </a>
+                                {% endif %}
+                            {% else %}
+                            <a href="{% url 'member_register' %}" class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors">
+                                <i class="fas fa-user-plus mr-1"></i>Join to Enroll
+                            </a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 {% endfor %}

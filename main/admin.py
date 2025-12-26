@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.utils.html import format_html
 from django.db.models import Count
 from django.utils import timezone
-from .models import Program, GalleryCategory, GalleryImage, TeamMember, Event, ContactMessage
+from .models import Program, GalleryCategory, GalleryImage, TeamMember, Event, ContactMessage, MemberProfile, EventAttendance, ProgramParticipation
 from .forms import MultipleImageUploadForm
 
 # Custom Admin Site Configuration
@@ -401,6 +401,95 @@ class ContactMessageAdmin(admin.ModelAdmin):
         updated = queryset.update(is_read=False)
         self.message_user(request, f'{updated} message(s) marked as unread.', messages.SUCCESS)
     mark_as_unread.short_description = "Mark as unread"
+
+
+# Member Management Admin
+@admin.register(MemberProfile)
+class MemberProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'get_full_name', 'phone', 'member_since', 'membership_type', 'is_verified')
+    list_filter = ('membership_type', 'is_verified', 'joined_date')
+    search_fields = ('user__username', 'user__first_name', 'user__last_name', 'user__email', 'phone')
+    readonly_fields = ('user', 'member_since', 'joined_date')
+    list_editable = ('is_verified',)
+    list_per_page = 25
+    
+    fieldsets = (
+        ('User Information', {
+            'fields': ('user', 'member_since')
+        }),
+        ('Profile Details', {
+            'fields': ('phone', 'address', 'date_of_birth', 'bio', 'profile_picture')
+        }),
+        ('Membership', {
+            'fields': ('membership_type', 'is_verified')
+        }),
+    )
+    
+    def get_full_name(self, obj):
+        return obj.user.get_full_name() or obj.user.username
+    get_full_name.short_description = "Full Name"
+    
+    def member_since(self, obj):
+        return obj.user.date_joined.strftime('%b %d, %Y')
+    member_since.short_description = "Member Since"
+
+
+@admin.register(EventAttendance)
+class EventAttendanceAdmin(admin.ModelAdmin):
+    list_display = ('get_member_name', 'event', 'status', 'registered_at')
+    list_filter = ('status', 'event', 'registered_at')
+    search_fields = ('member__user__username', 'member__user__first_name', 'member__user__last_name', 'event__title')
+    readonly_fields = ('registered_at',)
+    list_per_page = 30
+    date_hierarchy = 'registered_at'
+    
+    def get_member_name(self, obj):
+        return obj.member.user.get_full_name() or obj.member.user.username
+    get_member_name.short_description = "Member"
+    
+    actions = ['mark_as_attended', 'mark_as_absent']
+    
+    def mark_as_attended(self, request, queryset):
+        updated = queryset.update(status='attended')
+        self.message_user(request, f'{updated} attendance(s) marked as attended.', messages.SUCCESS)
+    mark_as_attended.short_description = "Mark as attended"
+    
+    def mark_as_absent(self, request, queryset):
+        updated = queryset.update(status='absent')
+        self.message_user(request, f'{updated} attendance(s) marked as absent.', messages.SUCCESS)
+    mark_as_absent.short_description = "Mark as absent"
+
+
+@admin.register(ProgramParticipation)
+class ProgramParticipationAdmin(admin.ModelAdmin):
+    list_display = ('get_member_name', 'program', 'role', 'status', 'enrolled_at', 'certificate_issued')
+    list_filter = ('status', 'role', 'program', 'certificate_issued', 'enrolled_at')
+    search_fields = ('member__user__username', 'member__user__first_name', 'member__user__last_name', 'program__title')
+    readonly_fields = ('enrolled_at',)
+    list_editable = ('certificate_issued',)
+    list_per_page = 30
+    date_hierarchy = 'enrolled_at'
+    
+    def get_member_name(self, obj):
+        return obj.member.user.get_full_name() or obj.member.user.username
+    get_member_name.short_description = "Member"
+    
+    actions = ['mark_as_completed', 'mark_as_active', 'issue_certificates']
+    
+    def mark_as_completed(self, request, queryset):
+        updated = queryset.update(status='completed')
+        self.message_user(request, f'{updated} participation(s) marked as completed.', messages.SUCCESS)
+    mark_as_completed.short_description = "Mark as completed"
+    
+    def mark_as_active(self, request, queryset):
+        updated = queryset.update(status='active')
+        self.message_user(request, f'{updated} participation(s) marked as active.', messages.SUCCESS)
+    mark_as_active.short_description = "Mark as active"
+    
+    def issue_certificates(self, request, queryset):
+        updated = queryset.filter(status='completed').update(certificate_issued=True)
+        self.message_user(request, f'{updated} certificate(s) issued.', messages.SUCCESS)
+    issue_certificates.short_description = "Issue certificates to completed participants"
 
 
 # Custom Admin Site with Dashboard
