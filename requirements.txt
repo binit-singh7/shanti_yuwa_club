@@ -1,0 +1,21 @@
+# Shanti Yuwa Club - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# Django Framework
+Django==5.2.4
+
+# Django Forms
+django-crispy-forms==2.4
+crispy-bootstrap4==2025.6
+
+# Rich Text Editor
+django-ckeditor==6.7.3
+django-js-asset==3.1.2
+
+# Image Processing
+pillow==11.3.0
+
+# Database & Server
+asgiref==3.9.1
+sqlparse==0.5.3
+tzdata==2025.2
