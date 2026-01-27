@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Member Login - Shanti Yuwa Club{% endblock %}
+{% block title %}Join - Shanti Yuwa Club{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -11,8 +11,8 @@
             <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg">
                 <i class="fas fa-user-circle text-white text-3xl"></i>
             </div>
-            <h2 class="text-3xl font-bold text-gray-900">Welcome Back</h2>
-            <p class="mt-2 text-gray-600">Sign in to your member account</p>
+            <h2 class="text-3xl font-bold text-gray-900">Member Login</h2>
+            <p class="mt-2 text-gray-600">Sign in to access your member dashboard</p>
         </div>
 
         <!-- Login Form -->
@@ -60,11 +60,11 @@
                 </button>
             </form>
 
-            <div class="mt-6 text-center">
-                <p class="text-gray-600">
-                    Don't have an account?
-                    <a href="{% url 'member_register' %}" class="font-semibold text-primary-600 hover:text-primary-700">Join now</a>
-                </p>
+            <div class="mt-6 pt-6 border-t border-gray-200 text-center">
+                <p class="text-sm text-gray-500 mb-3">New to Shanti Yuwa Club?</p>
+                <a href="{% url 'member_register' %}" class="inline-block w-full py-3 px-4 rounded-xl bg-white border-2 border-primary-600 text-primary-600 font-semibold hover:bg-primary-50 transition-all">
+                    <i class="fas fa-user-plus mr-2"></i>Join Our Club
+                </a>
             </div>
         </div>
 

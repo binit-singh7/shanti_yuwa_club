@@ -1,259 +1,257 @@
 {% extends "admin/base_site.html" %}
 {% load static %}
 
+{% block title %}Dashboard - Shanti Yuwa Club Admin{% endblock %}
 {% block page_title %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="space-y-8">
-    <!-- Welcome Section -->
-    <div class="border-b border-slate-200 pb-8">
-        <h1 class="text-4xl font-bold text-slate-900 mb-2">Dashboard</h1>
-        <p class="text-slate-600 text-base">Welcome back, <span class="font-semibold text-slate-800">{{ user.username }}</span>! Here's what's happening with your club.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Members Card -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-indigo-500 hover:shadow-lg transition">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-500 text-sm font-medium">Total Members</p>
+                <p class="text-3xl font-bold text-indigo-600">{{ stats.total_members }}</p>
+            </div>
+            <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-users text-xl text-indigo-600"></i>
+            </div>
+        </div>
+        <p class="text-xs text-gray-400 mt-2">
+            <span class="text-green-600 font-medium">+{{ recent.new_members_this_month }}</span> this month
+        </p>
     </div>
 
-    <!-- Stats Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Programs Card -->
-        <div class="bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-purple-600 text-white">
-                    <i class="fas fa-project-diagram text-lg"></i>
-                </div>
-                <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-green-500/20 text-green-700">
-                    +{{ stats.new_programs_this_week }} new
-                </span>
+    <!-- Programs Card -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500 hover:shadow-lg transition">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-500 text-sm font-medium">Programs</p>
+                <p class="text-3xl font-bold text-purple-600">{{ stats.total_programs }}</p>
             </div>
-            <h3 class="text-4xl font-bold text-slate-900 mb-1">{{ stats.total_programs }}</h3>
-            <p class="text-slate-600 text-sm font-medium mb-4">Total Programs</p>
-            <div class="pt-4 border-t border-purple-200">
-                <p class="text-sm text-purple-700 font-semibold">{{ stats.active_programs }} currently active</p>
+            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-book text-xl text-purple-600"></i>
             </div>
         </div>
+        <p class="text-xs text-gray-400 mt-2">
+            <span class="text-green-600 font-medium">{{ stats.active_programs }}</span> active
+        </p>
+    </div>
 
-        <!-- Gallery Card -->
-        <div class="bg-gradient-to-br from-pink-50 to-pink-100 border border-pink-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-pink-600 text-white">
-                    <i class="fas fa-images text-lg"></i>
-                </div>
-                <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-green-500/20 text-green-700">
-                    +{{ stats.gallery_images_this_month }} this month
-                </span>
+    <!-- Gallery Card -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-pink-500 hover:shadow-lg transition">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-500 text-sm font-medium">Gallery Images</p>
+                <p class="text-3xl font-bold text-pink-600">{{ stats.total_images }}</p>
             </div>
-            <h3 class="text-4xl font-bold text-slate-900 mb-1">{{ stats.total_gallery_images }}</h3>
-            <p class="text-slate-600 text-sm font-medium mb-4">Gallery Images</p>
-            <div class="pt-4 border-t border-pink-200">
-                <a href="{% url 'admin:gallery-upload-multiple' %}" class="text-sm text-pink-700 hover:text-pink-800 font-semibold flex items-center gap-2 group">
-                    <i class="fas fa-arrow-up-from-bracket"></i>
-                    <span class="group-hover:underline">Upload more</span>
-                </a>
+            <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-images text-xl text-pink-600"></i>
             </div>
         </div>
+        <p class="text-xs text-gray-400 mt-2">Across all categories</p>
+    </div>
 
-        <!-- Team Card -->
-        <div class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-blue-600 text-white">
-                    <i class="fas fa-users text-lg"></i>
-                </div>
+    <!-- Team Card -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-cyan-500 hover:shadow-lg transition">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-500 text-sm font-medium">Team Members</p>
+                <p class="text-3xl font-bold text-cyan-600">{{ stats.total_team }}</p>
             </div>
-            <h3 class="text-4xl font-bold text-slate-900 mb-1">{{ stats.total_team_members }}</h3>
-            <p class="text-slate-600 text-sm font-medium mb-4">Team Members</p>
-            <div class="pt-4 border-t border-blue-200">
-                <p class="text-sm text-blue-700 font-semibold">{{ stats.active_team_members }} active members</p>
+            <div class="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-user-tie text-xl text-cyan-600"></i>
             </div>
         </div>
+        <p class="text-xs text-gray-400 mt-2">Active team</p>
+    </div>
+</div>
 
-        <!-- Messages Card -->
-        <div class="bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-orange-600 text-white">
-                    <i class="fas fa-envelope text-lg"></i>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <!-- Member Engagement -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between mb-4 pb-4 border-b">
+            <h3 class="text-lg font-semibold text-slate-900">Member Engagement</h3>
+            <i class="fas fa-chart-pie text-indigo-600"></i>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium text-gray-600">Active Members</span>
+                    <span class="text-lg font-bold text-green-600">{{ engagement.active }}</span>
                 </div>
-                {% if stats.unread_messages %}
-                <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-red-500/30 text-red-700 animate-pulse">
-                    {{ stats.unread_messages }} unread
-                </span>
-                {% endif %}
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-green-500 h-2 rounded-full" style="width: {% widthratio engagement.active engagement.total 100 %}%"></div>
+                </div>
             </div>
-            <h3 class="text-4xl font-bold text-slate-900 mb-1">{{ stats.total_messages }}</h3>
-            <p class="text-slate-600 text-sm font-medium mb-4">Contact Messages</p>
-            <div class="pt-4 border-t border-orange-200">
-                <p class="text-sm text-orange-700 font-semibold">{{ stats.messages_this_week }} this week</p>
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium text-gray-600">Inactive Members</span>
+                    <span class="text-lg font-bold text-red-600">{{ engagement.inactive }}</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-red-500 h-2 rounded-full" style="width: {% widthratio engagement.inactive engagement.total 100 %}%"></div>
+                </div>
+            </div>
+            <div class="pt-2 border-t">
+                <p class="text-sm text-gray-500">
+                    Engagement Rate: <span class="font-bold text-indigo-600">{{ engagement.engagement_rate|floatformat:1 }}%</span>
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- Main Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Quick Actions Sidebar -->
-        <div class="lg:col-span-1">
-            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 sticky top-6">
-                <h2 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-600 text-white">
-                        <i class="fas fa-wand-magic-sparkles text-sm"></i>
-                    </span>
-                    Quick Actions
-                </h2>
-                <div class="space-y-3">
-                    <a href="{% url 'admin:main_program_add' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 transition-colors group">
-                        <div class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-purple-200 text-purple-700 group-hover:scale-110 transition-transform">
-                            <i class="fas fa-plus text-sm"></i>
+    <!-- Recent Members -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between mb-4 pb-4 border-b">
+            <h3 class="text-lg font-semibold text-slate-900">Recent Members</h3>
+            <i class="fas fa-user-plus text-purple-600"></i>
+        </div>
+        <div class="space-y-3">
+            {% for member in recent.recent_members %}
+                <div class="flex items-center justify-between pb-3 border-b last:border-b-0">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-xs font-bold text-purple-600">
+                                {{ member.user.first_name|first|default:member.user.username|first|upper }}
+                            </span>
                         </div>
-                        <span class="font-semibold text-sm">Add Program</span>
-                    </a>
-                    
-                    <a href="{% url 'admin:main_event_add' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition-colors group">
-                        <div class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-emerald-200 text-emerald-700 group-hover:scale-110 transition-transform">
-                            <i class="fas fa-calendar-plus text-sm"></i>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">
+                                {{ member.user.first_name|default:member.user.username }}
+                            </p>
+                            <p class="text-xs text-gray-500">{{ member.joined_date|date:"M d" }}</p>
                         </div>
-                        <span class="font-semibold text-sm">Create Event</span>
-                    </a>
-                    
-                    <a href="{% url 'admin:gallery-upload-multiple' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-700 transition-colors group">
-                        <div class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-pink-200 text-pink-700 group-hover:scale-110 transition-transform">
-                            <i class="fas fa-cloud-arrow-up text-sm"></i>
-                        </div>
-                        <span class="font-semibold text-sm">Upload Photos</span>
-                    </a>
-                    
-                    <a href="{% url 'admin:main_teammember_add' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 transition-colors group">
-                        <div class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-blue-200 text-blue-700 group-hover:scale-110 transition-transform">
-                            <i class="fas fa-user-plus text-sm"></i>
-                        </div>
-                        <span class="font-semibold text-sm">Add Team Member</span>
-                    </a>
-                    
-                    {% if stats.unread_messages %}
-                    <a href="{% url 'admin:main_contactmessage_changelist' %}?is_read__exact=0" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 transition-colors group">
-                        <div class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-red-200 text-red-700 group-hover:scale-110 transition-transform">
-                            <i class="fas fa-envelope-circle-check text-sm"></i>
-                        </div>
-                        <span class="font-semibold text-sm">Check Messages</span>
-                        <span class="ml-auto inline-flex items-center justify-center min-w-6 h-6 px-2 rounded-full bg-red-500 text-white text-xs font-bold">{{ stats.unread_messages }}</span>
-                    </a>
+                    </div>
+                    {% if member.is_verified %}
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Verified</span>
                     {% endif %}
                 </div>
-            </div>
-        </div>
-
-        <!-- Events Overview -->
-        <div class="lg:col-span-2">
-            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                        <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-600 text-white">
-                            <i class="fas fa-calendar text-sm"></i>
-                        </span>
-                        Events Overview
-                    </h2>
-                    <a href="{% url 'admin:main_event_changelist' %}" class="inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 hover:text-indigo-700 hover:gap-2 transition-all">
-                        View all <i class="fas fa-arrow-right text-xs"></i>
-                    </a>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg p-4 border border-slate-200">
-                        <p class="text-3xl font-bold text-slate-900">{{ stats.total_events }}</p>
-                        <p class="text-sm text-slate-600 mt-1">Total Events</p>
-                    </div>
-                    <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-lg p-4 border border-emerald-200">
-                        <p class="text-3xl font-bold text-emerald-900">{{ stats.upcoming_events }}</p>
-                        <p class="text-sm text-slate-600 mt-1">Upcoming</p>
-                    </div>
-                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
-                        <p class="text-3xl font-bold text-blue-900">{{ stats.events_this_month }}</p>
-                        <p class="text-sm text-slate-600 mt-1">This Month</p>
-                    </div>
-                    <div class="bg-gradient-to-br from-slate-100 to-slate-200 rounded-lg p-4 border border-slate-300">
-                        <p class="text-3xl font-bold text-slate-900">{{ stats.past_events }}</p>
-                        <p class="text-sm text-slate-600 mt-1">Completed</p>
-                    </div>
-                </div>
-            </div>
+            {% empty %}
+                <p class="text-gray-500 text-sm text-center py-4">No members yet</p>
+            {% endfor %}
         </div>
     </div>
 
-    <!-- Recent Activity Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Recent Messages -->
-        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="px-6 py-5 border-b border-slate-200 flex items-center gap-3">
-                <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-orange-600 text-white">
-                    <i class="fas fa-envelope text-sm"></i>
-                </span>
-                <h2 class="text-lg font-bold text-slate-900">Recent Messages</h2>
-                <a href="{% url 'admin:main_contactmessage_changelist' %}" class="ml-auto text-sm font-semibold text-indigo-600 hover:text-indigo-700">
-                    View all
-                </a>
-            </div>
-            <div class="divide-y divide-slate-100 max-h-96 overflow-y-auto">
-                {% for message in recent_activity.messages %}
-                <div class="px-6 py-4 hover:bg-slate-50 transition-colors {% if not message.is_read %}bg-orange-50{% endif %}">
-                    <div class="flex items-start gap-4">
-                        <div class="inline-flex items-center justify-center w-10 h-10 rounded-full flex-shrink-0 {% if not message.is_read %}bg-orange-600 text-white{% else %}bg-slate-300 text-slate-700{% endif %} font-bold text-sm">
-                            {{ message.name|slice:":1"|upper }}
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center justify-between gap-2 mb-1">
-                                <p class="font-semibold text-slate-900 truncate">{{ message.name }}</p>
-                                <span class="text-xs text-slate-500 flex-shrink-0">{{ message.created_at|timesince }} ago</span>
-                            </div>
-                            <p class="text-sm text-slate-600 truncate">{{ message.subject }}</p>
-                        </div>
-                        {% if not message.is_read %}
-                        <div class="w-2 h-2 rounded-full bg-orange-600 flex-shrink-0 mt-2"></div>
-                        {% endif %}
-                    </div>
-                </div>
-                {% empty %}
-                <div class="px-6 py-16 text-center text-slate-400">
-                    <i class="fas fa-inbox text-4xl mb-3 opacity-50"></i>
-                    <p class="font-medium">No messages yet</p>
-                </div>
-                {% endfor %}
-            </div>
+    <!-- Recent Programs -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between mb-4 pb-4 border-b">
+            <h3 class="text-lg font-semibold text-slate-900">Recent Programs</h3>
+            <i class="fas fa-book text-pink-600"></i>
         </div>
-
-        <!-- Recent Programs -->
-        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="px-6 py-5 border-b border-slate-200 flex items-center gap-3">
-                <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-purple-600 text-white">
-                    <i class="fas fa-briefcase text-sm"></i>
-                </span>
-                <h2 class="text-lg font-bold text-slate-900">Recent Programs</h2>
-                <a href="{% url 'admin:main_program_changelist' %}" class="ml-auto text-sm font-semibold text-indigo-600 hover:text-indigo-700">
-                    View all
-                </a>
-            </div>
-            <div class="divide-y divide-slate-100 max-h-96 overflow-y-auto">
-                {% for program in recent_activity.programs %}
-                <div class="px-6 py-4 hover:bg-slate-50 transition-colors">
-                    <div class="flex items-center gap-4">
-                        {% if program.image %}
-                        <img src="{{ program.image.url }}" alt="{{ program.title }}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0">
+        <div class="space-y-3">
+            {% for program in recent.recent_programs %}
+                <div class="pb-3 border-b last:border-b-0">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-900 truncate">{{ program.title }}</p>
+                            <p class="text-xs text-gray-500">{{ program.created_at|date:"M d, Y" }}</p>
+                        </div>
+                        {% if program.is_active %}
+                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full flex-shrink-0 ml-2">Active</span>
                         {% else %}
-                        <div class="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-purple-100 text-purple-600 flex-shrink-0">
-                            <i class="fas fa-briefcase"></i>
-                        </div>
+                            <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full flex-shrink-0 ml-2">Inactive</span>
                         {% endif %}
-                        <div class="flex-1 min-w-0">
-                            <p class="font-semibold text-slate-900 truncate">{{ program.title }}</p>
-                            <p class="text-xs text-slate-500">{{ program.created_at|timesince }} ago</p>
-                        </div>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold flex-shrink-0 {% if program.is_active %}bg-emerald-100 text-emerald-700{% else %}bg-slate-100 text-slate-600{% endif %}">
-                            {% if program.is_active %}Active{% else %}Inactive{% endif %}
-                        </span>
                     </div>
                 </div>
-                {% empty %}
-                <div class="px-6 py-16 text-center text-slate-400">
-                    <i class="fas fa-folder-open text-4xl mb-3 opacity-50"></i>
-                    <p class="font-medium">No programs yet</p>
-                </div>
-                {% endfor %}
-            </div>
+            {% empty %}
+                <p class="text-gray-500 text-sm text-center py-4">No programs yet</p>
+            {% endfor %}
         </div>
     </div>
 </div>
+
+<!-- Quick Actions -->
+<div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <div class="flex items-center justify-between mb-4 pb-4 border-b">
+        <h3 class="text-lg font-semibold text-slate-900">Quick Actions</h3>
+        <i class="fas fa-lightning-bolt text-yellow-500"></i>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <a href="/admin/main/program/add/" class="btn-sm btn-primary">
+            <i class="fas fa-plus-circle"></i> Add Program
+        </a>
+        <a href="/admin/main/galleryimage/add/" class="btn-sm btn-primary">
+            <i class="fas fa-image"></i> Add Image
+        </a>
+        <a href="/admin/main/teammember/add/" class="btn-sm btn-primary">
+            <i class="fas fa-user-plus"></i> Add Team Member
+        </a>
+        <a href="/admin/main/memberprofile/" class="btn-sm btn-secondary">
+            <i class="fas fa-users"></i> View Members
+        </a>
+    </div>
+</div>
+
+<!-- Traffic Chart -->
+<div class="bg-white rounded-lg shadow-md p-6 mb-6 card-animated">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-slate-900">Traffic (Last 7 days)</h3>
+        <i class="fas fa-chart-line text-indigo-600"></i>
+    </div>
+    <div>
+        <canvas id="trafficChart"></canvas>
+    </div>
+</div>
+
+<!-- Site Statistics -->
+<div class="bg-white rounded-lg shadow-md p-6">
+    <div class="flex items-center justify-between mb-4 pb-4 border-b">
+        <h3 class="text-lg font-semibold text-slate-900">Site Overview</h3>
+        <i class="fas fa-chart-bar text-indigo-600"></i>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div class="text-center p-4 bg-slate-50 rounded-lg">
+            <p class="text-2xl font-bold text-indigo-600">{{ stats.total_users }}</p>
+            <p class="text-xs text-gray-600 mt-1">Total Users</p>
+        </div>
+        <div class="text-center p-4 bg-slate-50 rounded-lg">
+            <p class="text-2xl font-bold text-purple-600">{{ stats.total_programs }}</p>
+            <p class="text-xs text-gray-600 mt-1">Programs</p>
+        </div>
+        <div class="text-center p-4 bg-slate-50 rounded-lg">
+            <p class="text-2xl font-bold text-pink-600">{{ stats.total_images }}</p>
+            <p class="text-xs text-gray-600 mt-1">Images</p>
+        </div>
+        <div class="text-center p-4 bg-slate-50 rounded-lg">
+            <p class="text-2xl font-bold text-cyan-600">{{ stats.total_events }}</p>
+            <p class="text-xs text-gray-600 mt-1">Events</p>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+(function(){
+    try{
+        // Use JSON-safe strings provided by the view and parse them here
+        const labels = JSON.parse('{{ stats.traffic_labels_json|default:'["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]'|escapejs }}');
+        const dataPoints = JSON.parse('{{ stats.traffic_last_7_json|default:'[12,19,7,14,22,18,25]'|escapejs }}');
+        const canvas = document.getElementById('trafficChart');
+        console.log('[admin] traffic chart labels=', labels, 'data=', dataPoints, 'canvas=', canvas);
+        if(canvas && typeof Chart !== 'undefined'){
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: dataPoints,
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99,102,241,0.12)',
+                        fill: true,
+                        tension: 0.3,
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+        } else {
+            console.warn('[admin] Chart not initialized. Chart lib available?:', typeof Chart !== 'undefined');
+        }
+    }catch(e){ console.error('Traffic chart error', e); }
+})();
+</script>
+{% endblock %}
+
 {% endblock %}

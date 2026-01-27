@@ -113,6 +113,19 @@ class MemberProfile(models.Model):
     phone = models.CharField(max_length=20, blank=True)
     address = models.TextField(blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
+    
+    BLOOD_GROUP_CHOICES = [
+        ('A+', 'A+'),
+        ('A-', 'A-'),
+        ('B+', 'B+'),
+        ('B-', 'B-'),
+        ('O+', 'O+'),
+        ('O-', 'O-'),
+        ('AB+', 'AB+'),
+        ('AB-', 'AB-'),
+    ]
+    blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES, blank=True, help_text="Your blood group")
+    
     profile_picture = models.ImageField(upload_to='members/', blank=True, null=True)
     bio = models.TextField(blank=True, help_text="Short bio about yourself")
     joined_date = models.DateField(auto_now_add=True)
@@ -197,4 +210,57 @@ def create_member_profile(sender, instance, created, **kwargs):
     """Create a MemberProfile for new users (non-staff only)"""
     if created and not instance.is_staff:
         MemberProfile.objects.create(user=instance)
+
+
+# ========================
+# OTP VERIFICATION MODEL
+# ========================
+
+class OTPVerification(models.Model):
+    """Model to store OTP for email verification"""
+    email = models.EmailField()
+    otp = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+    is_verified = models.BooleanField(default=False)
+    attempts = models.IntegerField(default=0, help_text="Number of failed verification attempts")
+    
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['email', 'is_verified']),
+            models.Index(fields=['expires_at']),
+        ]
+    
+    def __str__(self):
+        return f"OTP for {self.email}"
+    
+    def is_expired(self):
+        """Check if OTP has expired"""
+        from django.utils import timezone
+        return timezone.now() > self.expires_at
+    
+    def is_valid(self):
+        """Check if OTP is still valid (not expired and not verified)"""
+        return not self.is_expired() and not self.is_verified
+
+
+# ==========
+# Hero Images for homepage
+# ==========
+class HeroImage(models.Model):
+    title = models.CharField(max_length=200, blank=True)
+    image = models.ImageField(upload_to='hero/')
+    caption = models.TextField(blank=True)
+    is_active = models.BooleanField(default=True)
+    display_order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title or f"Hero Image {self.pk}"
+
+    class Meta:
+        ordering = ['display_order', '-created_at']
+        verbose_name = "Hero Image"
+        verbose_name_plural = "Hero Images"
 

@@ -1,66 +1,86 @@
-from django.db.models import Count
+from django.db.models import Count, Q
+from .models import Program, GalleryImage, TeamMember, MemberProfile, EventAttendance, ProgramParticipation, Event
+from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
-from .models import Program, GalleryImage, TeamMember, Event, ContactMessage
+import json
 
 
 class DashboardStats:
-    """Custom dashboard statistics for admin"""
+    """Dashboard statistics for admin panel"""
     
     @staticmethod
     def get_stats():
-        today = timezone.now()
-        week_ago = today - timedelta(days=7)
-        month_ago = today - timedelta(days=30)
-        
+        """Get overall dashboard statistics"""
         stats = {
-            # Program Statistics
+            'total_members': MemberProfile.objects.count(),
             'total_programs': Program.objects.count(),
             'active_programs': Program.objects.filter(is_active=True).count(),
-            'new_programs_this_week': Program.objects.filter(created_at__gte=week_ago).count(),
-            
-            # Gallery Statistics
-            'total_gallery_images': GalleryImage.objects.count(),
-            'gallery_images_this_month': GalleryImage.objects.filter(created_at__gte=month_ago).count(),
-            'images_by_category': list(
-                GalleryImage.objects.values('category__name')
-                .annotate(count=Count('id'))
-                .order_by('-count')[:5]
-            ),
-            
-            # Team Statistics
-            'total_team_members': TeamMember.objects.count(),
-            'active_team_members': TeamMember.objects.filter(is_active=True).count(),
-            
-            # Event Statistics
+            'total_images': GalleryImage.objects.count(),
+            'total_team': TeamMember.objects.count(),
             'total_events': Event.objects.count(),
-            'upcoming_events': Event.objects.filter(date__gte=today, is_active=True).count(),
-            'past_events': Event.objects.filter(date__lt=today).count(),
-            'events_this_month': Event.objects.filter(
-                date__year=today.year,
-                date__month=today.month
-            ).count(),
-            
-            # Contact Message Statistics
-            'total_messages': ContactMessage.objects.count(),
-            'unread_messages': ContactMessage.objects.filter(is_read=False).count(),
-            'messages_this_week': ContactMessage.objects.filter(created_at__gte=week_ago).count(),
-            'messages_this_month': ContactMessage.objects.filter(created_at__gte=month_ago).count(),
+            'total_users': User.objects.count(),
         }
-        
+        # Build traffic data (new member signups) for the last 7 days
+        try:
+            labels = []
+            data = []
+            for days_back in range(6, -1, -1):
+                day = timezone.now().date() - timedelta(days=days_back)
+                labels.append(day.strftime('%a'))
+                # joined_date is a DateField; use exact match instead of __date lookup
+                count = MemberProfile.objects.filter(joined_date=day).count()
+                data.append(count)
+            stats['traffic_labels'] = labels
+            stats['traffic_last_7'] = data
+            # Also provide JSON-serialized strings for safe template insertion
+            import json
+            stats['traffic_labels_json'] = json.dumps(labels)
+            stats['traffic_last_7_json'] = json.dumps(data)
+        except Exception:
+            # Fallback sensible defaults
+            fallback_labels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
+            fallback_data = [0,0,0,0,0,0,0]
+            stats['traffic_labels'] = fallback_labels
+            stats['traffic_last_7'] = fallback_data
+            stats['traffic_labels_json'] = json.dumps(fallback_labels)
+            stats['traffic_last_7_json'] = json.dumps(fallback_data)
+
         return stats
     
     @staticmethod
     def get_recent_activity():
-        """Get recent activity across all models"""
-        recent_programs = Program.objects.order_by('-created_at')[:5]
-        recent_events = Event.objects.order_by('-created_at')[:5]
-        recent_messages = ContactMessage.objects.order_by('-created_at')[:5]
-        recent_gallery = GalleryImage.objects.order_by('-created_at')[:5]
-        
-        return {
-            'programs': recent_programs,
-            'events': recent_events,
-            'messages': recent_messages,
-            'gallery': recent_gallery,
+        """Get recent activity data"""
+        activity = {
+            'new_members_this_month': MemberProfile.objects.filter(
+                joined_date__gte=timezone.now() - timedelta(days=30)
+            ).count(),
+            'recent_gallery': GalleryImage.objects.order_by('-id')[:5],
+            'recent_programs': Program.objects.order_by('-created_at')[:5],
+            'recent_members': MemberProfile.objects.order_by('-joined_date')[:5],
         }
+        return activity
+    
+    @staticmethod
+    def get_program_stats():
+        """Get program participation statistics"""
+        programs = Program.objects.annotate(
+            participant_count=Count('participations')
+        ).order_by('-participant_count')[:5]
+        return programs
+    
+    @staticmethod
+    def get_member_engagement():
+        """Get member engagement metrics"""
+        total_members = MemberProfile.objects.count()
+        active_members = MemberProfile.objects.filter(
+            Q(event_attendances__isnull=False) | Q(program_participations__isnull=False)
+        ).distinct().count()
+        
+        engagement = {
+            'total': total_members,
+            'active': active_members,
+            'inactive': total_members - active_members,
+            'engagement_rate': (active_members / total_members * 100) if total_members > 0 else 0,
+        }
+        return engagement

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto py-12 px-4">
+	<div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+		<div class="p-8 sm:p-12">
+			<h2 class="text-2xl font-bold text-gray-900 mb-3 flex items-center gap-3">
+				<i class="fas fa-envelope text-primary-600"></i>
+				Send Verification OTP
+			</h2>
+			<p class="text-sm text-gray-500 mb-6">Enter your email address to receive a verification code</p>
+
+			{% if messages %}
+				{% for message in messages %}
+				<div role="alert" class="mb-4 rounded-lg p-4 border {{ message.tags|default:'info' }}"
+					 {% if message.tags == 'success' %}style="background:#ecfdf5;border-color:#bbf7d0;color:#065f46"{% endif %}
+					 {% if message.tags == 'error' or message.tags == 'danger' %}style="background:#fee2e2;border-color:#fecaca;color:#7f1d1d"{% endif %}
+					 {% if message.tags == 'warning' %}style="background:#fffbeb;border-color:#fde68a;color:#92400e"{% endif %}
+					 {% if message.tags == 'info' %}style="background:#eff6ff;border-color:#bfdbfe;color:#1e40af"{% endif %}>
+					<div class="flex items-start gap-3">
+						<i class="fas fa-info-circle mt-0.5"></i>
+						<div class="text-sm">{{ message }}</div>
+					</div>
+				</div>
+				{% endfor %}
+			{% endif %}
+
+			<form method="POST" id="sendOtpForm" class="space-y-6" novalidate>
+				{% csrf_token %}
+				<div>
+					<label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+					<input type="email" name="email" id="email" required
+						class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+						placeholder="you@example.com" aria-describedby="emailHelp">
+					<p id="emailError" class="mt-2 text-sm text-red-600 hidden" role="alert"></p>
+					<p id="emailHelp" class="mt-1 text-xs text-gray-400">We'll send you a 6-digit OTP code. The code expires in 10 minutes.</p>
+				</div>
+
+				<div>
+					<button type="submit" id="sendBtn" class="w-full inline-flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-primary-600 text-white font-semibold hover:bg-primary-700 focus:outline-none" aria-busy="false">
+						<i class="fas fa-paper-plane"></i>
+						<span id="sendBtnText">Send OTP</span>
+					</button>
+				</div>
+			</form>
+
+			<hr class="my-6">
+
+			<p class="text-sm text-gray-500 text-center">
+				Already have an OTP?
+				<a href="{% url 'verify-otp' %}" class="text-primary-600 font-medium hover:underline">Verify it here</a>
+			</p>
+		</div>
+	</div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+	const form = document.getElementById('sendOtpForm');
+	if (!form) return;
+
+	const sendBtn = document.getElementById('sendBtn');
+	const sendBtnText = document.getElementById('sendBtnText');
+	const emailInput = document.getElementById('email');
+	const emailError = document.getElementById('emailError');
+
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+	function setLoading(loading) {
+		if (!sendBtn) return;
+		sendBtn.disabled = loading;
+		sendBtn.setAttribute('aria-busy', loading ? 'true' : 'false');
+		if (loading) {
+			sendBtnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+		} else {
+			sendBtnText.textContent = 'Send OTP';
+		}
+	}
+
+	form.addEventListener('submit', function (e) {
+		if (!emailInput) return;
+		emailError.classList.add('hidden');
+		emailInput.removeAttribute('aria-invalid');
+
+		const email = (emailInput.value || '').trim();
+		if (!emailRegex.test(email)) {
+			e.preventDefault();
+			emailError.textContent = 'Please enter a valid email address.';
+			emailError.classList.remove('hidden');
+			emailInput.setAttribute('aria-invalid', 'true');
+			emailInput.focus();
+			return;
+		}
+
+		// Prevent multiple submits and show a loading state.
+		setLoading(true);
+
+		// Fallback: if server doesn't navigate within 15s, re-enable the button so user can retry.
+		const fallback = setTimeout(() => {
+			setLoading(false);
+		}, 15000);
+
+		// If the browser navigates away (normal submit), clear fallback to avoid race.
+		window.addEventListener('beforeunload', function () {
+			clearTimeout(fallback);
+		});
+	});
+});
+</script>
+{% endblock %}

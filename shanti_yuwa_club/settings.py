@@ -27,6 +27,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok.io', '.ngrok-free.app', '.ngrok.app']
 
+# CSRF settings for ngrok and development
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.ngrok-free.app',
+    'https://*.ngrok.io',
+    'https://*.ngrok.app',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+
 
 # Application definition
 
@@ -138,3 +147,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Crispy Forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap4'
+# Email Configuration
+# For development, use console backend (prints emails to console)
+# For production, configure with your email provider
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Console for development
+
+# Uncomment and configure for production:
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # or your email provider
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'shantiyuwac@gmail.com'
+EMAIL_HOST_PASSWORD = 'wsczjcmsppizktgy'
+
+DEFAULT_FROM_EMAIL = 'shantiyuwac@gmail.com'
+SERVER_EMAIL = 'shantiyuwac@gmail.com'

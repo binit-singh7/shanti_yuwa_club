@@ -5,13 +5,28 @@ from django.contrib import messages
 from django.utils.html import format_html
 from django.db.models import Count
 from django.utils import timezone
-from .models import Program, GalleryCategory, GalleryImage, TeamMember, Event, ContactMessage, MemberProfile, EventAttendance, ProgramParticipation
+from .models import Program, GalleryCategory, GalleryImage, TeamMember, Event, ContactMessage, MemberProfile, EventAttendance, ProgramParticipation, OTPVerification, HeroImage
 from .forms import MultipleImageUploadForm
+from .admin_dashboard import DashboardStats
 
-# Custom Admin Site Configuration
+# Customize the default admin site
 admin.site.site_header = "Shanti Yuwa Club Administration"
 admin.site.site_title = "Shanti Yuwa Club Admin"
 admin.site.index_title = "Welcome to Shanti Yuwa Club Admin Portal"
+
+# Override the index view to include dashboard stats
+_original_index = admin.site.index
+
+def custom_index(request, extra_context=None):
+    extra_context = extra_context or {}
+    extra_context['stats'] = DashboardStats.get_stats()
+    extra_context['recent'] = DashboardStats.get_recent_activity()
+    extra_context['engagement'] = DashboardStats.get_member_engagement()
+    extra_context['program_stats'] = DashboardStats.get_program_stats()
+    admin.site.index_template = 'admin/custom/dashboard.html'
+    return _original_index(request, extra_context)
+
+admin.site.index = custom_index
 
 # Register your models here.
 @admin.register(Program)
@@ -84,13 +99,12 @@ class GalleryImageAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'image_thumbnail', 'created_at')
     list_filter = ('category', 'created_at')
     search_fields = ('title', 'description')
-    readonly_fields = ('created_at', 'image_preview')
-    list_per_page = 30
+    readonly_fields = ('image_preview', 'created_at')
+    list_per_page = 20
     date_hierarchy = 'created_at'
-    change_list_template = 'admin/gallery_image_changelist.html'
     
     fieldsets = (
-        ('Image Information', {
+        ('Basic Information', {
             'fields': ('title', 'category', 'description')
         }),
         ('Image', {
@@ -114,124 +128,52 @@ class GalleryImageAdmin(admin.ModelAdmin):
         return "No Image"
     image_preview.short_description = "Full Preview"
     
-    actions = ['duplicate_images']
-    
-    def duplicate_images(self, request, queryset):
-        for obj in queryset:
-            obj.pk = None
-            obj.title = f"{obj.title} (Copy)"
-            obj.save()
-        self.message_user(request, f'{queryset.count()} image(s) successfully duplicated.', messages.SUCCESS)
-    duplicate_images.short_description = "Duplicate selected images"
-
-    
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [
-            path('upload-multiple/', self.admin_site.admin_view(self.upload_multiple_view), name='gallery-upload-multiple'),
-            path('direct-upload/', self.admin_site.admin_view(self.direct_upload_view), name='gallery-direct-upload'),
+            path('upload/', self.admin_site.admin_view(self.upload_view), name='gallery-direct-upload'),
         ]
         return custom_urls + urls
     
-    def upload_multiple_view(self, request):
+    def upload_view(self, request):
         if request.method == 'POST':
-            form = MultipleImageUploadForm(request.POST)
+            form = MultipleImageUploadForm(request.POST, request.FILES)
             if form.is_valid():
+                files = request.FILES.getlist('images')
                 category = form.cleaned_data['category']
-                title_prefix = form.cleaned_data['title_prefix']
-                description = form.cleaned_data['description']
-                
-                # Debug information
-                has_files = 'images' in request.FILES
-                images = request.FILES.getlist('images')
-                file_count = len(images) if has_files else 0
-                
-                if not has_files or file_count == 0:
-                    messages.error(request, f"No images selected for upload. Request contains files: {has_files}, File count: {file_count}")
-                    return render(request, 'admin/gallery_upload_multiple.html', {
-                        'form': form,
-                        'title': 'Upload Multiple Images',
-                        'site_title': 'Shanti Yuwa Club Admin',
-                        'site_header': 'Shanti Yuwa Club Administration',
-                        'has_permission': True,
-                        'opts': self.model._meta,
-                    })
-                
-                # Process multiple images
-                counter = 0
-                for image in images:
-                    counter += 1
-                    gallery_image = GalleryImage(
-                        title=f"{title_prefix}_{counter}",
+                for file in files:
+                    GalleryImage.objects.create(
+                        title=file.name.split('.')[0],
                         category=category,
-                        image=image,
-                        description=description
+                        image=file,
                     )
-                    gallery_image.save()
-                
-                messages.success(request, f"Successfully uploaded {counter} images to the '{category}' category.")
-                return redirect('admin:main_galleryimage_changelist')
-        else:
-            form = MultipleImageUploadForm()
-        
-        return render(request, 'admin/gallery_upload_multiple.html', {
-            'form': form,
-            'title': 'Upload Multiple Images',
-            'site_title': 'Shanti Yuwa Club Admin',
-            'site_header': 'Shanti Yuwa Club Administration',
-            'has_permission': True,
-            'opts': self.model._meta,
-        })
-
-    def direct_upload_view(self, request):
-        if request.method == 'POST':
-            form = MultipleImageUploadForm(request.POST)
-            if form.is_valid():
-                category = form.cleaned_data['category']
-                title_prefix = form.cleaned_data['title_prefix']
-                description = form.cleaned_data['description']
-                
-                # Debug information
-                has_files = 'images' in request.FILES
-                images = request.FILES.getlist('images')
-                file_count = len(images) if has_files else 0
-                
-                if not has_files or file_count == 0:
-                    messages.error(request, f"No images selected for upload. Request contains files: {has_files}, File count: {file_count}")
-                    return render(request, 'admin/gallery_direct_upload.html', {
-                        'form': form,
-                        'title': 'Upload Multiple Images',
-                        'site_title': 'Shanti Yuwa Club Admin',
-                        'site_header': 'Shanti Yuwa Club Administration',
-                        'has_permission': True,
-                        'opts': self.model._meta,
-                    })
-                
-                # Process multiple images
-                counter = 0
-                for image in images:
-                    counter += 1
-                    gallery_image = GalleryImage(
-                        title=f"{title_prefix}_{counter}",
-                        category=category,
-                        image=image,
-                        description=description
-                    )
-                    gallery_image.save()
-                
-                messages.success(request, f"Successfully uploaded {counter} images to the '{category}' category.")
-                return redirect('admin:main_galleryimage_changelist')
+                self.message_user(request, f'{len(files)} image(s) uploaded successfully.', messages.SUCCESS)
+                return redirect('..')
         else:
             form = MultipleImageUploadForm()
         
         return render(request, 'admin/gallery_direct_upload.html', {
             'form': form,
-            'title': 'Direct Upload Multiple Images',
-            'site_title': 'Shanti Yuwa Club Admin',
-            'site_header': 'Shanti Yuwa Club Administration',
-            'has_permission': True,
+            'title': 'Upload Gallery Images',
             'opts': self.model._meta,
+            'has_add_permission': True,
+            'has_permission': True,
         })
+
+
+@admin.register(HeroImage)
+class HeroImageAdmin(admin.ModelAdmin):
+    list_display = ('title', 'thumb', 'is_active', 'display_order', 'created_at')
+    list_editable = ('is_active', 'display_order')
+    readonly_fields = ('thumb',)
+    ordering = ('display_order',)
+
+    def thumb(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height:60px;" />', obj.image.url)
+        return "-"
+    thumb.short_description = 'Preview'
+
 
 @admin.register(TeamMember)
 class TeamMemberAdmin(admin.ModelAdmin):
@@ -418,7 +360,7 @@ class MemberProfileAdmin(admin.ModelAdmin):
             'fields': ('user', 'member_since')
         }),
         ('Profile Details', {
-            'fields': ('phone', 'address', 'date_of_birth', 'bio', 'profile_picture')
+            'fields': ('phone', 'address', 'date_of_birth', 'bio', 'profile_picture', 'blood_group')
         }),
         ('Membership', {
             'fields': ('membership_type', 'is_verified')
@@ -466,9 +408,18 @@ class ProgramParticipationAdmin(admin.ModelAdmin):
     list_filter = ('status', 'role', 'program', 'certificate_issued', 'enrolled_at')
     search_fields = ('member__user__username', 'member__user__first_name', 'member__user__last_name', 'program__title')
     readonly_fields = ('enrolled_at',)
-    list_editable = ('certificate_issued',)
+    list_editable = ('role', 'status')
     list_per_page = 30
     date_hierarchy = 'enrolled_at'
+    
+    fieldsets = (
+        ('Program & Member', {
+            'fields': ('program', 'member')
+        }),
+        ('Participation', {
+            'fields': ('role', 'status', 'certificate_issued', 'enrolled_at')
+        }),
+    )
     
     def get_member_name(self, obj):
         return obj.member.user.get_full_name() or obj.member.user.username
@@ -491,23 +442,39 @@ class ProgramParticipationAdmin(admin.ModelAdmin):
         self.message_user(request, f'{updated} certificate(s) issued.', messages.SUCCESS)
     issue_certificates.short_description = "Issue certificates to completed participants"
 
-
-# Custom Admin Site with Dashboard
-from django.contrib.admin import AdminSite
-from .admin_dashboard import DashboardStats
-
-class CustomAdminSite(AdminSite):
-    site_header = "Shanti Yuwa Club Administration"
-    site_title = "Shanti Yuwa Club Admin"
-    index_title = "Welcome to Shanti Yuwa Club Admin Portal"
+@admin.register(OTPVerification)
+class OTPVerificationAdmin(admin.ModelAdmin):
+    list_display = ('email', 'otp', 'created_at', 'expires_at', 'is_verified', 'attempts', 'status_badge')
+    list_filter = ('is_verified', 'created_at', 'expires_at')
+    search_fields = ('email',)
+    readonly_fields = ('otp', 'created_at', 'expires_at')
+    list_per_page = 50
+    date_hierarchy = 'created_at'
     
-    def index(self, request, extra_context=None):
-        extra_context = extra_context or {}
-        extra_context['stats'] = DashboardStats.get_stats()
-        extra_context['recent_activity'] = DashboardStats.get_recent_activity()
-        self.index_template = 'admin/custom/dashboard.html'
-        return super().index(request, extra_context)
-
-# Create custom admin site instance
-# Note: To use this, you'll need to update your urls.py to use this custom admin site
-# For now, we'll keep using the default admin site with enhanced models
+    fieldsets = (
+        ('OTP Details', {
+            'fields': ('email', 'otp', 'is_verified')
+        }),
+        ('Timing', {
+            'fields': ('created_at', 'expires_at'),
+        }),
+        ('Verification', {
+            'fields': ('attempts',),
+        }),
+    )
+    
+    def status_badge(self, obj):
+        if obj.is_expired():
+            return format_html('<span style="background-color: #dc3545; color: white; padding: 4px 8px; border-radius: 4px;">Expired</span>')
+        elif obj.is_verified:
+            return format_html('<span style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px;">✓ Verified</span>')
+        else:
+            return format_html('<span style="background-color: #ffc107; color: black; padding: 4px 8px; border-radius: 4px;">Pending</span>')
+    status_badge.short_description = "Status"
+    
+    actions = ['mark_as_verified']
+    
+    def mark_as_verified(self, request, queryset):
+        updated = queryset.update(is_verified=True)
+        self.message_user(request, f'{updated} OTP(s) marked as verified.', messages.SUCCESS)
+    mark_as_verified.short_description = "Mark as verified"

@@ -16,7 +16,32 @@ def home(request):
     team_members = TeamMember.objects.filter(is_active=True)[:4]
     # Order events by date to show upcoming events first
     events = Event.objects.filter(is_active=True).order_by('date')[:3]
-    gallery_images = GalleryImage.objects.select_related('category').all()[:6]
+    
+    # Get images from all categories
+    categories = GalleryCategory.objects.all()
+    gallery_images = []
+    if categories.exists():
+        # Get images from each category in rotation
+        images_per_category = max(1, 6 // categories.count())
+        remaining_slots = 6
+        
+        for category in categories:
+            if remaining_slots <= 0:
+                break
+            category_images = GalleryImage.objects.filter(category=category).order_by('-created_at')[:images_per_category]
+            gallery_images.extend(category_images)
+            remaining_slots -= len(category_images)
+        
+        # If we still have slots and didn't fill all 6, add more images
+        if len(gallery_images) < 6:
+            additional_images = GalleryImage.objects.exclude(
+                id__in=[img.id for img in gallery_images]
+            ).order_by('-created_at')[:6 - len(gallery_images)]
+            gallery_images.extend(additional_images)
+    else:
+        # Fallback if no categories exist
+        gallery_images = GalleryImage.objects.all()[:6]
+    
     
     # Get enrolled program IDs if user is logged in
     enrolled_program_ids = []
@@ -131,21 +156,51 @@ def set_language(request):
 # ========================
 
 def member_register(request):
-    """Registration view for new members"""
+    """Registration view for new members - requires OTP email verification"""
     if request.user.is_authenticated:
         return redirect('member_dashboard')
+    
+    # Check if email is verified via OTP
+    verified_email = request.session.get('verified_email')
     
     if request.method == 'POST':
         form = MemberRegistrationForm(request.POST)
         if form.is_valid():
+            email = form.cleaned_data['email']
+            
+            # Verify email matches the OTP-verified email
+            if verified_email != email:
+                messages.error(request, 'Please verify your email with OTP first. Click "Verify Email" button.')
+                return redirect('send-otp')
+            
             user = form.save()
+            # Clear the verified email from session
+            del request.session['verified_email']
+            request.session.modified = True
+            
             login(request, user)
             messages.success(request, 'Welcome to Shanti Yuwa Club! Your account has been created successfully.')
             return redirect('member_dashboard')
+        else:
+            # Check for username already taken error
+            if 'username' in form.errors:
+                for error in form.errors['username']:
+                    if 'already exists' in error.lower():
+                        messages.error(request, 'Username is already taken. Please choose a different username.')
+                        break
     else:
         form = MemberRegistrationForm()
+        # Pre-fill email if verified
+        if verified_email:
+            form.fields['email'].initial = verified_email
     
-    return render(request, 'members/register.html', {'form': form})
+    context = {
+        'form': form,
+        'email_verified': bool(verified_email),
+        'verified_email': verified_email,
+    }
+    return render(request, 'members/register.html', context)
+
 
 
 def member_login(request):

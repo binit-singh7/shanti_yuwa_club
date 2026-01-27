@@ -4,10 +4,64 @@
 {% block title %}Gallery - Shanti Yuwa Club{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
 <style>
-    .lb-outerContainer { border-radius: 1rem; }
-    .lb-dataContainer { padding: 1rem; }
+    /* Custom Image Modal Styles */
+    .image-modal {
+        backdrop-filter: blur(8px);
+    }
+    
+    .image-modal-content {
+        max-width: 90vw;
+        max-height: 90vh;
+        animation: modalFadeIn 0.3s ease-out;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    
+    .modal-nav-btn {
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4), 0 8px 10px -6px rgba(37, 99, 235, 0.2);
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    
+    .modal-nav-area:hover .modal-nav-btn {
+        opacity: 1;
+        transform: scale(1);
+    }
+    
+    .modal-nav-btn:hover {
+        box-shadow: 0 20px 35px -5px rgba(37, 99, 235, 0.6), 0 12px 15px -6px rgba(37, 99, 235, 0.3);
+        background-color: rgba(37, 99, 235, 0.9);
+    }
+    
+    .modal-nav-area {
+        transition: all 0.3s ease;
+    }
+    
+    .modal-nav-area::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+    
+    .modal-nav-area:hover::before {
+        opacity: 1;
+    }
 </style>
 {% endblock %}
 
@@ -69,7 +123,7 @@
             {% if gallery_images %}
                 {% for image in gallery_images %}
                 <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500">
-                    <a href="{{ image.image.url }}" data-lightbox="gallery" data-title="{{ image.title }}{% if image.description %} - {{ image.description }}{% endif %}" class="block aspect-square">
+                    <button onclick="openImageModal({{ forloop.counter0 }})" class="block aspect-square w-full">
                         <img src="{{ image.image.url }}" alt="{{ image.title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         
                         <!-- Overlay -->
@@ -87,7 +141,7 @@
                         <div class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <i class="fas fa-expand text-white"></i>
                         </div>
-                    </a>
+                    </button>
                 </div>
                 {% endfor %}
             {% else %}
@@ -154,6 +208,44 @@
     </div>
 </section>
 
+<!-- Custom Image Modal -->
+<div id="imageModal" class="hidden fixed inset-0 z-[100] bg-black/90 image-modal">
+    <div class="flex items-center justify-center min-h-screen p-4 relative">
+        <!-- Close Button -->
+        <button onclick="closeImageModal()" class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm flex items-center justify-center transition-all duration-300 z-20 group">
+            <i class="fas fa-times text-white text-xl group-hover:scale-110 transition-transform"></i>
+        </button>
+        
+        <!-- Left Navigation Area (Full Height) -->
+        <div onclick="previousImage()" class="modal-nav-area absolute left-0 top-0 bottom-0 w-1/3 cursor-w-resize z-10 transition-colors group">
+            <!-- Previous Button -->
+            <button class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-primary-600/80 hover:bg-primary-600 backdrop-blur-sm flex items-center justify-center modal-nav-btn pointer-events-none">
+                <i class="fas fa-chevron-left text-white text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Right Navigation Area (Full Height) -->
+        <div onclick="nextImage()" class="modal-nav-area absolute right-0 top-0 bottom-0 w-1/3 cursor-e-resize z-10 transition-colors group">
+            <!-- Next Button -->
+            <button class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-primary-600/80 hover:bg-primary-600 backdrop-blur-sm flex items-center justify-center modal-nav-btn pointer-events-none">
+                <i class="fas fa-chevron-right text-white text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Image Container -->
+        <div class="relative max-w-6xl w-full z-15">
+            <img id="modalImage" src="" alt="" class="w-full h-auto max-h-[85vh] object-contain rounded-2xl shadow-2xl image-modal-content mx-auto pointer-events-none">
+            
+            <!-- Image Info -->
+            <div class="mt-6 text-center">
+                <h3 id="modalTitle" class="text-2xl font-bold text-white mb-2"></h3>
+                <p id="modalDescription" class="text-gray-300 max-w-2xl mx-auto"></p>
+                <p id="modalCounter" class="text-gray-400 mt-4 text-sm"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Stats Section -->
 <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -212,14 +304,68 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 <script>
-    lightbox.option({
-        'resizeDuration': 200,
-        'wrapAround': true,
-        'showImageNumberLabel': false,
-        'fadeDuration': 200,
-        'imageFadeDuration': 200
+    // Gallery images data
+    const galleryImages = [
+        {% for image in gallery_images %}
+        {
+            url: '{{ image.image.url }}',
+            title: '{{ image.title|escapejs }}',
+            description: '{% if image.description %}{{ image.description|escapejs }}{% endif %}'
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+    
+    let currentImageIndex = 0;
+    
+    // Open image modal
+    function openImageModal(index) {
+        currentImageIndex = index;
+        updateModalImage();
+        document.getElementById('imageModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    // Close image modal
+    function closeImageModal() {
+        document.getElementById('imageModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Navigate to previous image
+    function previousImage() {
+        currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+        updateModalImage();
+    }
+    
+    // Navigate to next image
+    function nextImage() {
+        currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+        updateModalImage();
+    }
+    
+    // Update modal image and info
+    function updateModalImage() {
+        const image = galleryImages[currentImageIndex];
+        document.getElementById('modalImage').src = image.url;
+        document.getElementById('modalImage').alt = image.title;
+        document.getElementById('modalTitle').textContent = image.title;
+        document.getElementById('modalDescription').textContent = image.description;
+        document.getElementById('modalCounter').textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(event) {
+        const modal = document.getElementById('imageModal');
+        if (!modal.classList.contains('hidden')) {
+            if (event.key === 'Escape') {
+                closeImageModal();
+            } else if (event.key === 'ArrowLeft') {
+                previousImage();
+            } else if (event.key === 'ArrowRight') {
+                nextImage();
+            }
+        }
     });
 </script>
 {% endblock %}

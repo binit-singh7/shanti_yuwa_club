@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #007bff;
+            margin: 0;
+        }
+        .otp-box {
+            background-color: #f8f9fa;
+            border: 2px solid #007bff;
+            padding: 20px;
+            text-align: center;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+        .otp-code {
+            font-size: 32px;
+            font-weight: bold;
+            color: #007bff;
+            letter-spacing: 5px;
+            font-family: 'Courier New', monospace;
+        }
+        .expires {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ site_name }}</h1>
+            <p>Email Verification</p>
+        </div>
+        
+        <p>Hello,</p>
+        
+        <p>Thank you for joining {{ site_name }}! To verify your email address, please use the OTP code below:</p>
+        
+        <div class="otp-box">
+            <div class="otp-code">{{ otp }}</div>
+            <div class="expires">This OTP will expire in {{ expires_in_minutes }} minutes</div>
+        </div>
+        
+        <p>Please enter this code in the verification field on our website to complete your registration.</p>
+        
+        <div class="warning">
+            <strong>Security Notice:</strong> Never share this OTP with anyone. We will never ask you for this code via email or any other method.
+        </div>
+        
+        <p>If you didn't request this OTP, please ignore this email. Your email account is safe.</p>
+        
+        <div class="footer">
+            <p>&copy; 2026 {{ site_name }}. All rights reserved.</p>
+            <p>This is an automated email. Please do not reply to this message.</p>
+        </div>
+    </div>
+</body>
+</html>

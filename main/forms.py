@@ -39,11 +39,53 @@ class MultipleImageUploadForm(forms.Form):
 # ========================
 
 class MemberRegistrationForm(UserCreationForm):
-    """Registration form for new members"""
-    email = forms.EmailField(required=True)
-    first_name = forms.CharField(max_length=30, required=True)
-    last_name = forms.CharField(max_length=30, required=True)
-    phone = forms.CharField(max_length=20, required=False)
+    """Comprehensive registration/joining form for new members"""
+    email = forms.EmailField(
+        required=True,
+        help_text="We'll use this to keep you updated about club activities"
+    )
+    first_name = forms.CharField(max_length=30, required=True, label="First Name")
+    last_name = forms.CharField(max_length=30, required=True, label="Last Name")
+    phone = forms.CharField(
+        max_length=20,
+        required=True,
+        help_text="Your contact number for club communications"
+    )
+    address = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 2}),
+        required=False,
+        help_text="Your current address (Optional)"
+    )
+    date_of_birth = forms.DateField(
+        required=True,
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        help_text="Your date of birth",
+        label="Date of Birth"
+    )
+    
+    BLOOD_GROUP_CHOICES = [
+        ('', 'Select Blood Group'),
+        ('A+', 'A+'),
+        ('A-', 'A-'),
+        ('B+', 'B+'),
+        ('B-', 'B-'),
+        ('O+', 'O+'),
+        ('O-', 'O-'),
+        ('AB+', 'AB+'),
+        ('AB-', 'AB-'),
+    ]
+    blood_group = forms.ChoiceField(
+        choices=BLOOD_GROUP_CHOICES,
+        required=True,
+        help_text="Your blood group",
+        label="Blood Group"
+    )
+    
+    bio = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 3}),
+        required=False,
+        help_text="Tell us a bit about yourself and why you want to join (Optional)"
+    )
     
     class Meta:
         model = User
@@ -56,10 +98,14 @@ class MemberRegistrationForm(UserCreationForm):
         user.last_name = self.cleaned_data['last_name']
         if commit:
             user.save()
-            # Update the member profile with phone
-            if hasattr(user, 'member_profile'):
-                user.member_profile.phone = self.cleaned_data.get('phone', '')
-                user.member_profile.save()
+            # Create or update member profile with additional fields
+            profile, created = MemberProfile.objects.get_or_create(user=user)
+            profile.phone = self.cleaned_data.get('phone', '')
+            profile.address = self.cleaned_data.get('address', '')
+            profile.date_of_birth = self.cleaned_data.get('date_of_birth')
+            profile.blood_group = self.cleaned_data.get('blood_group', '')
+            profile.bio = self.cleaned_data.get('bio', '')
+            profile.save()
         return user
 
 

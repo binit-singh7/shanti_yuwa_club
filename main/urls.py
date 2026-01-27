@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import otp_views
 
 urlpatterns = [
     # Public pages
@@ -11,8 +12,14 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('set-language/', views.set_language, name='set_language'),
     
+    # OTP Verification
+    path('send-otp/', otp_views.send_otp_view, name='send-otp'),
+    path('verify-otp/', otp_views.verify_otp_view, name='verify-otp'),
+    path('resend-otp/', otp_views.resend_otp_view, name='resend-otp'),
+    
     # Member Portal
     path('member/register/', views.member_register, name='member_register'),
+    path('register/', views.member_register, name='register'),  # Alternative URL
     path('member/login/', views.member_login, name='member_login'),
     path('member/logout/', views.member_logout, name='member_logout'),
     path('member/dashboard/', views.member_dashboard, name='member_dashboard'),
