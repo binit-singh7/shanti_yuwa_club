@@ -1,257 +1,259 @@
 {% extends "admin/base_site.html" %}
-{% load static %}
+{% load i18n static %}
 
-{% block title %}Dashboard - Shanti Yuwa Club Admin{% endblock %}
-{% block page_title %}Dashboard{% endblock %}
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/dashboard.css' %}">
+<style>
+    /* Minimal Custom Dashboard Styles using Admin variables */
+    .dashboard-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
 
-{% block content %}
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <!-- Members Card -->
-    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-indigo-500 hover:shadow-lg transition">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-500 text-sm font-medium">Total Members</p>
-                <p class="text-3xl font-bold text-indigo-600">{{ stats.total_members }}</p>
-            </div>
-            <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
-                <i class="fas fa-users text-xl text-indigo-600"></i>
-            </div>
-        </div>
-        <p class="text-xs text-gray-400 mt-2">
-            <span class="text-green-600 font-medium">+{{ recent.new_members_this_month }}</span> this month
-        </p>
-    </div>
+    .stat-module {
+        flex: 1;
+        min-width: 200px;
+        background: var(--body-bg);
+        border: 1px solid var(--hairline-color);
+        border-radius: 4px;
+        padding: 15px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
 
-    <!-- Programs Card -->
-    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500 hover:shadow-lg transition">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-500 text-sm font-medium">Programs</p>
-                <p class="text-3xl font-bold text-purple-600">{{ stats.total_programs }}</p>
-            </div>
-            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                <i class="fas fa-book text-xl text-purple-600"></i>
-            </div>
-        </div>
-        <p class="text-xs text-gray-400 mt-2">
-            <span class="text-green-600 font-medium">{{ stats.active_programs }}</span> active
-        </p>
-    </div>
+    .stat-module h3 {
+        margin: 0 0 10px 0;
+        font-size: 13px;
+        color: var(--body-quiet-color);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-    <!-- Gallery Card -->
-    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-pink-500 hover:shadow-lg transition">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-500 text-sm font-medium">Gallery Images</p>
-                <p class="text-3xl font-bold text-pink-600">{{ stats.total_images }}</p>
-            </div>
-            <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center">
-                <i class="fas fa-images text-xl text-pink-600"></i>
-            </div>
-        </div>
-        <p class="text-xs text-gray-400 mt-2">Across all categories</p>
-    </div>
+    .stat-number {
+        font-size: 28px;
+        font-weight: bold;
+        color: var(--body-fg);
+        margin-bottom: 5px;
+    }
 
-    <!-- Team Card -->
-    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-cyan-500 hover:shadow-lg transition">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-500 text-sm font-medium">Team Members</p>
-                <p class="text-3xl font-bold text-cyan-600">{{ stats.total_team }}</p>
-            </div>
-            <div class="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center">
-                <i class="fas fa-user-tie text-xl text-cyan-600"></i>
-            </div>
-        </div>
-        <p class="text-xs text-gray-400 mt-2">Active team</p>
-    </div>
-</div>
+    .stat-meta {
+        font-size: 11px;
+        color: var(--body-quiet-color);
+    }
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-    <!-- Member Engagement -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <div class="flex items-center justify-between mb-4 pb-4 border-b">
-            <h3 class="text-lg font-semibold text-slate-900">Member Engagement</h3>
-            <i class="fas fa-chart-pie text-indigo-600"></i>
-        </div>
-        <div class="space-y-4">
-            <div>
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm font-medium text-gray-600">Active Members</span>
-                    <span class="text-lg font-bold text-green-600">{{ engagement.active }}</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-2">
-                    <div class="bg-green-500 h-2 rounded-full" style="width: {% widthratio engagement.active engagement.total 100 %}%"></div>
-                </div>
-            </div>
-            <div>
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm font-medium text-gray-600">Inactive Members</span>
-                    <span class="text-lg font-bold text-red-600">{{ engagement.inactive }}</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-2">
-                    <div class="bg-red-500 h-2 rounded-full" style="width: {% widthratio engagement.inactive engagement.total 100 %}%"></div>
-                </div>
-            </div>
-            <div class="pt-2 border-t">
-                <p class="text-sm text-gray-500">
-                    Engagement Rate: <span class="font-bold text-indigo-600">{{ engagement.engagement_rate|floatformat:1 }}%</span>
-                </p>
-            </div>
-        </div>
-    </div>
+    /* Charts & Widgets */
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+    }
 
-    <!-- Recent Members -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <div class="flex items-center justify-between mb-4 pb-4 border-b">
-            <h3 class="text-lg font-semibold text-slate-900">Recent Members</h3>
-            <i class="fas fa-user-plus text-purple-600"></i>
-        </div>
-        <div class="space-y-3">
-            {% for member in recent.recent_members %}
-                <div class="flex items-center justify-between pb-3 border-b last:border-b-0">
-                    <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <span class="text-xs font-bold text-purple-600">
-                                {{ member.user.first_name|first|default:member.user.username|first|upper }}
-                            </span>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-900">
-                                {{ member.user.first_name|default:member.user.username }}
-                            </p>
-                            <p class="text-xs text-gray-500">{{ member.joined_date|date:"M d" }}</p>
-                        </div>
-                    </div>
-                    {% if member.is_verified %}
-                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Verified</span>
-                    {% endif %}
-                </div>
-            {% empty %}
-                <p class="text-gray-500 text-sm text-center py-4">No members yet</p>
-            {% endfor %}
-        </div>
-    </div>
+    .dashboard-widget {
+        background: var(--body-bg);
+        border: 1px solid var(--hairline-color);
+        border-radius: 4px;
+        padding: 0;
+        overflow: hidden;
+    }
 
-    <!-- Recent Programs -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <div class="flex items-center justify-between mb-4 pb-4 border-b">
-            <h3 class="text-lg font-semibold text-slate-900">Recent Programs</h3>
-            <i class="fas fa-book text-pink-600"></i>
-        </div>
-        <div class="space-y-3">
-            {% for program in recent.recent_programs %}
-                <div class="pb-3 border-b last:border-b-0">
-                    <div class="flex items-start justify-between">
-                        <div class="flex-1">
-                            <p class="text-sm font-medium text-gray-900 truncate">{{ program.title }}</p>
-                            <p class="text-xs text-gray-500">{{ program.created_at|date:"M d, Y" }}</p>
-                        </div>
-                        {% if program.is_active %}
-                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full flex-shrink-0 ml-2">Active</span>
-                        {% else %}
-                            <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full flex-shrink-0 ml-2">Inactive</span>
-                        {% endif %}
-                    </div>
-                </div>
-            {% empty %}
-                <p class="text-gray-500 text-sm text-center py-4">No programs yet</p>
-            {% endfor %}
-        </div>
-    </div>
-</div>
+    .widget-header {
+        background: var(--darkened-bg);
+        padding: 10px 15px;
+        border-bottom: 1px solid var(--hairline-color);
+        font-weight: bold;
+        color: var(--body-fg);
+    }
 
-<!-- Quick Actions -->
-<div class="bg-white rounded-lg shadow-md p-6 mb-8">
-    <div class="flex items-center justify-between mb-4 pb-4 border-b">
-        <h3 class="text-lg font-semibold text-slate-900">Quick Actions</h3>
-        <i class="fas fa-lightning-bolt text-yellow-500"></i>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <a href="/admin/main/program/add/" class="btn-sm btn-primary">
-            <i class="fas fa-plus-circle"></i> Add Program
-        </a>
-        <a href="/admin/main/galleryimage/add/" class="btn-sm btn-primary">
-            <i class="fas fa-image"></i> Add Image
-        </a>
-        <a href="/admin/main/teammember/add/" class="btn-sm btn-primary">
-            <i class="fas fa-user-plus"></i> Add Team Member
-        </a>
-        <a href="/admin/main/memberprofile/" class="btn-sm btn-secondary">
-            <i class="fas fa-users"></i> View Members
-        </a>
-    </div>
-</div>
+    .widget-content {
+        padding: 15px;
+    }
 
-<!-- Traffic Chart -->
-<div class="bg-white rounded-lg shadow-md p-6 mb-6 card-animated">
-    <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-semibold text-slate-900">Traffic (Last 7 days)</h3>
-        <i class="fas fa-chart-line text-indigo-600"></i>
-    </div>
-    <div>
-        <canvas id="trafficChart"></canvas>
-    </div>
-</div>
+    /* Engagement Bars */
+    .engagement-bar {
+        background: #eee;
+        height: 8px;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-top: 5px;
+        margin-bottom: 15px;
+    }
 
-<!-- Site Statistics -->
-<div class="bg-white rounded-lg shadow-md p-6">
-    <div class="flex items-center justify-between mb-4 pb-4 border-b">
-        <h3 class="text-lg font-semibold text-slate-900">Site Overview</h3>
-        <i class="fas fa-chart-bar text-indigo-600"></i>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <div class="text-center p-4 bg-slate-50 rounded-lg">
-            <p class="text-2xl font-bold text-indigo-600">{{ stats.total_users }}</p>
-            <p class="text-xs text-gray-600 mt-1">Total Users</p>
-        </div>
-        <div class="text-center p-4 bg-slate-50 rounded-lg">
-            <p class="text-2xl font-bold text-purple-600">{{ stats.total_programs }}</p>
-            <p class="text-xs text-gray-600 mt-1">Programs</p>
-        </div>
-        <div class="text-center p-4 bg-slate-50 rounded-lg">
-            <p class="text-2xl font-bold text-pink-600">{{ stats.total_images }}</p>
-            <p class="text-xs text-gray-600 mt-1">Images</p>
-        </div>
-        <div class="text-center p-4 bg-slate-50 rounded-lg">
-            <p class="text-2xl font-bold text-cyan-600">{{ stats.total_events }}</p>
-            <p class="text-xs text-gray-600 mt-1">Events</p>
-        </div>
-    </div>
-</div>
+    .bar-fill {
+        height: 100%;
+    }
 
-{% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-(function(){
-    try{
-        // Use JSON-safe strings provided by the view and parse them here
-        const labels = JSON.parse('{{ stats.traffic_labels_json|default:'["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]'|escapejs }}');
-        const dataPoints = JSON.parse('{{ stats.traffic_last_7_json|default:'[12,19,7,14,22,18,25]'|escapejs }}');
-        const canvas = document.getElementById('trafficChart');
-        console.log('[admin] traffic chart labels=', labels, 'data=', dataPoints, 'canvas=', canvas);
-        if(canvas && typeof Chart !== 'undefined'){
-            const ctx = canvas.getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: dataPoints,
-                        borderColor: '#6366f1',
-                        backgroundColor: 'rgba(99,102,241,0.12)',
-                        fill: true,
-                        tension: 0.3,
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
-        } else {
-            console.warn('[admin] Chart not initialized. Chart lib available?:', typeof Chart !== 'undefined');
-        }
-    }catch(e){ console.error('Traffic chart error', e); }
-})();
-</script>
+    .bar-success {
+        background-color: #417690;
+    }
+
+    .bar-danger {
+        background-color: #ba2121;
+    }
+
+    /* Quick Actions */
+    .quick-actions a {
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+</style>
 {% endblock %}
 
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+
+    <!-- Custom Stats Row -->
+    <div class="dashboard-stats">
+        <div class="stat-module">
+            <h3>Total Members</h3>
+            <div class="stat-number">{{ stats.total_members }}</div>
+            <div class="stat-meta">+{{ recent.new_members_this_month }} this month</div>
+        </div>
+        <div class="stat-module">
+            <h3>Programs</h3>
+            <div class="stat-number">{{ stats.total_programs }}</div>
+            <div class="stat-meta">{{ stats.active_programs }} active</div>
+        </div>
+        <div class="stat-module">
+            <h3>Gallery Images</h3>
+            <div class="stat-number">{{ stats.total_images }}</div>
+            <div class="stat-meta">Across categories</div>
+        </div>
+        <div class="stat-module">
+            <h3>Team Size</h3>
+            <div class="stat-number">{{ stats.total_team }}</div>
+            <div class="stat-meta">Active members</div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="dashboard-widget module" style="margin-bottom: 20px;">
+        <div class="widget-header">Quick Actions</div>
+        <div class="widget-content quick-actions">
+            <a href="/admin/main/program/add/" class="button">Add Program</a>
+            <a href="/admin/main/galleryimage/add/" class="button">Add Image</a>
+            <a href="/admin/main/teammember/add/" class="button">Add Team Member</a>
+            <a href="/admin/main/memberprofile/" class="button" style="background: #79aec8">View Members</a>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- App List (Standard Django) -->
+        <div class="dashboard-widget module">
+            <div class="widget-header">Applications</div>
+            <div class="widget-content" style="padding: 0;">
+                {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+            </div>
+        </div>
+
+        <!-- Recent Activity & Charts -->
+        <div class="dashboard-column">
+            <!-- Member Engagement -->
+            <div class="dashboard-widget module" style="margin-bottom: 20px;">
+                <div class="widget-header">Member Engagement</div>
+                <div class="widget-content">
+                    <div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <strong>Active Members</strong>
+                            <span>{{ engagement.active }}</span>
+                        </div>
+                        <div class="engagement-bar">
+                            <div class="bar-fill bar-success"
+                                style="width: {% widthratio engagement.active engagement.total 100 %}%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <strong>Inactive Members</strong>
+                            <span>{{ engagement.inactive }}</span>
+                        </div>
+                        <div class="engagement-bar">
+                            <div class="bar-fill bar-danger"
+                                style="width: {% widthratio engagement.inactive engagement.total 100 %}%"></div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px;">
+                        Engagement Rate: <strong>{{ engagement.engagement_rate|floatformat:1 }}%</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Log Actions (Standard Django) -->
+            <div class="dashboard-widget module">
+                <div class="widget-header">Recent Actions</div>
+                <div class="widget-content">
+                    {% load log %}
+                    {% get_admin_log 10 as admin_log for_user user %}
+                    {% if admin_log %}
+                    <ul class="actionlist">
+                        {% for entry in admin_log %}
+                        <li
+                            class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                            {% if entry.is_deletion or not entry.get_admin_url %}
+                            {{ entry.object_repr }}
+                            {% else %}
+                            <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                            {% endif %}
+                            <br>
+                            {% if entry.content_type %}
+                            <span class="mini quiet">{% filter capfirst %}{{ entry.content_type }}{% endfilter %}</span>
+                            {% else %}
+                            <span class="mini quiet">{% trans 'Unknown content' %}</span>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>{% trans 'None available' %}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related">
+    <div class="module" id="recent-actions-module">
+        <h2>{% trans 'Recent Actions' %}</h2>
+        <h3>{% trans 'My Actions' %}</h3>
+        {% load log %}
+        {% get_admin_log 10 as admin_log for_user user %}
+        {% if 1 %} <!-- Force show standard log if desired, usually hidden in dashboard override -->
+        <ul class="actionlist">
+            {% for entry in admin_log %}
+            <li
+                class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                {% if entry.is_deletion or not entry.get_admin_url %}
+                {{ entry.object_repr }}
+                {% else %}
+                <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                {% endif %}
+                <br>
+                {% if entry.content_type %}
+                <span class="mini quiet">{% filter capfirst %}{{ entry.content_type }}{% endfilter %}</span>
+                {% else %}
+                <span class="mini quiet">{% trans 'Unknown content' %}</span>
+                {% endif %}
+            </li>
+            {% empty %}
+            <li>{% trans 'None available' %}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

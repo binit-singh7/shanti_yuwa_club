@@ -245,22 +245,3 @@ class OTPVerification(models.Model):
         return not self.is_expired() and not self.is_verified
 
 
-# ==========
-# Hero Images for homepage
-# ==========
-class HeroImage(models.Model):
-    title = models.CharField(max_length=200, blank=True)
-    image = models.ImageField(upload_to='hero/')
-    caption = models.TextField(blank=True)
-    is_active = models.BooleanField(default=True)
-    display_order = models.PositiveIntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title or f"Hero Image {self.pk}"
-
-    class Meta:
-        ordering = ['display_order', '-created_at']
-        verbose_name = "Hero Image"
-        verbose_name_plural = "Hero Images"
-

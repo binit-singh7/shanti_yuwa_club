@@ -3,11 +3,11 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+
 from django.utils import timezone
 from .models import Program, GalleryImage, GalleryCategory, TeamMember, Event, ContactMessage, MemberProfile, EventAttendance, ProgramParticipation
 from .forms import ContactForm, MemberRegistrationForm, MemberProfileForm
+from collections import defaultdict
 
 # Create your views here.
 def home(request):
@@ -20,7 +20,18 @@ def home(request):
     # Get images from all categories
     categories = GalleryCategory.objects.all()
     gallery_images = []
+    
     if categories.exists():
+        # Optimized: Fetch all relevant images in one query
+        all_relevant_images = GalleryImage.objects.filter(
+            category__in=categories
+        ).order_by('category', '-created_at')
+        
+        # Group by category in Python
+        cat_map = defaultdict(list)
+        for img in all_relevant_images:
+            cat_map[img.category_id].append(img)
+            
         # Get images from each category in rotation
         images_per_category = max(1, 6 // categories.count())
         remaining_slots = 6
@@ -28,7 +39,10 @@ def home(request):
         for category in categories:
             if remaining_slots <= 0:
                 break
-            category_images = GalleryImage.objects.filter(category=category).order_by('-created_at')[:images_per_category]
+            
+            # Use pre-fetched images
+            category_images = cat_map.get(category.id, [])[:images_per_category]
+            
             gallery_images.extend(category_images)
             remaining_slots -= len(category_images)
         
@@ -142,13 +156,6 @@ def contact(request):
         'form': form,
     }
     return render(request, 'main/contact.html', context)
-
-def set_language(request):
-    """
-    View for setting the language - now always redirects to homepage
-    as language switching is no longer supported
-    """
-    return HttpResponseRedirect(reverse('home'))
 
 
 # ========================

@@ -10,7 +10,7 @@ urlpatterns = [
     path('programs/<slug:slug>/', views.program_detail, name='program_detail'),
     path('gallery/', views.gallery, name='gallery'),
     path('contact/', views.contact, name='contact'),
-    path('set-language/', views.set_language, name='set_language'),
+
     
     # OTP Verification
     path('send-otp/', otp_views.send_otp_view, name='send-otp'),
@@ -19,7 +19,7 @@ urlpatterns = [
     
     # Member Portal
     path('member/register/', views.member_register, name='member_register'),
-    path('register/', views.member_register, name='register'),  # Alternative URL
+
     path('member/login/', views.member_login, name='member_login'),
     path('member/logout/', views.member_logout, name='member_logout'),
     path('member/dashboard/', views.member_dashboard, name='member_dashboard'),

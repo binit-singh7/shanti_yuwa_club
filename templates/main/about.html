@@ -1,9 +1,7 @@
 {% extends 'base.html' %} {% load static %} {% block title %}About Us - Shanti
 Yuwa Club{% endblock %} {% block content %}
 <!-- Page Header -->
-<section
-  class="relative py-24 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 overflow-hidden"
->
+<section class="relative py-24 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 overflow-hidden">
   <!-- Background Pattern -->
   <div class="absolute inset-0 opacity-10">
     <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -19,11 +17,7 @@ Yuwa Club{% endblock %} {% block content %}
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="max-w-3xl">
       <nav class="flex items-center text-sm text-primary-200 mb-6">
-        <a
-          href="{% url 'home' %}"
-          class="hover:text-white transition-colors duration-200"
-          >Home</a
-        >
+        <a href="{% url 'home' %}" class="hover:text-white transition-colors duration-200">Home</a>
         <i class="fas fa-chevron-right mx-3 text-xs"></i>
         <span class="text-white">About Us</span>
       </nav>
@@ -38,9 +32,7 @@ Yuwa Club{% endblock %} {% block content %}
   </div>
 
   <!-- Decorative Shapes -->
-  <div
-    class="absolute bottom-0 right-0 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl -mb-48 -mr-48"
-  ></div>
+  <div class="absolute bottom-0 right-0 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl -mb-48 -mr-48"></div>
 </section>
 
 <!-- Our Story Section -->
@@ -50,8 +42,7 @@ Yuwa Club{% endblock %} {% block content %}
       <!-- Content Side -->
       <div>
         <div
-          class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6"
-        >
+          class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
           <i class="fas fa-book-open mr-2"></i>
           Our Story
         </div>
@@ -85,19 +76,14 @@ Yuwa Club{% endblock %} {% block content %}
       <!-- Image Side -->
       <div class="relative">
         <div class="relative z-10">
-          <img
-            src="{% static 'images/about-story.jpg' %}?v={% now 'U' %}"
-            alt="Our Story"
-            class="w-full rounded-2xl shadow-2xl"
-          />
+          <img src="{% static 'images/about-story.jpg' %}?v={% now 'U' %}" alt="Our Story"
+            class="w-full rounded-2xl shadow-2xl" />
         </div>
         <!-- Decorative Elements -->
         <div
-          class="absolute -bottom-6 -left-6 w-full h-full bg-gradient-to-br from-secondary-400 to-secondary-500 rounded-2xl -z-10"
-        ></div>
-        <div
-          class="absolute -top-4 -right-4 w-24 h-24 bg-primary-500 rounded-2xl -z-10"
-        ></div>
+          class="absolute -bottom-6 -left-6 w-full h-full bg-gradient-to-br from-secondary-400 to-secondary-500 rounded-2xl -z-10">
+        </div>
+        <div class="absolute -top-4 -right-4 w-24 h-24 bg-primary-500 rounded-2xl -z-10"></div>
       </div>
     </div>
   </div>
@@ -108,12 +94,9 @@ Yuwa Club{% endblock %} {% block content %}
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid md:grid-cols-2 gap-8">
       <!-- Mission Card -->
-      <div
-        class="bg-white rounded-3xl shadow-xl p-10 hover:shadow-2xl transition-shadow duration-300"
-      >
+      <div class="bg-white rounded-3xl shadow-xl p-10 hover:shadow-2xl transition-shadow duration-300">
         <div
-          class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center mb-6"
-        >
+          class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center mb-6">
           <i class="fas fa-bullseye text-2xl text-white"></i>
         </div>
         <h3 class="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
@@ -123,7 +106,7 @@ Yuwa Club{% endblock %} {% block content %}
           address community challenges and foster sustainable development.
         </p>
       </div>
-      <section class="py-16 bg-primary-900 text-white">
+      <section class="py-16 bg-primary-900 rounded-3xl text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
             <div>
@@ -135,7 +118,7 @@ Yuwa Club{% endblock %} {% block content %}
               <div class="text-primary-300">Projects Yearly</div>
             </div>
             <div>
-              <div class="text-4xl font-bold mb-2">5k+</div>
+              <div class="text-4xl font-bold mb-2">1000+</div>
               <div class="text-primary-300">Lives Impacted</div>
             </div>
             <div>
@@ -146,12 +129,9 @@ Yuwa Club{% endblock %} {% block content %}
         </div>
       </section>
       <!-- Vision Card -->
-      <div
-        class="bg-white rounded-3xl shadow-xl p-10 hover:shadow-2xl transition-shadow duration-300"
-      >
+      <div class="bg-white rounded-3xl shadow-xl p-10 hover:shadow-2xl transition-shadow duration-300">
         <div
-          class="w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center mb-6"
-        >
+          class="w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center mb-6">
           <i class="fas fa-eye text-2xl text-white"></i>
         </div>
         <h3 class="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
@@ -171,8 +151,7 @@ Yuwa Club{% endblock %} {% block content %}
     <!-- Section Header -->
     <div class="text-center max-w-3xl mx-auto mb-16">
       <div
-        class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6"
-      >
+        class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
         <i class="fas fa-heart mr-2"></i>
         Our Values
       </div>
@@ -188,12 +167,9 @@ Yuwa Club{% endblock %} {% block content %}
     <!-- Values Grid -->
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- Value 1 -->
-      <div
-        class="group bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300"
-      >
+      <div class="group bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300">
         <div
-          class="w-14 h-14 rounded-xl bg-gradient-to-br from-red-400 to-red-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
+          class="w-14 h-14 rounded-xl bg-gradient-to-br from-red-400 to-red-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
           <i class="fas fa-hand-holding-heart text-2xl text-white"></i>
         </div>
         <h3 class="text-xl font-bold text-gray-900 mb-3">Compassion</h3>
@@ -204,12 +180,9 @@ Yuwa Club{% endblock %} {% block content %}
       </div>
 
       <!-- Value 2 -->
-      <div
-        class="group bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300"
-      >
+      <div class="group bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300">
         <div
-          class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
+          class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
           <i class="fas fa-users text-2xl text-white"></i>
         </div>
         <h3 class="text-xl font-bold text-gray-900 mb-3">Inclusivity</h3>
@@ -220,12 +193,9 @@ Yuwa Club{% endblock %} {% block content %}
       </div>
 
       <!-- Value 3 -->
-      <div
-        class="group bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300"
-      >
+      <div class="group bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300">
         <div
-          class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-400 to-green-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
+          class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-400 to-green-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
           <i class="fas fa-globe-asia text-2xl text-white"></i>
         </div>
         <h3 class="text-xl font-bold text-gray-900 mb-3">Sustainability</h3>
@@ -236,12 +206,9 @@ Yuwa Club{% endblock %} {% block content %}
       </div>
 
       <!-- Value 4 -->
-      <div
-        class="group bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300"
-      >
+      <div class="group bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300">
         <div
-          class="w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-400 to-yellow-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
+          class="w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-400 to-yellow-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
           <i class="fas fa-lightbulb text-2xl text-white"></i>
         </div>
         <h3 class="text-xl font-bold text-gray-900 mb-3">Innovation</h3>
@@ -252,12 +219,9 @@ Yuwa Club{% endblock %} {% block content %}
       </div>
 
       <!-- Value 5 -->
-      <div
-        class="group bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300"
-      >
+      <div class="group bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300">
         <div
-          class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
+          class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
           <i class="fas fa-hands-helping text-2xl text-white"></i>
         </div>
         <h3 class="text-xl font-bold text-gray-900 mb-3">Collaboration</h3>
@@ -268,12 +232,9 @@ Yuwa Club{% endblock %} {% block content %}
       </div>
 
       <!-- Value 6 -->
-      <div
-        class="group bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300"
-      >
+      <div class="group bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300">
         <div
-          class="w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
+          class="w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
           <i class="fas fa-balance-scale text-2xl text-white"></i>
         </div>
         <h3 class="text-xl font-bold text-gray-900 mb-3">Integrity</h3>
@@ -287,13 +248,12 @@ Yuwa Club{% endblock %} {% block content %}
 </section>
 
 <!-- Team Section -->
-<section class="py-24 bg-gray-50">
+<section id="team" class="py-24 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Section Header -->
     <div class="text-center max-w-3xl mx-auto mb-16">
       <div
-        class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6"
-      >
+        class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
         <i class="fas fa-users mr-2"></i>
         Our Team
       </div>
@@ -310,50 +270,33 @@ Yuwa Club{% endblock %} {% block content %}
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
       {% if team_members %} {% for member in team_members %}
       <div
-        class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
-      >
+        class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
         <div class="relative h-72 overflow-hidden">
-          <img
-            src="{{ member.image.url }}"
-            alt="{{ member.name }}"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-          />
+          <img src="{{ member.image.url }}" alt="{{ member.name }}"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
           <div
-            class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          ></div>
+            class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          </div>
 
           <!-- Social Links Overlay -->
           <div
-            class="absolute bottom-4 left-0 right-0 flex justify-center space-x-3 transform translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300"
-          >
+            class="absolute bottom-4 left-0 right-0 flex justify-center space-x-3 transform translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
             {% if member.facebook %}
-            <a
-              href="{{ member.facebook }}"
-              target="_blank"
-              rel="noopener noreferrer"
+            <a href="{{ member.facebook }}" target="_blank" rel="noopener noreferrer"
               class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm hover:bg-primary-600 flex items-center justify-center text-white transition-all duration-300"
-              aria-label="{{ member.name }}'s Facebook"
-            >
+              aria-label="{{ member.name }}'s Facebook">
               <i class="fab fa-facebook-f"></i>
             </a>
             {% endif %} {% if member.instagram %}
-            <a
-              href="{{ member.instagram }}"
-              target="_blank"
-              rel="noopener noreferrer"
+            <a href="{{ member.instagram }}" target="_blank" rel="noopener noreferrer"
               class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 flex items-center justify-center text-white transition-all duration-300"
-              aria-label="{{ member.name }}'s Instagram"
-            >
+              aria-label="{{ member.name }}'s Instagram">
               <i class="fab fa-instagram"></i>
             </a>
             {% endif %} {% if member.twitter %}
-            <a
-              href="{{ member.twitter }}"
-              target="_blank"
-              rel="noopener noreferrer"
+            <a href="{{ member.twitter }}" target="_blank" rel="noopener noreferrer"
               class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm hover:bg-sky-500 flex items-center justify-center text-white transition-all duration-300"
-              aria-label="{{ member.name }}'s Twitter"
-            >
+              aria-label="{{ member.name }}'s Twitter">
               <i class="fab fa-twitter"></i>
             </a>
             {% endif %}
@@ -373,9 +316,7 @@ Yuwa Club{% endblock %} {% block content %}
       </div>
       {% endfor %} {% else %}
       <div class="col-span-full text-center py-12">
-        <div
-          class="w-20 h-20 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center"
-        >
+        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
           <i class="fas fa-users text-3xl text-gray-400"></i>
         </div>
         <p class="text-gray-500 text-lg">Team information coming soon!</p>
@@ -391,8 +332,7 @@ Yuwa Club{% endblock %} {% block content %}
     <!-- Section Header -->
     <div class="text-center max-w-3xl mx-auto mb-16">
       <div
-        class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6"
-      >
+        class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
         <i class="fas fa-history mr-2"></i>
         Our Journey
       </div>
@@ -405,17 +345,15 @@ Yuwa Club{% endblock %} {% block content %}
     <div class="relative">
       <!-- Timeline Line -->
       <div
-        class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-primary-500 to-primary-600 hidden md:block"
-      ></div>
+        class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-primary-500 to-primary-600 hidden md:block">
+      </div>
 
       <!-- Timeline Items -->
       <div class="space-y-12">
         <!-- Item 1 -->
         <div class="relative flex flex-col md:flex-row items-center">
           <div class="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
-            <div
-              class="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300"
-            >
+            <div class="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300">
               <span class="text-primary-600 font-bold">2020</span>
               <h3 class="text-xl font-bold text-gray-900 mt-2">Foundation</h3>
               <p class="text-gray-600 mt-2">
@@ -425,8 +363,7 @@ Yuwa Club{% endblock %} {% block content %}
             </div>
           </div>
           <div
-            class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-primary-600 border-4 border-white shadow-lg hidden md:flex items-center justify-center"
-          >
+            class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-primary-600 border-4 border-white shadow-lg hidden md:flex items-center justify-center">
             <div class="w-3 h-3 rounded-full bg-white"></div>
           </div>
           <div class="md:w-1/2 md:pl-12"></div>
@@ -436,14 +373,11 @@ Yuwa Club{% endblock %} {% block content %}
         <div class="relative flex flex-col md:flex-row items-center">
           <div class="md:w-1/2 md:pr-12"></div>
           <div
-            class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-primary-600 border-4 border-white shadow-lg hidden md:flex items-center justify-center"
-          >
+            class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-primary-600 border-4 border-white shadow-lg hidden md:flex items-center justify-center">
             <div class="w-3 h-3 rounded-full bg-white"></div>
           </div>
           <div class="md:w-1/2 md:pl-12 mb-6 md:mb-0">
-            <div
-              class="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300"
-            >
+            <div class="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300">
               <span class="text-primary-600 font-bold">2021</span>
               <h3 class="text-xl font-bold text-gray-900 mt-2">
                 First Community Project
@@ -459,9 +393,7 @@ Yuwa Club{% endblock %} {% block content %}
         <!-- Item 3 -->
         <div class="relative flex flex-col md:flex-row items-center">
           <div class="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
-            <div
-              class="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300"
-            >
+            <div class="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300">
               <span class="text-primary-600 font-bold">2022</span>
               <h3 class="text-xl font-bold text-gray-900 mt-2">
                 Growing Impact
@@ -472,8 +404,7 @@ Yuwa Club{% endblock %} {% block content %}
             </div>
           </div>
           <div
-            class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-primary-600 border-4 border-white shadow-lg hidden md:flex items-center justify-center"
-          >
+            class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-primary-600 border-4 border-white shadow-lg hidden md:flex items-center justify-center">
             <div class="w-3 h-3 rounded-full bg-white"></div>
           </div>
           <div class="md:w-1/2 md:pl-12"></div>
@@ -483,14 +414,11 @@ Yuwa Club{% endblock %} {% block content %}
         <div class="relative flex flex-col md:flex-row items-center">
           <div class="md:w-1/2 md:pr-12"></div>
           <div
-            class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-primary-600 border-4 border-white shadow-lg hidden md:flex items-center justify-center"
-          >
+            class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-primary-600 border-4 border-white shadow-lg hidden md:flex items-center justify-center">
             <div class="w-3 h-3 rounded-full bg-white"></div>
           </div>
           <div class="md:w-1/2 md:pl-12">
-            <div
-              class="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300"
-            >
+            <div class="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300">
               <span class="text-primary-600 font-bold">Today</span>
               <h3 class="text-xl font-bold text-gray-900 mt-2">
                 Continuing the Journey
@@ -518,17 +446,13 @@ Yuwa Club{% endblock %} {% block content %}
       in touch and become part of the change.
     </p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a
-        href="{% url 'contact' %}"
-        class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white text-primary-600 font-semibold shadow-lg hover:shadow-white/25 transition-all duration-300 hover:scale-105"
-      >
+      <a href="{% url 'contact' %}"
+        class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white text-primary-600 font-semibold shadow-lg hover:shadow-white/25 transition-all duration-300 hover:scale-105">
         <i class="fas fa-envelope mr-2"></i>
         Contact Us
       </a>
-      <a
-        href="{% url 'programs' %}"
-        class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold hover:bg-white/20 transition-all duration-300"
-      >
+      <a href="{% url 'programs' %}"
+        class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold hover:bg-white/20 transition-all duration-300">
         <i class="fas fa-project-diagram mr-2"></i>
         View Our Programs
       </a>

@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.utils.html import format_html
 from django.db.models import Count
 from django.utils import timezone
-from .models import Program, GalleryCategory, GalleryImage, TeamMember, Event, ContactMessage, MemberProfile, EventAttendance, ProgramParticipation, OTPVerification, HeroImage
+from .models import Program, GalleryCategory, GalleryImage, TeamMember, Event, ContactMessage, MemberProfile, EventAttendance, ProgramParticipation, OTPVerification
 from .forms import MultipleImageUploadForm
 from .admin_dashboard import DashboardStats
 
@@ -102,6 +102,7 @@ class GalleryImageAdmin(admin.ModelAdmin):
     readonly_fields = ('image_preview', 'created_at')
     list_per_page = 20
     date_hierarchy = 'created_at'
+    change_list_template = 'admin/gallery_image_changelist.html'
     
     fieldsets = (
         ('Basic Information', {
@@ -160,19 +161,6 @@ class GalleryImageAdmin(admin.ModelAdmin):
             'has_permission': True,
         })
 
-
-@admin.register(HeroImage)
-class HeroImageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'thumb', 'is_active', 'display_order', 'created_at')
-    list_editable = ('is_active', 'display_order')
-    readonly_fields = ('thumb',)
-    ordering = ('display_order',)
-
-    def thumb(self, obj):
-        if obj.image:
-            return format_html('<img src="{}" style="max-height:60px;" />', obj.image.url)
-        return "-"
-    thumb.short_description = 'Preview'
 
 
 @admin.register(TeamMember)
