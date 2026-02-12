@@ -7,6 +7,12 @@ from .settings import *
 import os
 import dj_database_url
 
+# Add Cloudinary apps
+INSTALLED_APPS += [
+    'cloudinary_storage',
+    'cloudinary',
+]
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
