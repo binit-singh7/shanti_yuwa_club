@@ -2,66 +2,66 @@
 {% load static %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto py-12 px-4">
-	<div class="bg-white rounded-3xl shadow-xl overflow-hidden">
-		<div class="p-8 sm:p-12">
-			<h2 class="text-2xl font-bold text-gray-900 mb-3 flex items-center gap-3">
-				<i class="fas fa-shield-alt text-primary-600"></i>
+<div class="max-w-xl mx-auto py-12 px-4">
+	<div class="bg-white rounded-2xl shadow-sm border border-surface-100 overflow-hidden">
+		<div class="p-8 sm:p-10">
+			<h2 class="text-2xl font-extrabold text-surface-900 mb-2 flex items-center gap-3 tracking-tight">
+				<i class="fas fa-shield-alt text-brand-500"></i>
 				Verify Your OTP
 			</h2>
 
-			<p class="text-sm text-gray-500 mb-6">Enter the 6-digit code sent to your email to verify your address.</p>
+			<p class="text-sm text-surface-500 mb-6">Enter the 6-digit code sent to your email to verify your address.</p>
 
 			{% if messages %}
 				{% for message in messages %}
-				<div role="alert" class="mb-4 rounded-lg p-4"
+				<div role="alert" class="mb-4 rounded-xl p-4 text-sm"
 					 {% if message.tags == 'success' %}style="background:#ecfdf5;border:1px solid #bbf7d0;color:#065f46"{% endif %}
 					 {% if message.tags == 'error' or message.tags == 'danger' %}style="background:#fee2e2;border:1px solid #fecaca;color:#7f1d1d"{% endif %}
 					 {% if message.tags == 'warning' %}style="background:#fffbeb;border:1px solid #fde68a;color:#92400e"{% endif %}
 					 {% if message.tags == 'info' %}style="background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af"{% endif %}>
 					<div class="flex items-start gap-3">
 						<i class="fas fa-info-circle mt-0.5"></i>
-						<div class="text-sm">{{ message }}</div>
+						<div>{{ message }}</div>
 					</div>
 				</div>
 				{% endfor %}
 			{% endif %}
 
-			<form method="POST" id="verifyOtpForm" class="space-y-6" novalidate>
+			<form method="POST" id="verifyOtpForm" class="flex flex-col gap-5" novalidate>
 				{% csrf_token %}
 
 				<div>
-					<label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+					<label for="email" class="block text-sm font-semibold text-surface-700 mb-2">Email Address</label>
 					<input type="email" name="email" id="email" required
-						class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+						class="w-full px-4 py-3 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-sm"
 						placeholder="you@example.com" value="{{ email|default:'' }}" aria-describedby="emailHelp">
-					<p id="emailError" class="mt-2 text-sm text-red-600 hidden" role="alert"></p>
-					<p id="emailHelp" class="mt-1 text-xs text-gray-400">Enter the email where you received the OTP.</p>
+					<p id="emailError" class="mt-2 text-xs text-red-600 hidden" role="alert"></p>
+					<p id="emailHelp" class="mt-1 text-xs text-surface-400">Enter the email where you received the OTP.</p>
 				</div>
 
 				<div>
-					<label for="otp" class="block text-sm font-medium text-gray-700 mb-2">OTP Code</label>
+					<label for="otp" class="block text-sm font-semibold text-surface-700 mb-2">OTP Code</label>
 					<input type="text" name="otp" id="otp" inputmode="numeric" pattern="[0-9]*" maxlength="6" required
-						class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+						class="w-full px-4 py-3 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-sm tracking-widest text-center text-lg font-bold"
 						placeholder="123456" aria-describedby="otpHelp" autocomplete="one-time-code">
-					<p id="otpError" class="mt-2 text-sm text-red-600 hidden" role="alert"></p>
-					<p id="otpHelp" class="mt-1 text-xs text-gray-400">Enter the 6-digit code you received. Codes expire in 10 minutes.</p>
+					<p id="otpError" class="mt-2 text-xs text-red-600 hidden" role="alert"></p>
+					<p id="otpHelp" class="mt-1 text-xs text-surface-400">Enter the 6-digit code you received. Codes expire in 10 minutes.</p>
 				</div>
 
 				<div class="flex items-center gap-4">
-					<button type="submit" id="verifyBtn" class="inline-flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-primary-600 text-white font-semibold hover:bg-primary-700 focus:outline-none" aria-busy="false">
-						<i class="fas fa-check"></i>
+					<button type="submit" id="verifyBtn" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-surface-900 text-white font-semibold hover:bg-surface-800 transition-all text-sm" aria-busy="false">
+						<i class="fas fa-check text-xs"></i>
 						<span id="verifyBtnText">Verify OTP</span>
 					</button>
 
-					<a href="{% url 'resend-otp' %}" id="resendLink" class="text-sm text-primary-600 hover:underline">Resend OTP</a>
+					<a href="{% url 'resend-otp' %}" id="resendLink" class="text-sm text-brand-600 font-semibold hover:underline">Resend OTP</a>
 				</div>
 			</form>
 
-			<hr class="my-6">
+			<hr class="my-6 border-surface-100">
 
-			<p class="text-sm text-gray-500 text-center">
-				Need help? <a href="{% url 'contact' %}" class="text-primary-600 font-medium hover:underline">Contact us</a>
+			<p class="text-sm text-surface-500 text-center">
+				Need help? <a href="{% url 'contact' %}" class="text-brand-600 font-semibold hover:underline">Contact us</a>
 			</p>
 		</div>
 	</div>
@@ -127,10 +127,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			return;
 		}
 
-		// Prevent multiple submits and show loading state.
 		setLoading(true);
 
-		// Fallback: re-enable after 15s if nothing happens (server stall)
 		const fallback = setTimeout(() => {
 			setLoading(false);
 		}, 15000);

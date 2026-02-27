@@ -4,17 +4,17 @@
 
 {% block member_content %}
 <div class="mb-8">
-    <h1 class="text-2xl font-bold text-gray-900">Programs</h1>
-    <p class="text-gray-600">Explore and enroll in club programs</p>
+    <h1 class="text-2xl font-bold text-surface-900">Programs</h1>
+    <p class="text-surface-600">Explore and enroll in club programs</p>
 </div>
 
 <!-- Tabs -->
-<div class="mb-6 border-b border-gray-200">
+<div class="mb-6 border-b border-surface-200">
     <nav class="flex space-x-8">
-        <button onclick="showTab('all')" id="tab-all" class="tab-btn py-4 px-1 border-b-2 border-primary-500 text-primary-600 font-medium text-sm">
+        <button onclick="showTab('all')" id="tab-all" class="tab-btn py-4 px-1 border-b-2 border-brand-500 text-brand-600 font-medium text-sm">
             All Programs
         </button>
-        <button onclick="showTab('enrolled')" id="tab-enrolled" class="tab-btn py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm">
+        <button onclick="showTab('enrolled')" id="tab-enrolled" class="tab-btn py-4 px-1 border-b-2 border-transparent text-surface-500 hover:text-surface-700 font-medium text-sm">
             My Enrollments
         </button>
     </nav>
@@ -25,9 +25,9 @@
     {% if all_programs %}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for program in all_programs %}
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+            <div class="bg-white rounded-2xl shadow-sm border border-surface-100 overflow-hidden hover:shadow-md transition-shadow">
                 {% if program.image %}
-                <div class="h-48 bg-gray-100">
+                <div class="h-48 bg-surface-100">
                     <img src="{{ program.image.url }}" alt="{{ program.title }}" class="w-full h-full object-cover">
                 </div>
                 {% else %}
@@ -36,19 +36,19 @@
                 </div>
                 {% endif %}
                 <div class="p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ program.title }}</h3>
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">{{ program.short_description|default:program.content|striptags|truncatewords:30 }}</p>
+                    <h3 class="text-lg font-semibold text-surface-900 mb-2">{{ program.title }}</h3>
+                    <p class="text-surface-600 text-sm mb-4 line-clamp-3">{{ program.short_description|default:program.content|striptags|truncatewords:30 }}</p>
                     
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <div class="flex items-center justify-between pt-4 border-t border-surface-100">
                         {% if program.id in enrolled_program_ids %}
                             <span class="inline-flex items-center text-green-600 text-sm font-medium">
                                 <i class="fas fa-check-circle mr-1"></i>Enrolled
                             </span>
-                            <a href="{% url 'program_detail' program.slug %}" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+                            <a href="{% url 'program_detail' program.slug %}" class="text-brand-600 hover:text-brand-700 text-sm font-medium">
                                 View Details →
                             </a>
                         {% else %}
-                            <a href="{% url 'program_detail' program.slug %}" class="text-gray-600 hover:text-gray-700 text-sm">
+                            <a href="{% url 'program_detail' program.slug %}" class="text-surface-600 hover:text-surface-700 text-sm">
                                 Learn More
                             </a>
                             <form method="post" action="{% url 'enroll_in_program' program.id %}">
@@ -64,12 +64,12 @@
             {% endfor %}
         </div>
     {% else %}
-        <div class="text-center py-16 bg-white rounded-2xl border border-gray-100">
-            <div class="w-20 h-20 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                <i class="fas fa-clipboard-list text-gray-400 text-3xl"></i>
+        <div class="text-center py-16 bg-white rounded-2xl border border-surface-100">
+            <div class="w-20 h-20 mx-auto bg-surface-100 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-clipboard-list text-surface-400 text-3xl"></i>
             </div>
-            <h3 class="text-lg font-medium text-gray-900 mb-2">No Programs Available</h3>
-            <p class="text-gray-500">Check back later for new programs!</p>
+            <h3 class="text-lg font-medium text-surface-900 mb-2">No Programs Available</h3>
+            <p class="text-surface-500">Check back later for new programs!</p>
         </div>
     {% endif %}
 </div>
@@ -79,7 +79,7 @@
     {% if program_history %}
         <div class="space-y-6">
             {% for enrollment in program_history %}
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-surface-100 overflow-hidden">
                 <div class="p-6">
                     <div class="flex flex-col md:flex-row md:items-start md:justify-between">
                         <div class="flex items-start space-x-4">
@@ -93,14 +93,14 @@
                             </div>
                             {% endif %}
                             <div>
-                                <h3 class="font-semibold text-gray-900 text-lg">{{ enrollment.program.title }}</h3>
-                                <p class="text-sm text-gray-500 mt-1">Enrolled on {{ enrollment.enrolled_at|date:"M d, Y" }}</p>
+                                <h3 class="font-semibold text-surface-900 text-lg">{{ enrollment.program.title }}</h3>
+                                <p class="text-sm text-surface-500 mt-1">Enrolled on {{ enrollment.enrolled_at|date:"M d, Y" }}</p>
                                 <div class="mt-3 flex items-center space-x-3">
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
                                         {% if enrollment.status == 'active' %}bg-green-100 text-green-700
                                         {% elif enrollment.status == 'completed' %}bg-blue-100 text-blue-700
                                         {% elif enrollment.status == 'dropped' %}bg-red-100 text-red-700
-                                        {% else %}bg-gray-100 text-gray-700{% endif %}">
+                                        {% else %}bg-surface-100 text-surface-700{% endif %}">
                                         {{ enrollment.get_status_display }}
                                     </span>
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
@@ -115,16 +115,16 @@
                             </div>
                         </div>
                         <div class="mt-4 md:mt-0 flex items-center space-x-4">
-                            <a href="{% url 'program_detail' enrollment.program.slug %}" class="px-4 py-2 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors">
+                            <a href="{% url 'program_detail' enrollment.program.slug %}" class="px-4 py-2 rounded-xl border border-surface-200 text-surface-700 text-sm font-medium hover:bg-surface-50 transition-colors">
                                 View Program
                             </a>
                         </div>
                     </div>
                     
                     {% if enrollment.feedback %}
-                    <div class="mt-4 pt-4 border-t border-gray-100">
-                        <h4 class="text-sm font-medium text-gray-700 mb-2">Your Feedback</h4>
-                        <p class="text-sm text-gray-600">{{ enrollment.feedback }}</p>
+                    <div class="mt-4 pt-4 border-t border-surface-100">
+                        <h4 class="text-sm font-medium text-surface-700 mb-2">Your Feedback</h4>
+                        <p class="text-sm text-surface-600">{{ enrollment.feedback }}</p>
                     </div>
                     {% endif %}
                 </div>
@@ -132,13 +132,13 @@
             {% endfor %}
         </div>
     {% else %}
-        <div class="text-center py-16 bg-white rounded-2xl border border-gray-100">
-            <div class="w-20 h-20 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                <i class="fas fa-user-graduate text-gray-400 text-3xl"></i>
+        <div class="text-center py-16 bg-white rounded-2xl border border-surface-100">
+            <div class="w-20 h-20 mx-auto bg-surface-100 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-user-graduate text-surface-400 text-3xl"></i>
             </div>
-            <h3 class="text-lg font-medium text-gray-900 mb-2">No Enrollments Yet</h3>
-            <p class="text-gray-500">You haven't enrolled in any programs yet.</p>
-            <button onclick="showTab('all')" class="mt-4 text-primary-600 hover:text-primary-700 font-medium">
+            <h3 class="text-lg font-medium text-surface-900 mb-2">No Enrollments Yet</h3>
+            <p class="text-surface-500">You haven't enrolled in any programs yet.</p>
+            <button onclick="showTab('all')" class="mt-4 text-brand-600 hover:text-brand-700 font-medium">
                 Browse Available Programs
             </button>
         </div>
@@ -151,16 +151,16 @@ function showTab(tabName) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
     // Remove active from all tabs
     document.querySelectorAll('.tab-btn').forEach(el => {
-        el.classList.remove('border-primary-500', 'text-primary-600');
-        el.classList.add('border-transparent', 'text-gray-500');
+        el.classList.remove('border-brand-500', 'text-brand-600');
+        el.classList.add('border-transparent', 'text-surface-500');
     });
     
     // Show selected content
     document.getElementById('content-' + tabName).classList.remove('hidden');
     // Activate selected tab
     const activeTab = document.getElementById('tab-' + tabName);
-    activeTab.classList.add('border-primary-500', 'text-primary-600');
-    activeTab.classList.remove('border-transparent', 'text-gray-500');
+    activeTab.classList.add('border-brand-500', 'text-brand-600');
+    activeTab.classList.remove('border-transparent', 'text-surface-500');
 }
 </script>
 {% endblock %}

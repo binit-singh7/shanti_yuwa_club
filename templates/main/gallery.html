@@ -5,116 +5,47 @@
 
 {% block extra_css %}
 <style>
-    /* Custom Image Modal Styles */
-    .image-modal {
-        backdrop-filter: blur(8px);
-    }
-
-    .image-modal-content {
-        max-width: 90vw;
-        max-height: 90vh;
-        animation: modalFadeIn 0.3s ease-out;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    }
-
-    @keyframes modalFadeIn {
-        from {
-            opacity: 0;
-            transform: scale(0.95);
-        }
-
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
-
-    .modal-nav-btn {
-        transition: all 0.3s ease;
-        box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4), 0 8px 10px -6px rgba(37, 99, 235, 0.2);
-        opacity: 0;
-        transform: scale(0.9);
-    }
-
-    .modal-nav-area:hover .modal-nav-btn {
-        opacity: 1;
-        transform: scale(1);
-    }
-
-    .modal-nav-btn:hover {
-        box-shadow: 0 20px 35px -5px rgba(37, 99, 235, 0.6), 0 12px 15px -6px rgba(37, 99, 235, 0.3);
-        background-color: rgba(37, 99, 235, 0.9);
-    }
-
-    .modal-nav-area {
-        transition: all 0.3s ease;
-    }
-
-    .modal-nav-area::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        pointer-events: none;
-    }
-
-    .modal-nav-area:hover::before {
-        opacity: 1;
-    }
+    .image-modal { backdrop-filter: blur(8px); }
+    .image-modal-content { max-width: 90vw; max-height: 90vh; animation: modalFadeIn 0.3s ease-out; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+    @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    .modal-nav-btn { transition: all 0.3s ease; opacity: 0; transform: scale(0.9); }
+    .modal-nav-area:hover .modal-nav-btn { opacity: 1; transform: scale(1); }
 </style>
 {% endblock %}
 
 {% block content %}
 <!-- Page Header -->
-<section class="relative py-8 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 overflow-hidden">
-    <!-- Background Pattern -->
-    <div class="absolute inset-0 opacity-10">
-        <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <defs>
-                <pattern id="dots" width="5" height="5" patternUnits="userSpaceOnUse">
-                    <circle cx="2.5" cy="2.5" r="1" fill="white" />
-                </pattern>
-            </defs>
-            <rect width="100" height="100" fill="url(#dots)" />
-        </svg>
-    </div>
-
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="relative py-24 lg:py-32 bg-surface-950 overflow-hidden">
+    <div class="relative max-w-[1400px] mx-auto px-6 lg:px-10">
         <div class="max-w-3xl">
-            <nav class="flex items-center text-sm text-primary-200 mb-6">
+            <nav class="flex items-center text-sm text-surface-500 mb-6">
                 <a href="{% url 'home' %}" class="hover:text-white transition-colors duration-200">Home</a>
-                <i class="fas fa-chevron-right mx-3 text-xs"></i>
+                <span class="mx-3 text-surface-600">/</span>
                 <span class="text-white">Gallery</span>
             </nav>
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-6">
                 Photo Gallery
             </h1>
-            <p class="text-xl text-primary-100">
+            <p class="text-lg text-surface-400 max-w-xl">
                 Explore moments captured from our activities, events, and community engagement.
             </p>
         </div>
     </div>
-
-    <!-- Decorative Shapes -->
-    <div class="absolute bottom-0 right-0 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl -mb-48 -mr-48"></div>
 </section>
 
 <!-- Gallery Section -->
-<section class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="py-16 lg:py-24 bg-surface-50">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
         <!-- Category Filter -->
         <div class="mb-12">
-            <div class="flex flex-wrap justify-center gap-3">
+            <div class="flex flex-wrap justify-center gap-2">
                 <a href="{% url 'gallery' %}"
-                    class="px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 {% if not selected_category %}bg-primary-600 text-white shadow-lg{% else %}bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-600 shadow-sm{% endif %}">
-                    <i class="fas fa-th-large mr-2"></i>
+                    class="px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 {% if not selected_category %}bg-surface-900 text-white{% else %}bg-white text-surface-600 hover:text-surface-900 shadow-sm{% endif %}">
                     All Photos
                 </a>
                 {% for category in categories %}
                 <a href="{% url 'gallery' %}?category={{ category.name }}"
-                    class="px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 {% if selected_category == category.name %}bg-primary-600 text-white shadow-lg{% else %}bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-600 shadow-sm{% endif %}">
+                    class="px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 {% if selected_category == category.name %}bg-surface-900 text-white{% else %}bg-white text-surface-600 hover:text-surface-900 shadow-sm{% endif %}">
                     {{ category.name }}
                 </a>
                 {% endfor %}
@@ -122,44 +53,39 @@
         </div>
 
         <!-- Gallery Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {% if gallery_images %}
             {% for image in gallery_images %}
-            <div
-                class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500">
-                <button onclick="openImageModal({{ forloop.counter0 }})" class="block aspect-square w-full">
+            <div class="group relative overflow-hidden rounded-2xl bg-surface-200 img-zoom">
+                <button onclick="openImageModal({{ forloop.counter0 }})" class="block aspect-square w-full text-left">
                     <img src="{{ image.image.url }}" alt="{{ image.title }}"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        class="w-full h-full object-cover">
 
                     <!-- Overlay -->
-                    <div
-                        class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    </div>
+                    <div class="absolute inset-0 bg-surface-950/0 group-hover:bg-surface-950/60 transition-all duration-300"></div>
 
                     <!-- Content -->
-                    <div
-                        class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                        <h3 class="text-white font-bold text-lg mb-1">{{ image.title }}</h3>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                        <h3 class="text-white font-bold text-base mb-1">{{ image.title }}</h3>
                         {% if image.description %}
-                        <p class="text-gray-300 text-sm line-clamp-2">{{ image.description }}</p>
+                        <p class="text-surface-300 text-sm line-clamp-2">{{ image.description }}</p>
                         {% endif %}
                     </div>
 
                     <!-- View Icon -->
-                    <div
-                        class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <i class="fas fa-expand text-white"></i>
+                    <div class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <i class="fas fa-expand text-white text-sm"></i>
                     </div>
                 </button>
             </div>
             {% endfor %}
             {% else %}
-            <div class="col-span-full text-center py-16">
-                <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
-                    <i class="fas fa-images text-4xl text-gray-400"></i>
+            <div class="col-span-full text-center py-20">
+                <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-surface-100 flex items-center justify-center">
+                    <i class="fas fa-images text-3xl text-surface-400"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">No Images Yet</h3>
-                <p class="text-gray-500 text-lg max-w-md mx-auto">
+                <h3 class="text-2xl font-bold text-surface-900 mb-3">No Images Yet</h3>
+                <p class="text-surface-500 text-base max-w-md mx-auto">
                     {% if selected_category %}
                     No images available in this category. Try another category!
                     {% else %}
@@ -173,53 +99,35 @@
         <!-- Pagination -->
         {% if gallery_images.has_other_pages %}
         <div class="mt-16">
-            <nav class="flex justify-center items-center space-x-2">
+            <nav class="flex justify-center items-center gap-2">
                 {% if gallery_images.has_previous %}
                 <a href="?{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ gallery_images.previous_page_number }}"
-                    class="inline-flex items-center px-4 py-2 rounded-lg bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-200 shadow-sm">
-                    <i class="fas fa-chevron-left mr-2"></i>
-                    Previous
+                    class="inline-flex items-center px-5 py-2.5 rounded-full bg-white text-surface-700 hover:bg-surface-900 hover:text-white transition-colors duration-200 text-sm font-medium shadow-sm">
+                    <i class="fas fa-arrow-left mr-2 text-xs"></i>Previous
                 </a>
-                {% else %}
-                <span
-                    class="inline-flex items-center px-4 py-2 rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed">
-                    <i class="fas fa-chevron-left mr-2"></i>
-                    Previous
-                </span>
                 {% endif %}
 
-                <div class="flex items-center space-x-1">
+                <div class="flex items-center gap-1">
                     {% for num in gallery_images.paginator.page_range %}
                     {% if gallery_images.number == num %}
-                    <span
-                        class="w-10 h-10 rounded-lg bg-primary-600 text-white flex items-center justify-center font-semibold">{{
-                        num }}</span>
-                    {% elif num > gallery_images.number|add:'-3' and num < gallery_images.number|add:'3' %} <a
-                        href="?{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ num }}"
-                        class="w-10 h-10 rounded-lg bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-600 flex items-center justify-center font-medium transition-colors duration-200 shadow-sm">
-                        {{ num }}</a>
-                        {% elif num == 1 or num == gallery_images.paginator.num_pages %}
-                        <a href="?{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ num }}"
-                            class="w-10 h-10 rounded-lg bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-600 flex items-center justify-center font-medium transition-colors duration-200 shadow-sm">{{
-                            num }}</a>
-                        {% elif num == gallery_images.number|add:'-3' or num == gallery_images.number|add:'3' %}
-                        <span class="w-10 h-10 flex items-center justify-center text-gray-400">...</span>
-                        {% endif %}
-                        {% endfor %}
+                    <span class="w-10 h-10 rounded-full bg-surface-900 text-white flex items-center justify-center text-sm font-semibold">{{ num }}</span>
+                    {% elif num > gallery_images.number|add:'-3' and num < gallery_images.number|add:'3' %}
+                    <a href="?{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ num }}"
+                        class="w-10 h-10 rounded-full bg-white text-surface-700 hover:bg-surface-100 flex items-center justify-center text-sm font-medium transition-colors duration-200 shadow-sm">{{ num }}</a>
+                    {% elif num == 1 or num == gallery_images.paginator.num_pages %}
+                    <a href="?{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ num }}"
+                        class="w-10 h-10 rounded-full bg-white text-surface-700 hover:bg-surface-100 flex items-center justify-center text-sm font-medium transition-colors duration-200 shadow-sm">{{ num }}</a>
+                    {% elif num == gallery_images.number|add:'-3' or num == gallery_images.number|add:'3' %}
+                    <span class="w-10 h-10 flex items-center justify-center text-surface-400">...</span>
+                    {% endif %}
+                    {% endfor %}
                 </div>
 
                 {% if gallery_images.has_next %}
                 <a href="?{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ gallery_images.next_page_number }}"
-                    class="inline-flex items-center px-4 py-2 rounded-lg bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-200 shadow-sm">
-                    Next
-                    <i class="fas fa-chevron-right ml-2"></i>
+                    class="inline-flex items-center px-5 py-2.5 rounded-full bg-white text-surface-700 hover:bg-surface-900 hover:text-white transition-colors duration-200 text-sm font-medium shadow-sm">
+                    Next<i class="fas fa-arrow-right ml-2 text-xs"></i>
                 </a>
-                {% else %}
-                <span
-                    class="inline-flex items-center px-4 py-2 rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed">
-                    Next
-                    <i class="fas fa-chevron-right ml-2"></i>
-                </span>
                 {% endif %}
             </nav>
         </div>
@@ -228,72 +136,63 @@
 </section>
 
 <!-- Custom Image Modal -->
-<div id="imageModal" class="hidden fixed inset-0 z-[100] bg-black/90 image-modal">
+<div id="imageModal" class="hidden fixed inset-0 z-[100] bg-surface-950/90 image-modal">
     <div class="flex items-center justify-center min-h-screen p-4 relative">
         <!-- Close Button -->
         <button onclick="closeImageModal()"
-            class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm flex items-center justify-center transition-all duration-300 z-20 group">
-            <i class="fas fa-times text-white text-xl group-hover:scale-110 transition-transform"></i>
+            class="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm flex items-center justify-center transition-all duration-300 z-20">
+            <i class="fas fa-times text-white text-lg"></i>
         </button>
 
-        <!-- Left Navigation Area (Full Height) -->
+        <!-- Left Navigation Area -->
         <div onclick="previousImage()"
-            class="modal-nav-area absolute left-0 top-0 bottom-0 w-1/3 cursor-w-resize z-10 transition-colors group">
-            <!-- Previous Button -->
-            <button
-                class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-primary-600/80 hover:bg-primary-600 backdrop-blur-sm flex items-center justify-center modal-nav-btn pointer-events-none">
-                <i class="fas fa-chevron-left text-white text-xl"></i>
+            class="modal-nav-area absolute left-0 top-0 bottom-0 w-1/3 cursor-w-resize z-10">
+            <button class="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-brand-500/80 hover:bg-brand-500 backdrop-blur-sm flex items-center justify-center modal-nav-btn pointer-events-none">
+                <i class="fas fa-chevron-left text-white"></i>
             </button>
         </div>
 
-        <!-- Right Navigation Area (Full Height) -->
+        <!-- Right Navigation Area -->
         <div onclick="nextImage()"
-            class="modal-nav-area absolute right-0 top-0 bottom-0 w-1/3 cursor-e-resize z-10 transition-colors group">
-            <!-- Next Button -->
-            <button
-                class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-primary-600/80 hover:bg-primary-600 backdrop-blur-sm flex items-center justify-center modal-nav-btn pointer-events-none">
-                <i class="fas fa-chevron-right text-white text-xl"></i>
+            class="modal-nav-area absolute right-0 top-0 bottom-0 w-1/3 cursor-e-resize z-10">
+            <button class="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-brand-500/80 hover:bg-brand-500 backdrop-blur-sm flex items-center justify-center modal-nav-btn pointer-events-none">
+                <i class="fas fa-chevron-right text-white"></i>
             </button>
         </div>
 
         <!-- Image Container -->
-        <div class="relative max-w-6xl w-full z-15">
+        <div class="relative max-w-5xl w-full z-15">
             <img id="modalImage" src="" alt=""
-                class="w-full h-auto max-h-[85vh] object-contain rounded-2xl shadow-2xl image-modal-content mx-auto pointer-events-none">
-
-            <!-- Image Info -->
+                class="w-full h-auto max-h-[80vh] object-contain rounded-2xl image-modal-content mx-auto pointer-events-none">
             <div class="mt-6 text-center">
-                <h3 id="modalTitle" class="text-2xl font-bold text-white mb-2"></h3>
-                <p id="modalDescription" class="text-gray-300 max-w-2xl mx-auto"></p>
-                <p id="modalCounter" class="text-gray-400 mt-4 text-sm"></p>
+                <h3 id="modalTitle" class="text-xl font-bold text-white mb-1"></h3>
+                <p id="modalDescription" class="text-surface-400 text-sm max-w-2xl mx-auto"></p>
+                <p id="modalCounter" class="text-surface-500 mt-3 text-xs tracking-widest uppercase"></p>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Stats Section -->
-<section class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-gradient-to-r from-gray-900 to-gray-800 rounded-3xl overflow-hidden">
+<section class="py-20 bg-white">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+        <div class="bg-surface-950 rounded-3xl overflow-hidden">
             <div class="px-8 py-12 md:px-16 md:py-16">
                 <div class="grid md:grid-cols-2 gap-8 items-center">
                     <div>
-                        <h2 class="text-3xl font-bold text-white mb-4">
-                            Capturing Our Journey
-                        </h2>
-                        <p class="text-gray-400 text-lg">
+                        <h2 class="text-3xl font-extrabold text-white mb-4 tracking-tight">Capturing Our Journey</h2>
+                        <p class="text-surface-400 text-base leading-relaxed">
                             Every photo tells a story of impact, community, and the difference we're making together.
                         </p>
                     </div>
-                    <div class="flex justify-center md:justify-end space-x-8">
+                    <div class="flex justify-center md:justify-end gap-12">
                         <div class="text-center">
-                            <p class="text-4xl font-bold text-white">{{ gallery_images.paginator.count|default:"0" }}+
-                            </p>
-                            <p class="text-gray-400">Photos</p>
+                            <p class="text-3xl font-extrabold text-white stat-number">{{ gallery_images.paginator.count|default:"0" }}+</p>
+                            <p class="text-surface-400 text-sm mt-1">Photos</p>
                         </div>
                         <div class="text-center">
-                            <p class="text-4xl font-bold text-white">{{ categories|length|default:"0" }}+</p>
-                            <p class="text-gray-400">Categories</p>
+                            <p class="text-3xl font-extrabold text-white stat-number">{{ categories|length|default:"0" }}+</p>
+                            <p class="text-surface-400 text-sm mt-1">Categories</p>
                         </div>
                     </div>
                 </div>
@@ -303,28 +202,18 @@
 </section>
 
 <!-- CTA Section -->
-<section class="py-20 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div
-            class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
-            <i class="fas fa-camera mr-2"></i>
-            Be Part of the Story
-        </div>
-        <h2 class="text-3xl font-bold text-gray-900 mb-6">
-            Want to Be in Our Next Photo?
-        </h2>
-        <p class="text-gray-600 text-lg max-w-2xl mx-auto mb-10">
+<section class="py-24 bg-surface-50">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
+        <p class="text-brand-600 text-xs font-bold tracking-widest uppercase mb-4">Be Part of the Story</p>
+        <h2 class="text-3xl font-extrabold text-surface-900 mb-4 tracking-tight">Want to Be in Our Next Photo?</h2>
+        <p class="text-surface-500 text-lg max-w-xl mx-auto mb-10">
             Join our events and activities to become part of the memories we create together.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{% url 'programs' %}"
-                class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold shadow-lg hover:shadow-primary-500/25 transition-all duration-300 hover:scale-105">
-                <i class="fas fa-project-diagram mr-2"></i>
+            <a href="{% url 'programs' %}" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-surface-900 text-white font-semibold hover:bg-surface-800 transition-all duration-300 text-sm">
                 View Our Programs
             </a>
-            <a href="{% url 'contact' %}"
-                class="inline-flex items-center justify-center px-8 py-4 rounded-full border-2 border-primary-600 text-primary-600 font-semibold hover:bg-primary-600 hover:text-white transition-all duration-300">
-                <i class="fas fa-envelope mr-2"></i>
+            <a href="{% url 'contact' %}" class="inline-flex items-center justify-center px-8 py-4 rounded-full border border-surface-200 text-surface-700 font-semibold hover:bg-white transition-all duration-300 text-sm">
                 Contact Us
             </a>
         </div>
@@ -334,20 +223,18 @@
 
 {% block extra_js %}
 <script>
-    // Gallery images data
     const galleryImages = [
         {% for image in gallery_images %}
-    {
-        url: '{{ image.image.url }}',
+        {
+            url: '{{ image.image.url }}',
             title: '{{ image.title|escapejs }}',
-                description: '{% if image.description %}{{ image.description|escapejs }}{% endif %}'
-    } {% if not forloop.last %}, {% endif %}
-    {% endfor %}
+            description: '{% if image.description %}{{ image.description|escapejs }}{% endif %}'
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
     ];
 
     let currentImageIndex = 0;
 
-    // Open image modal
     function openImageModal(index) {
         currentImageIndex = index;
         updateModalImage();
@@ -355,25 +242,21 @@
         document.body.style.overflow = 'hidden';
     }
 
-    // Close image modal
     function closeImageModal() {
         document.getElementById('imageModal').classList.add('hidden');
         document.body.style.overflow = 'auto';
     }
 
-    // Navigate to previous image
     function previousImage() {
         currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
         updateModalImage();
     }
 
-    // Navigate to next image
     function nextImage() {
         currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
         updateModalImage();
     }
 
-    // Update modal image and info
     function updateModalImage() {
         const image = galleryImages[currentImageIndex];
         document.getElementById('modalImage').src = image.url;
@@ -383,17 +266,12 @@
         document.getElementById('modalCounter').textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
     }
 
-    // Keyboard navigation
-    document.addEventListener('keydown', function (event) {
+    document.addEventListener('keydown', function(event) {
         const modal = document.getElementById('imageModal');
         if (!modal.classList.contains('hidden')) {
-            if (event.key === 'Escape') {
-                closeImageModal();
-            } else if (event.key === 'ArrowLeft') {
-                previousImage();
-            } else if (event.key === 'ArrowRight') {
-                nextImage();
-            }
+            if (event.key === 'Escape') closeImageModal();
+            else if (event.key === 'ArrowLeft') previousImage();
+            else if (event.key === 'ArrowRight') nextImage();
         }
     });
 </script>
