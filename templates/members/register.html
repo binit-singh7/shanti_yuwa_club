@@ -4,30 +4,30 @@
 {% block title %}Join Shanti Yuwa Club - Member Registration{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-surface-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-2xl w-full">
         <!-- Logo & Header -->
         <div class="text-center mb-8">
-            <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg">
-                <i class="fas fa-user-plus text-white text-3xl"></i>
+            <div class="w-16 h-16 mx-auto mb-5 rounded-xl bg-surface-900 flex items-center justify-center">
+                <i class="fas fa-user-plus text-white text-2xl"></i>
             </div>
-            <h2 class="text-3xl font-bold text-gray-900">Member Joining Form</h2>
-            <p class="mt-2 text-gray-600">Fill out this form to become a member of Shanti Yuwa Club</p>
+            <h2 class="text-3xl font-extrabold text-surface-900 tracking-tight">Member Joining Form</h2>
+            <p class="mt-2 text-surface-500 text-sm">Fill out this form to become a member of Shanti Yuwa Club</p>
         </div>
 
         <!-- Registration Form -->
-        <div class="bg-white rounded-2xl shadow-xl p-8">
+        <div class="bg-white rounded-2xl shadow-sm border border-surface-100 p-8">
             <!-- Already Joined Link -->
-            <div class="mb-6 pb-4 border-b border-gray-200 text-center">
-                <p class="text-sm text-gray-600">
+            <div class="mb-6 pb-4 border-b border-surface-100 text-center">
+                <p class="text-sm text-surface-500">
                     Already joined our club?
-                    <a href="{% url 'member_login' %}" class="font-semibold text-primary-600 hover:text-primary-700 hover:underline">Login here</a>
+                    <a href="{% url 'member_login' %}" class="font-semibold text-brand-600 hover:text-brand-700 hover:underline">Login here</a>
                 </p>
             </div>
 
             {% if messages %}
                 {% for message in messages %}
-                    <div class="mb-4 p-4 rounded-xl {% if message.tags == 'success' %}bg-green-50 border border-green-200 text-green-700{% elif message.tags == 'error' %}bg-red-50 border border-red-200 text-red-700{% else %}bg-blue-50 border border-blue-200 text-blue-700{% endif %}">
+                    <div class="mb-4 p-4 rounded-xl text-sm {% if message.tags == 'success' %}bg-green-50 border border-green-200 text-green-700{% elif message.tags == 'error' %}bg-red-50 border border-red-200 text-red-700{% else %}bg-blue-50 border border-blue-200 text-blue-700{% endif %}">
                         <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} mr-2"></i>{{ message }}
                     </div>
                 {% endfor %}
@@ -35,84 +35,84 @@
             
             <!-- Email Verification Alert -->
             {% if not email_verified %}
-                <div class="mb-6 p-4 rounded-xl bg-yellow-50 border border-yellow-200">
+                <div class="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-200">
                     <div class="flex items-start gap-3">
-                        <i class="fas fa-envelope-circle-check text-yellow-600 text-xl mt-1"></i>
+                        <i class="fas fa-envelope-circle-check text-amber-600 text-xl mt-1"></i>
                         <div class="flex-1">
-                            <h4 class="font-semibold text-yellow-900 mb-1">Email Verification Required</h4>
-                            <p class="text-sm text-yellow-800 mb-3">Please verify your email address with OTP before registering.</p>
-                            <a href="{% url 'send-otp' %}" class="inline-flex items-center px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-lg transition-colors">
-                                <i class="fas fa-lock mr-2"></i> Verify Email with OTP
+                            <h4 class="font-semibold text-amber-900 text-sm mb-1">Email Verification Required</h4>
+                            <p class="text-sm text-amber-800 mb-3">Please verify your email address with OTP before registering.</p>
+                            <a href="{% url 'send-otp' %}" class="inline-flex items-center px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-medium rounded-full transition-colors">
+                                <i class="fas fa-lock mr-2 text-xs"></i> Verify Email with OTP
                             </a>
                         </div>
                     </div>
                 </div>
             {% else %}
                 <div class="mb-6 p-4 rounded-xl bg-green-50 border border-green-200 flex items-center gap-2">
-                    <i class="fas fa-check-circle text-green-600 text-xl"></i>
-                    <span class="text-sm text-green-800"><strong>✓ Email Verified:</strong> {{ verified_email }}</span>
+                    <i class="fas fa-check-circle text-green-600"></i>
+                    <span class="text-sm text-green-800"><strong>Email Verified:</strong> {{ verified_email }}</span>
                 </div>
             {% endif %}
 
-            <form method="post" id="registrationForm" class="space-y-6" novalidate>
+            <form method="post" id="registrationForm" class="flex flex-col gap-6" novalidate>
                 {% csrf_token %}
                 
                 <!-- Personal Information Section -->
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                        <i class="fas fa-user-circle text-primary-600 mr-2"></i>
+                    <h3 class="text-base font-bold text-surface-900 mb-4 flex items-center gap-2">
+                        <i class="fas fa-user-circle text-brand-500 text-sm"></i>
                         Personal Information
                     </h3>
                     
-                    <div class="space-y-4">
+                    <div class="flex flex-col gap-4">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label for="id_first_name" class="block text-sm font-medium text-gray-700 mb-1">
+                                <label for="id_first_name" class="block text-sm font-semibold text-surface-700 mb-2">
                                     First Name <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" name="first_name" id="id_first_name" required
                                        value="{{ form.first_name.value|default:'' }}"
-                                       class="w-full px-4 py-3 rounded-xl border {% if form.first_name.errors %}border-red-500{% else %}border-gray-200{% endif %} focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+                                       class="w-full px-4 py-3 rounded-xl border {% if form.first_name.errors %}border-red-500{% else %}border-surface-200{% endif %} focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-sm"
                                        placeholder="First name">
                                 {% if form.first_name.errors %}
-                                    <p class="mt-1 text-sm text-red-600">{{ form.first_name.errors.0 }}</p>
+                                    <p class="mt-1 text-xs text-red-600">{{ form.first_name.errors.0 }}</p>
                                 {% endif %}
                             </div>
                             <div>
-                                <label for="id_last_name" class="block text-sm font-medium text-gray-700 mb-1">
+                                <label for="id_last_name" class="block text-sm font-semibold text-surface-700 mb-2">
                                     Last Name <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" name="last_name" id="id_last_name" required
                                        value="{{ form.last_name.value|default:'' }}"
-                                       class="w-full px-4 py-3 rounded-xl border {% if form.last_name.errors %}border-red-500{% else %}border-gray-200{% endif %} focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+                                       class="w-full px-4 py-3 rounded-xl border {% if form.last_name.errors %}border-red-500{% else %}border-surface-200{% endif %} focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-sm"
                                        placeholder="Last name">
                                 {% if form.last_name.errors %}
-                                    <p class="mt-1 text-sm text-red-600">{{ form.last_name.errors.0 }}</p>
+                                    <p class="mt-1 text-xs text-red-600">{{ form.last_name.errors.0 }}</p>
                                 {% endif %}
                             </div>
                         </div>
                         
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label for="id_date_of_birth" class="block text-sm font-medium text-gray-700 mb-1">
+                                <label for="id_date_of_birth" class="block text-sm font-semibold text-surface-700 mb-2">
                                     Date of Birth <span class="text-red-500">*</span>
                                 </label>
                                 <input type="date" name="date_of_birth" id="id_date_of_birth" required
                                        value="{{ form.date_of_birth.value|default:'' }}"
-                                       class="w-full px-4 py-3 rounded-xl border {% if form.date_of_birth.errors %}border-red-500{% else %}border-gray-200{% endif %} focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+                                       class="w-full px-4 py-3 rounded-xl border {% if form.date_of_birth.errors %}border-red-500{% else %}border-surface-200{% endif %} focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-sm"
                                        max="{% now 'Y-m-d' %}">
                                 {% if form.date_of_birth.errors %}
-                                    <p class="mt-1 text-sm text-red-600">{{ form.date_of_birth.errors.0 }}</p>
+                                    <p class="mt-1 text-xs text-red-600">{{ form.date_of_birth.errors.0 }}</p>
                                 {% endif %}
-                                <p class="mt-1 text-xs text-gray-500">{{ form.date_of_birth.help_text }}</p>
+                                <p class="mt-1 text-xs text-surface-400">{{ form.date_of_birth.help_text }}</p>
                             </div>
                             
                             <div>
-                                <label for="id_blood_group" class="block text-sm font-medium text-gray-700 mb-1">
+                                <label for="id_blood_group" class="block text-sm font-semibold text-surface-700 mb-2">
                                     Blood Group <span class="text-red-500">*</span>
                                 </label>
                                 <select name="blood_group" id="id_blood_group" required
-                                        class="w-full px-4 py-3 rounded-xl border {% if form.blood_group.errors %}border-red-500{% else %}border-gray-200{% endif %} focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all">
+                                        class="w-full px-4 py-3 rounded-xl border {% if form.blood_group.errors %}border-red-500{% else %}border-surface-200{% endif %} focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-sm">
                                     <option value="">Select Blood Group</option>
                                     <option value="A+" {% if form.blood_group.value == 'A+' %}selected{% endif %}>A+</option>
                                     <option value="A-" {% if form.blood_group.value == 'A-' %}selected{% endif %}>A-</option>
@@ -124,153 +124,153 @@
                                     <option value="AB-" {% if form.blood_group.value == 'AB-' %}selected{% endif %}>AB-</option>
                                 </select>
                                 {% if form.blood_group.errors %}
-                                    <p class="mt-1 text-sm text-red-600">{{ form.blood_group.errors.0 }}</p>
+                                    <p class="mt-1 text-xs text-red-600">{{ form.blood_group.errors.0 }}</p>
                                 {% endif %}
-                                <p class="mt-1 text-xs text-gray-500">{{ form.blood_group.help_text }}</p>
+                                <p class="mt-1 text-xs text-surface-400">{{ form.blood_group.help_text }}</p>
                             </div>
                         </div>
 
                         <div>
-                            <label for="id_address" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="id_address" class="block text-sm font-semibold text-surface-700 mb-2">
                                 Address
-                                <span class="text-xs text-gray-500">(Optional)</span>
+                                <span class="text-xs text-surface-400 font-normal">(Optional)</span>
                             </label>
                             <textarea name="address" id="id_address" rows="2"
-                                      class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all resize-none"
+                                      class="w-full px-4 py-3 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all resize-none text-sm"
                                       placeholder="Your current address">{{ form.address.value|default:'' }}</textarea>
-                            <p class="mt-1 text-xs text-gray-500">{{ form.address.help_text }}</p>
+                            <p class="mt-1 text-xs text-surface-400">{{ form.address.help_text }}</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Divider -->
-                <div class="border-t border-gray-200"></div>
+                <div class="border-t border-surface-100"></div>
 
                 <!-- Contact Information Section -->
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                        <i class="fas fa-envelope text-primary-600 mr-2"></i>
+                    <h3 class="text-base font-bold text-surface-900 mb-4 flex items-center gap-2">
+                        <i class="fas fa-envelope text-brand-500 text-sm"></i>
                         Contact Information
                     </h3>
                     
-                    <div class="space-y-4">
+                    <div class="flex flex-col gap-4">
                         <div>
-                            <label for="id_email" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="id_email" class="block text-sm font-semibold text-surface-700 mb-2">
                                 Email Address <span class="text-red-500">*</span>
                             </label>
                             <input type="email" name="email" id="id_email" required
                                    value="{{ form.email.value|default:'' }}"
-                                   class="w-full px-4 py-3 rounded-xl border {% if form.email.errors %}border-red-500{% else %}border-gray-200{% endif %} focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+                                   class="w-full px-4 py-3 rounded-xl border {% if form.email.errors %}border-red-500{% else %}border-surface-200{% endif %} focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-sm"
                                    placeholder="your@email.com">
                             {% if form.email.errors %}
-                                <p class="mt-1 text-sm text-red-600">{{ form.email.errors.0 }}</p>
+                                <p class="mt-1 text-xs text-red-600">{{ form.email.errors.0 }}</p>
                             {% endif %}
-                            <p class="mt-1 text-xs text-gray-500">{{ form.email.help_text }}</p>
+                            <p class="mt-1 text-xs text-surface-400">{{ form.email.help_text }}</p>
                         </div>
 
                         <div>
-                            <label for="id_phone" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="id_phone" class="block text-sm font-semibold text-surface-700 mb-2">
                                 Phone Number <span class="text-red-500">*</span>
                             </label>
                             <input type="tel" name="phone" id="id_phone" required
                                    value="{{ form.phone.value|default:'' }}"
-                                   class="w-full px-4 py-3 rounded-xl border {% if form.phone.errors %}border-red-500{% else %}border-gray-200{% endif %} focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+                                   class="w-full px-4 py-3 rounded-xl border {% if form.phone.errors %}border-red-500{% else %}border-surface-200{% endif %} focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-sm"
                                    placeholder="+977 98XXXXXXXX">
                             {% if form.phone.errors %}
-                                <p class="mt-1 text-sm text-red-600">{{ form.phone.errors.0 }}</p>
+                                <p class="mt-1 text-xs text-red-600">{{ form.phone.errors.0 }}</p>
                             {% endif %}
-                            <p class="mt-1 text-xs text-gray-500">{{ form.phone.help_text }}</p>
+                            <p class="mt-1 text-xs text-surface-400">{{ form.phone.help_text }}</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Divider -->
-                <div class="border-t border-gray-200"></div>
+                <div class="border-t border-surface-100"></div>
 
                 <!-- About You Section -->
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                        <i class="fas fa-comment-dots text-primary-600 mr-2"></i>
+                    <h3 class="text-base font-bold text-surface-900 mb-4 flex items-center gap-2">
+                        <i class="fas fa-comment-dots text-brand-500 text-sm"></i>
                         About You
                     </h3>
                     
                     <div>
-                        <label for="id_bio" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="id_bio" class="block text-sm font-semibold text-surface-700 mb-2">
                             Tell us about yourself
-                            <span class="text-xs text-gray-500">(Optional)</span>
+                            <span class="text-xs text-surface-400 font-normal">(Optional)</span>
                         </label>
                         <textarea name="bio" id="id_bio" rows="4"
-                                  class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all resize-none"
+                                  class="w-full px-4 py-3 rounded-xl border border-surface-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all resize-none text-sm"
                                   placeholder="Tell us a bit about yourself and why you want to join our club...">{{ form.bio.value|default:'' }}</textarea>
-                        <p class="mt-1 text-xs text-gray-500">{{ form.bio.help_text }}</p>
+                        <p class="mt-1 text-xs text-surface-400">{{ form.bio.help_text }}</p>
                     </div>
                 </div>
 
                 <!-- Divider -->
-                <div class="border-t border-gray-200"></div>
+                <div class="border-t border-surface-100"></div>
 
                 <!-- Account Information Section -->
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                        <i class="fas fa-key text-primary-600 mr-2"></i>
+                    <h3 class="text-base font-bold text-surface-900 mb-4 flex items-center gap-2">
+                        <i class="fas fa-key text-brand-500 text-sm"></i>
                         Account Information
                     </h3>
                     
-                    <div class="space-y-4">
+                    <div class="flex flex-col gap-4">
                         <div>
-                            <label for="id_username" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="id_username" class="block text-sm font-semibold text-surface-700 mb-2">
                                 Username <span class="text-red-500">*</span>
                             </label>
                             <input type="text" name="username" id="id_username" required
                                    value="{{ form.username.value|default:'' }}"
-                                   class="w-full px-4 py-3 rounded-xl border {% if form.username.errors %}border-red-500{% else %}border-gray-200{% endif %} focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+                                   class="w-full px-4 py-3 rounded-xl border {% if form.username.errors %}border-red-500{% else %}border-surface-200{% endif %} focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-sm"
                                    placeholder="Choose a username">
                             {% if form.username.errors %}
-                                <p class="mt-1 text-sm text-red-600">{{ form.username.errors.0 }}</p>
+                                <p class="mt-1 text-xs text-red-600">{{ form.username.errors.0 }}</p>
                             {% endif %}
                         </div>
 
                         <div>
-                            <label for="id_password1" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="id_password1" class="block text-sm font-semibold text-surface-700 mb-2">
                                 Password <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
                                 <input type="password" name="password1" id="id_password1" required
-                                       class="w-full px-4 py-3 pr-12 rounded-xl border {% if form.password1.errors %}border-red-500{% else %}border-gray-200{% endif %} focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+                                       class="w-full px-4 py-3 pr-12 rounded-xl border {% if form.password1.errors %}border-red-500{% else %}border-surface-200{% endif %} focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-sm"
                                        placeholder="Create a strong password">
                                 <button type="button" onclick="togglePassword('id_password1', this)" 
-                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-surface-400 hover:text-surface-600 focus:outline-none">
                                     <i class="fas fa-eye" id="icon_id_password1"></i>
                                 </button>
                             </div>
                             {% if form.password1.errors %}
-                                <p class="mt-1 text-sm text-red-600">{{ form.password1.errors.0 }}</p>
+                                <p class="mt-1 text-xs text-red-600">{{ form.password1.errors.0 }}</p>
                             {% endif %}
                         </div>
 
                         <div>
-                            <label for="id_password2" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="id_password2" class="block text-sm font-semibold text-surface-700 mb-2">
                                 Confirm Password <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
                                 <input type="password" name="password2" id="id_password2" required
-                                       class="w-full px-4 py-3 pr-12 rounded-xl border {% if form.password2.errors %}border-red-500{% else %}border-gray-200{% endif %} focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+                                       class="w-full px-4 py-3 pr-12 rounded-xl border {% if form.password2.errors %}border-red-500{% else %}border-surface-200{% endif %} focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-sm"
                                        placeholder="Re-enter your password">
                                 <button type="button" onclick="togglePassword('id_password2', this)" 
-                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-surface-400 hover:text-surface-600 focus:outline-none">
                                     <i class="fas fa-eye" id="icon_id_password2"></i>
                                 </button>
                             </div>
                             {% if form.password2.errors %}
-                                <p class="mt-1 text-sm text-red-600">{{ form.password2.errors.0 }}</p>
+                                <p class="mt-1 text-xs text-red-600">{{ form.password2.errors.0 }}</p>
                             {% endif %}
                         </div>
 
                         <!-- Show Password Checkbox -->
                         <div class="flex items-center">
                             <input type="checkbox" id="showPasswordCheckbox" onclick="toggleAllPasswords(this)" 
-                                   class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
-                            <label for="showPasswordCheckbox" class="ml-2 text-sm text-gray-600 cursor-pointer">
+                                   class="w-4 h-4 text-brand-600 border-surface-300 rounded focus:ring-brand-500">
+                            <label for="showPasswordCheckbox" class="ml-2 text-sm text-surface-500 cursor-pointer">
                                 Show passwords
                             </label>
                         </div>
@@ -279,7 +279,7 @@
 
                 {% if form.non_field_errors %}
                 <div class="bg-red-50 border border-red-200 rounded-xl p-4 mt-4">
-                    <ul class="text-sm text-red-600 space-y-1">
+                    <ul class="text-xs text-red-600 flex flex-col gap-1">
                         {% for error in form.non_field_errors %}
                             <li><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</li>
                         {% endfor %}
@@ -288,11 +288,10 @@
                 {% endif %}
 
                 <div class="pt-2">
-                    <button type="submit" class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 text-white font-bold text-lg shadow-lg hover:shadow-xl hover:from-primary-700 hover:to-primary-800 transition-all transform hover:scale-[1.02]">
-                        <i class="fas fa-user-plus mr-2"></i>Submit Joining Form
+                    <button type="submit" class="w-full py-4 px-6 rounded-full bg-surface-900 text-white font-bold text-sm hover:bg-surface-800 transition-all">
+                        Submit Joining Form
                     </button>
-                    <p class="mt-3 text-xs text-center text-gray-500">
-                        <i class="fas fa-info-circle mr-1"></i>
+                    <p class="mt-3 text-xs text-center text-surface-400">
                         By submitting this form, you agree to become a member of Shanti Yuwa Club
                     </p>
                 </div>
@@ -347,69 +346,50 @@ function toggleAllPasswords(checkbox) {
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('registrationForm');
     
-    // Name validation - only letters, spaces, hyphens, and apostrophes
     const namePattern = /^[a-zA-Z\s\-']+$/;
-    
-    // Email validation
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
-    // Phone validation - basic pattern for international numbers
     const phonePattern = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/;
-    
-    // Username validation - alphanumeric, underscore, hyphen, 3-30 chars
     const usernamePattern = /^[a-zA-Z0-9_-]{3,30}$/;
     
-    // Real-time validation for first name
     const firstNameInput = document.getElementById('id_first_name');
     if (firstNameInput) {
         firstNameInput.addEventListener('input', function(e) {
             let value = e.target.value;
-            // Remove invalid characters
             value = value.replace(/[^a-zA-Z\s\-']/g, '');
-            // Capitalize first letter of each word
             value = value.replace(/\b\w/g, l => l.toUpperCase());
             e.target.value = value;
         });
     }
     
-    // Real-time validation for last name
     const lastNameInput = document.getElementById('id_last_name');
     if (lastNameInput) {
         lastNameInput.addEventListener('input', function(e) {
             let value = e.target.value;
-            // Remove invalid characters
             value = value.replace(/[^a-zA-Z\s\-']/g, '');
-            // Capitalize first letter of each word
             value = value.replace(/\b\w/g, l => l.toUpperCase());
             e.target.value = value;
         });
     }
     
-    // Real-time validation for username
     const usernameInput = document.getElementById('id_username');
     if (usernameInput) {
         usernameInput.addEventListener('input', function(e) {
             let value = e.target.value;
-            // Remove invalid characters
             value = value.replace(/[^a-zA-Z0-9_-]/g, '');
-            // Convert to lowercase
             value = value.toLowerCase();
             e.target.value = value;
         });
     }
     
-    // Real-time validation for phone
     const phoneInput = document.getElementById('id_phone');
     if (phoneInput) {
         phoneInput.addEventListener('input', function(e) {
             let value = e.target.value;
-            // Allow only numbers, +, -, spaces, and parentheses
             value = value.replace(/[^0-9\+\-\s\(\)]/g, '');
             e.target.value = value;
         });
     }
     
-    // Prevent whitespace-only submission in text fields
     const textInputs = form.querySelectorAll('input[type="text"], input[type="email"], textarea');
     textInputs.forEach(input => {
         input.addEventListener('blur', function(e) {
@@ -417,12 +397,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Form submission validation
     form.addEventListener('submit', function(e) {
         let isValid = true;
         let errors = [];
         
-        // Validate first name
         const firstName = firstNameInput.value.trim();
         if (!firstName) {
             errors.push('First name is required');
@@ -436,7 +414,6 @@ document.addEventListener('DOMContentLoaded', function() {
             firstNameInput.classList.remove('border-red-500');
         }
         
-        // Validate last name
         const lastName = lastNameInput.value.trim();
         if (!lastName) {
             errors.push('Last name is required');
@@ -450,7 +427,6 @@ document.addEventListener('DOMContentLoaded', function() {
             lastNameInput.classList.remove('border-red-500');
         }
         
-        // Validate username
         const username = usernameInput.value.trim();
         if (!username) {
             errors.push('Username is required');
@@ -464,7 +440,6 @@ document.addEventListener('DOMContentLoaded', function() {
             usernameInput.classList.remove('border-red-500');
         }
         
-        // Validate email
         const emailInput = document.getElementById('id_email');
         const email = emailInput.value.trim();
         if (!email) {
@@ -479,7 +454,6 @@ document.addEventListener('DOMContentLoaded', function() {
             emailInput.classList.remove('border-red-500');
         }
         
-        // Validate phone
         const phone = phoneInput.value.trim();
         if (!phone) {
             errors.push('Phone number is required');
@@ -493,7 +467,6 @@ document.addEventListener('DOMContentLoaded', function() {
             phoneInput.classList.remove('border-red-500');
         }
         
-        // Validate date of birth
         const dateOfBirthInput = document.getElementById('id_date_of_birth');
         const dateOfBirth = dateOfBirthInput.value;
         if (!dateOfBirth) {
@@ -501,7 +474,6 @@ document.addEventListener('DOMContentLoaded', function() {
             isValid = false;
             dateOfBirthInput.classList.add('border-red-500');
         } else {
-            // Check if date is not in the future
             const today = new Date();
             const selectedDate = new Date(dateOfBirth);
             if (selectedDate > today) {
@@ -513,7 +485,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Validate blood group
         const bloodGroupInput = document.getElementById('id_blood_group');
         const bloodGroup = bloodGroupInput.value;
         if (!bloodGroup) {
@@ -524,7 +495,6 @@ document.addEventListener('DOMContentLoaded', function() {
             bloodGroupInput.classList.remove('border-red-500');
         }
         
-        // Validate passwords
         const password1 = document.getElementById('id_password1');
         const password2 = document.getElementById('id_password2');
         
@@ -552,29 +522,23 @@ document.addEventListener('DOMContentLoaded', function() {
             password2.classList.remove('border-red-500');
         }
         
-        // If validation fails, prevent submission and show errors
         if (!isValid) {
             e.preventDefault();
-            
-            // Scroll to top to show errors
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            // Create error message div if it doesn't exist
             let errorDiv = document.getElementById('validationErrors');
             if (!errorDiv) {
                 errorDiv = document.createElement('div');
                 errorDiv.id = 'validationErrors';
-                errorDiv.className = 'mb-4 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700';
+                errorDiv.className = 'mb-4 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm';
                 form.insertBefore(errorDiv, form.firstChild);
             }
             
-            // Display errors
             errorDiv.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i><strong>Please fix the following errors:</strong><ul class="mt-2 ml-6 list-disc">' + 
                 errors.map(err => '<li>' + err + '</li>').join('') + '</ul>';
             
             return false;
         } else {
-            // Remove error div if validation passes
             const errorDiv = document.getElementById('validationErrors');
             if (errorDiv) {
                 errorDiv.remove();

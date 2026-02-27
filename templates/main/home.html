@@ -5,161 +5,105 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-    <!-- Background Carousel with Overlay -->
+<section class="relative min-h-[90vh] flex items-center overflow-hidden bg-surface-950">
+    <!-- Background Image -->
     <div class="absolute inset-0 z-0">
         <div class="hero-slides w-full h-full relative">
-            <div class="absolute inset-0 bg-center bg-cover z-10"
-                style="background-image: url('{% static 'images/hero-bg.jpg' %}?v={% now 'U' %}')"></div>
+            <div class="absolute inset-0 bg-center bg-cover" style="background-image: url('{% static 'images/hero-bg.jpg' %}?v={% now 'U' %}')"></div>
         </div>
-        <div class="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/70 to-gray-900/50"></div>
-    </div>
-
-    <!-- Animated Background Elements -->
-    <div class="absolute inset-0 z-0 overflow-hidden">
-        <div
-            class="absolute top-20 left-4 sm:left-10 w-48 sm:w-72 h-48 sm:h-72 bg-primary-500/10 rounded-full blur-3xl animate-float">
-        </div>
-        <div class="absolute bottom-20 right-4 sm:right-10 w-64 sm:w-96 h-64 sm:h-96 bg-secondary-500/10 rounded-full blur-3xl animate-float"
-            style="animation-delay: 1s;"></div>
+        <div class="absolute inset-0 bg-surface-950/70"></div>
     </div>
 
     <!-- Hero Content -->
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+    <div class="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 py-32 lg:py-40">
         <div class="max-w-3xl">
-            <!-- Badge -->
-            <div
-                class="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm mb-8 animate-fade-in">
-                <span class="w-2 h-2 rounded-full bg-green-400 mr-2 animate-pulse"></span>
+            <p class="text-brand-400 text-sm font-semibold tracking-widest uppercase mb-6 animate-fade-in">
                 Youth-Led Community Organization
-            </div>
-
-            <!-- Heading -->
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 animate-slide-up">
-                Empowering Youth,
-                <span class="bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Building
-                    Community</span>
-            </h1>
-
-            <!-- Description -->
-            <p class="text-lg sm:text-xl text-gray-300 mb-10 leading-relaxed animate-slide-up"
-                style="animation-delay: 0.1s;">
-                Shanti Yuwa Club is a youth-led, community-based organization in Biratnagar, Nepal working on social
-                awareness, empowerment, and local outreach.
             </p>
-
-            <!-- CTA Buttons -->
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-[1.05] mb-8 animate-slide-up tracking-tight">
+                Empowering Youth,
+                <span class="text-brand-400">Building Community</span>
+            </h1>
+            <p class="text-lg text-surface-300 mb-10 leading-relaxed max-w-xl animate-slide-up" style="animation-delay: 0.1s;">
+                We are a youth-led organization in Biratnagar, Nepal working on social awareness, empowerment, and local outreach.
+            </p>
             <div class="flex flex-col sm:flex-row gap-4 animate-slide-up" style="animation-delay: 0.2s;">
                 <a href="{% url 'about' %}"
-                    class="group inline-flex items-center justify-center px-8 py-4 rounded-full bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold shadow-lg hover:shadow-primary-500/25 transition-all duration-300 hover:scale-105">
-                    Learn More
-                    <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                    class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-brand-500 text-white font-semibold hover:bg-brand-600 transition-all duration-300 text-sm tracking-wide">
+                    Discover Our Story
+                    <i class="fas fa-arrow-right ml-3 text-xs"></i>
                 </a>
                 <a href="{% url 'member_register' %}"
-                    class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold hover:bg-white/20 transition-all duration-300">
-                    <i class="fas fa-hands-helping mr-2"></i>
-                    Get Involved
+                    class="inline-flex items-center justify-center px-8 py-4 rounded-full border border-white/20 text-white font-semibold hover:bg-white/10 transition-all duration-300 text-sm tracking-wide">
+                    Join Our Community
                 </a>
             </div>
         </div>
     </div>
 
     <!-- Scroll Indicator -->
-    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
-        <a href="#about"
-            class="flex flex-col items-center text-white/60 hover:text-white transition-colors duration-200">
-            <span class="text-xs mb-2">Scroll Down</span>
-            <i class="fas fa-chevron-down"></i>
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+        <a href="#about" class="flex flex-col items-center text-white/40 hover:text-white/70 transition-colors duration-200">
+            <span class="text-[10px] tracking-widest uppercase mb-2">Scroll</span>
+            <div class="w-5 h-8 rounded-full border border-white/30 flex items-start justify-center p-1">
+                <div class="w-1 h-2 bg-white/60 rounded-full animate-bounce"></div>
+            </div>
         </a>
     </div>
 </section>
 
-<!-- About Section -->
-<section id="about" class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
+<!-- About Preview Section -->
+<section id="about" class="py-24 lg:py-32 bg-surface-50">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+        <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
             <!-- Image Side -->
             <div class="relative">
-                <div class="relative z-10">
+                <div class="aspect-[4/5] rounded-2xl overflow-hidden">
                     <img src="{% static 'images/about-home.jpg' %}?v={% now 'U' %}" alt="Shanti Yuwa Club Team"
-                        class="w-full rounded-2xl shadow-2xl">
+                        class="w-full h-full object-cover">
                 </div>
-                <!-- Decorative Elements -->
-                <div
-                    class="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 w-full h-full bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl -z-10">
-                </div>
-                <div
-                    class="absolute -top-2 -left-2 sm:-top-4 sm:-left-4 w-16 sm:w-24 h-16 sm:h-24 bg-secondary-400 rounded-2xl -z-10">
-                </div>
-
-                <!-- Stats Card -->
-                <div
-                    class="absolute -bottom-6 -left-4 sm:-bottom-8 sm:-left-8 bg-white rounded-2xl shadow-xl p-4 sm:p-6 z-20">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-14 h-14 rounded-full bg-primary-100 flex items-center justify-center">
-                            <i class="fas fa-users text-2xl text-primary-600"></i>
-                        </div>
-                        <div>
-                            <p class="text-3xl font-bold text-gray-900">5+</p>
-                            <p class="text-gray-500 text-sm">Years of Impact</p>
-                        </div>
-                    </div>
+                <!-- Floating Stats Card -->
+                <div class="absolute -bottom-6 -right-4 sm:-bottom-8 sm:right-8 bg-surface-900 text-white rounded-xl p-6 shadow-2xl">
+                    <p class="text-3xl font-extrabold">5+</p>
+                    <p class="text-surface-400 text-sm mt-1">Years of Impact</p>
                 </div>
             </div>
 
             <!-- Content Side -->
             <div>
-                <a href="{% url 'about' %}"
-                    class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6 hover:bg-primary-100 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer shadow-md">
-                    <i class="fas fa-info-circle mr-2"></i>
-                    About Us
-                </a>
-                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-                    Creating Positive Change Through
-                    <span class="text-primary-600">Youth Leadership</span>
+                <p class="text-brand-600 text-xs font-bold tracking-widest uppercase mb-4">About Us</p>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-surface-900 leading-tight mb-6 tracking-tight">
+                    Creating Positive Change Through Youth Leadership
                 </h2>
-                <p class="text-gray-600 text-lg leading-relaxed mb-6">
-                    Shanti Yuwa Club is dedicated to empowering youth and creating positive change in our community.
-                    Founded in 2020, our organization works on various social issues and community development projects
-                    in Biratnagar and surrounding areas.
+                <p class="text-surface-500 text-lg leading-relaxed mb-6">
+                    Shanti Yuwa Club is dedicated to empowering youth and creating positive change in our community. Founded in 2020, our organization works on various social issues and community development projects in Biratnagar and surrounding areas.
                 </p>
-                <p class="text-gray-600 text-lg leading-relaxed mb-8">
-                    Our mission is to promote peace, social awareness, and youth empowerment through various initiatives
-                    and programs designed to address local needs and create sustainable impact.
+                <p class="text-surface-500 text-lg leading-relaxed mb-10">
+                    Our mission is to promote peace, social awareness, and youth empowerment through various initiatives and programs.
                 </p>
 
-                <!-- Features List -->
-                <div class="grid sm:grid-cols-2 gap-4 mb-8">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-green-600"></i>
-                        </div>
-                        <span class="text-gray-700 font-medium">Youth Empowerment</span>
+                <div class="grid grid-cols-2 gap-4 mb-10">
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full bg-brand-500"></div>
+                        <span class="text-surface-700 text-sm font-medium">Youth Empowerment</span>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-green-600"></i>
-                        </div>
-                        <span class="text-gray-700 font-medium">Community Development</span>
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full bg-brand-500"></div>
+                        <span class="text-surface-700 text-sm font-medium">Community Development</span>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-green-600"></i>
-                        </div>
-                        <span class="text-gray-700 font-medium">Social Awareness</span>
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full bg-brand-500"></div>
+                        <span class="text-surface-700 text-sm font-medium">Social Awareness</span>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-green-600"></i>
-                        </div>
-                        <span class="text-gray-700 font-medium">Environmental Action</span>
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full bg-brand-500"></div>
+                        <span class="text-surface-700 text-sm font-medium">Environmental Action</span>
                     </div>
                 </div>
 
-                <a href="{% url 'about' %}"
-                    class="group inline-flex items-center px-6 py-3 rounded-full bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-all duration-300 shadow-lg hover:shadow-primary-500/25">
+                <a href="{% url 'about' %}" class="inline-flex items-center gap-2 text-surface-900 font-semibold text-sm border-b-2 border-surface-900 pb-1 hover:text-brand-600 hover:border-brand-600 transition-colors duration-200">
                     Learn More About Us
-                    <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                    <i class="fas fa-arrow-right text-xs"></i>
                 </a>
             </div>
         </div>
@@ -167,200 +111,144 @@
 </section>
 
 <!-- Programs Section -->
-<section class="py-24 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="py-24 lg:py-32 bg-white">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
         <!-- Section Header -->
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <div
-                class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
-                <i class="fas fa-project-diagram mr-2"></i>
-                Our Programs
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
+            <div class="max-w-2xl">
+                <p class="text-brand-600 text-xs font-bold tracking-widest uppercase mb-4">Our Programs</p>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-surface-900 tracking-tight">
+                    Initiatives That Make a Difference
+                </h2>
             </div>
-            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-                Initiatives That Make a
-                <span class="text-primary-600">Difference</span>
-            </h2>
-            <p class="text-gray-600 text-lg">
-                Explore our initiatives and see how we're making a difference in the community through various programs
-                and activities.
-            </p>
+            <a href="{% url 'programs' %}" class="inline-flex items-center gap-2 text-surface-900 font-semibold text-sm border-b-2 border-surface-900 pb-1 hover:text-brand-600 hover:border-brand-600 transition-colors duration-200 self-start lg:self-auto">
+                View All Programs
+                <i class="fas fa-arrow-right text-xs"></i>
+            </a>
         </div>
 
         <!-- Programs Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% if programs %}
             {% for program in programs %}
-            <div
-                class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                <div class="relative h-56 overflow-hidden">
+            <div class="group bg-surface-50 rounded-2xl overflow-hidden bento-card">
+                <div class="relative aspect-[16/10] overflow-hidden">
                     <img src="{{ program.image.url }}" alt="{{ program.title }}"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                     {% if program.id in enrolled_program_ids %}
                     <div class="absolute top-4 right-4">
-                        <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-500 text-white shadow-lg">
-                            <i class="fas fa-check-circle mr-1"></i>Enrolled
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-500 text-white">
+                            Enrolled
                         </span>
                     </div>
                     {% endif %}
                 </div>
                 <div class="p-6">
-                    <h3
-                        class="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors duration-200">
+                    <h3 class="text-lg font-bold text-surface-900 mb-2 group-hover:text-brand-600 transition-colors duration-200">
                         {{ program.title }}</h3>
-                    <p class="text-gray-600 mb-4 line-clamp-2">{{ program.short_description }}</p>
+                    <p class="text-surface-500 text-sm mb-5 line-clamp-2">{{ program.short_description }}</p>
                     <div class="flex items-center justify-between">
-                        <a href="{% url 'program_detail' program.slug %}"
-                            class="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 transition-colors duration-200">
-                            Learn More
-                            <i
-                                class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                        <a href="{% url 'program_detail' program.slug %}" class="inline-flex items-center gap-2 text-sm font-semibold text-surface-900 hover:text-brand-600 transition-colors duration-200">
+                            Learn More <i class="fas fa-arrow-right text-xs"></i>
                         </a>
                         {% if user.is_authenticated %}
-                        {% if program.id in enrolled_program_ids %}
-                        <span class="text-sm text-green-600 font-medium">
-                            <i class="fas fa-user-check mr-1"></i>Member
-                        </span>
+                            {% if program.id in enrolled_program_ids %}
+                            <span class="text-xs text-green-600 font-medium">Member</span>
+                            {% else %}
+                            <a href="{% url 'enroll_in_program' program.id %}" class="text-xs font-semibold text-brand-600 hover:text-brand-700 transition-colors">Enroll</a>
+                            {% endif %}
                         {% else %}
-                        <a href="{% url 'enroll_in_program' program.id %}"
-                            class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-primary-100 text-primary-700 hover:bg-primary-200 transition-colors">
-                            <i class="fas fa-plus mr-1"></i>Enroll
-                        </a>
-                        {% endif %}
-                        {% else %}
-                        <a href="{% url 'member_register' %}"
-                            class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors">
-                            <i class="fas fa-user-plus mr-1"></i>Join to Enroll
-                        </a>
+                        <a href="{% url 'member_register' %}" class="text-xs font-semibold text-surface-400 hover:text-brand-600 transition-colors">Join to Enroll</a>
                         {% endif %}
                     </div>
                 </div>
             </div>
             {% endfor %}
             {% else %}
-            <div class="col-span-full text-center py-12">
-                <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
-                    <i class="fas fa-folder-open text-3xl text-gray-400"></i>
-                </div>
-                <p class="text-gray-500 text-lg">No programs available at the moment. Check back later!</p>
+            <div class="col-span-full text-center py-16">
+                <p class="text-surface-400 text-lg">No programs available at the moment.</p>
             </div>
             {% endif %}
-        </div>
-
-        <!-- View All Button -->
-        <div class="text-center mt-12">
-            <a href="{% url 'programs' %}"
-                class="inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold shadow-lg hover:shadow-primary-500/25 transition-all duration-300 hover:scale-105">
-                View All Programs
-                <i class="fas fa-arrow-right ml-2"></i>
-            </a>
         </div>
     </div>
 </section>
 
-<!-- Team Members Section -->
-<section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Section Header -->
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <div
-                class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
-                <i class="fas fa-users mr-2"></i>
-                Our Team
+<!-- Team Section -->
+<section class="py-24 lg:py-32 bg-surface-950 text-white">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
+            <div class="max-w-2xl">
+                <p class="text-brand-400 text-xs font-bold tracking-widest uppercase mb-4">Our Team</p>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight">
+                    Meet the Passionate People
+                </h2>
             </div>
-            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-                Meet the <span class="text-primary-600">Passionate People</span>
-            </h2>
-            <p class="text-gray-600 text-lg">
-                The dedicated individuals behind Shanti Yuwa Club working tirelessly to create positive change.
-            </p>
+            <a href="{% url 'about' %}#team" class="inline-flex items-center gap-2 text-white font-semibold text-sm border-b border-white/30 pb-1 hover:border-brand-400 hover:text-brand-400 transition-colors duration-200 self-start lg:self-auto">
+                View Full Team <i class="fas fa-arrow-right text-xs"></i>
+            </a>
         </div>
 
-        <!-- Team Grid -->
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {% if team_members %}
             {% for member in team_members %}
-            <div class="group text-center">
-                <div class="relative mb-6 mx-auto w-48 h-48">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-105">
-                    </div>
+            <div class="group">
+                <div class="relative aspect-[3/4] rounded-2xl overflow-hidden mb-5">
                     <img src="{{ member.image.url }}" alt="{{ member.name }}"
-                        class="relative w-full h-full rounded-full object-cover border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-300">
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-surface-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <!-- Social Links Overlay -->
+                    <div class="absolute bottom-4 left-4 right-4 flex justify-center gap-3 transform translate-y-8 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        {% if member.facebook %}
+                        <a href="{{ member.facebook }}" target="_blank" rel="noopener noreferrer"
+                            class="w-9 h-9 rounded-full bg-white/15 backdrop-blur-sm hover:bg-brand-500 flex items-center justify-center text-white transition-all duration-200" aria-label="{{ member.name }}'s Facebook">
+                            <i class="fab fa-facebook-f text-sm"></i>
+                        </a>
+                        {% endif %}
+                        {% if member.instagram %}
+                        <a href="{{ member.instagram }}" target="_blank" rel="noopener noreferrer"
+                            class="w-9 h-9 rounded-full bg-white/15 backdrop-blur-sm hover:bg-brand-500 flex items-center justify-center text-white transition-all duration-200" aria-label="{{ member.name }}'s Instagram">
+                            <i class="fab fa-instagram text-sm"></i>
+                        </a>
+                        {% endif %}
+                        {% if member.twitter %}
+                        <a href="{{ member.twitter }}" target="_blank" rel="noopener noreferrer"
+                            class="w-9 h-9 rounded-full bg-white/15 backdrop-blur-sm hover:bg-brand-500 flex items-center justify-center text-white transition-all duration-200" aria-label="{{ member.name }}'s Twitter">
+                            <i class="fab fa-twitter text-sm"></i>
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-1">{{ member.name }}</h3>
-                <p class="text-primary-600 font-medium mb-4">{{ member.position }}</p>
-                <div class="flex justify-center space-x-3">
-                    {% if member.facebook %}
-                    <a href="{{ member.facebook }}" target="_blank" rel="noopener noreferrer"
-                        class="w-10 h-10 rounded-full bg-gray-100 hover:bg-primary-600 flex items-center justify-center text-gray-600 hover:text-white transition-all duration-300"
-                        aria-label="{{ member.name }}'s Facebook">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    {% endif %}
-                    {% if member.instagram %}
-                    <a href="{{ member.instagram }}" target="_blank" rel="noopener noreferrer"
-                        class="w-10 h-10 rounded-full bg-gray-100 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 flex items-center justify-center text-gray-600 hover:text-white transition-all duration-300"
-                        aria-label="{{ member.name }}'s Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    {% endif %}
-                    {% if member.twitter %}
-                    <a href="{{ member.twitter }}" target="_blank" rel="noopener noreferrer"
-                        class="w-10 h-10 rounded-full bg-gray-100 hover:bg-sky-500 flex items-center justify-center text-gray-600 hover:text-white transition-all duration-300"
-                        aria-label="{{ member.name }}'s Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    {% endif %}
-                </div>
+                <h3 class="text-base font-bold text-white">{{ member.name }}</h3>
+                <p class="text-brand-400 text-sm mt-1">{{ member.position }}</p>
             </div>
             {% endfor %}
             {% else %}
             <div class="col-span-full text-center py-12">
-                <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
-                    <i class="fas fa-users text-3xl text-gray-400"></i>
-                </div>
-                <p class="text-gray-500 text-lg">Team information coming soon!</p>
+                <p class="text-surface-500 text-lg">Team information coming soon!</p>
             </div>
             {% endif %}
-        </div>
-
-        <!-- View All Button -->
-        <div class="text-center mt-12">
-            <a href="{% url 'about' %}#team"
-                class="inline-flex items-center px-8 py-4 rounded-full border-2 border-primary-600 text-primary-600 font-semibold hover:bg-primary-600 hover:text-white transition-all duration-300">
-                View All Team Members
-                <i class="fas fa-arrow-right ml-2"></i>
-            </a>
         </div>
     </div>
 </section>
 
 <!-- Gallery Preview Section -->
-<section class="py-24 bg-gray-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Section Header -->
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <a href="{% url 'gallery' %}"
-                class="inline-flex items-center px-4 py-2 rounded-full bg-white/10 text-primary-400 text-sm font-medium mb-6 hover:bg-white/20 transition-colors duration-300">
-                <i class="fas fa-images mr-2"></i>
-                Photo Gallery
+<section class="py-24 lg:py-32 bg-white">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
+            <div class="max-w-2xl">
+                <p class="text-brand-600 text-xs font-bold tracking-widest uppercase mb-4">Photo Gallery</p>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-surface-900 tracking-tight">
+                    Glimpses of Our Journey
+                </h2>
+            </div>
+            <a href="{% url 'gallery' %}" class="inline-flex items-center gap-2 text-surface-900 font-semibold text-sm border-b-2 border-surface-900 pb-1 hover:text-brand-600 hover:border-brand-600 transition-colors duration-200 self-start lg:self-auto">
+                View Full Gallery <i class="fas fa-arrow-right text-xs"></i>
             </a>
-            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6">
-                Glimpses of Our <span class="text-primary-400">Journey</span>
-            </h2>
-            <p class="text-gray-400 text-lg">
-                Capturing moments from our activities, events, and community engagement.
-            </p>
         </div>
 
-        <!-- Gallery Slideshow -->
         {% if gallery_images %}
         <div class="relative max-w-6xl mx-auto">
-            <!-- Slideshow Container -->
-            <div id="gallery-slideshow" class="relative overflow-hidden rounded-3xl" style="height: 600px;">
-                <!-- Slides Container with Virtualization -->
+            <div id="gallery-slideshow" class="relative overflow-hidden rounded-2xl" style="height: 550px;">
                 <div id="slides-container" class="relative w-full h-full">
                     {% for image in gallery_images %}
                     <div class="gallery-slide absolute inset-0 opacity-0 transition-opacity duration-700 ease-in-out {% if forloop.first %}active opacity-100{% endif %}"
@@ -368,194 +256,131 @@
                         data-title="{{ image.title }}" data-category="{{ image.category.name }}">
                         <img src="{{ image.image.url }}" alt="{{ image.title }}" class="w-full h-full object-cover"
                             loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
-                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/30 to-transparent">
-                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-surface-950/80 via-surface-950/20 to-transparent"></div>
                         <div class="absolute bottom-0 left-0 right-0 p-8 text-white">
                             <div class="max-w-3xl">
-                                <span
-                                    class="inline-block px-4 py-1 rounded-full bg-primary-500/80 text-sm font-medium mb-3">
+                                <span class="inline-block px-3 py-1 rounded-full bg-brand-500/80 text-xs font-medium mb-3">
                                     {{ image.category.name }}
                                 </span>
                                 <h3 class="text-2xl md:text-3xl font-bold mb-2">{{ image.title }}</h3>
                                 {% if image.description %}
-                                <p class="text-gray-300 text-sm md:text-base">{{ image.description|truncatewords:20 }}
-                                </p>
+                                <p class="text-surface-300 text-sm">{{ image.description|truncatewords:20 }}</p>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
-
-                <!-- Slide Indicators (non-interactive) -->
-                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex space-x-2">
+                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2">
                     {% for image in gallery_images %}
-                    <span
-                        class="slide-indicator w-2 h-2 rounded-full bg-white/50 transition-all duration-300 {% if forloop.first %}active !w-8 !bg-white{% endif %}"></span>
+                    <span class="slide-indicator w-2 h-2 rounded-full bg-white/40 transition-all duration-300 {% if forloop.first %}active !w-8 !bg-white{% endif %}"></span>
                     {% endfor %}
                 </div>
-
-                <!-- Controls removed to keep hero and gallery images clean (no buttons/icons on images) -->
             </div>
         </div>
         {% else %}
         <div class="text-center py-12">
-            <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gray-800 flex items-center justify-center">
-                <i class="fas fa-images text-3xl text-gray-600"></i>
-            </div>
-            <p class="text-gray-500 text-lg">Gallery images coming soon!</p>
+            <p class="text-surface-400 text-lg">Gallery images coming soon!</p>
         </div>
         {% endif %}
-
-        <!-- View All Button -->
-        <div class="text-center mt-12">
-            <a href="{% url 'gallery' %}"
-                class="inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold shadow-lg hover:shadow-primary-500/25 transition-all duration-300 hover:scale-105">
-                View Full Gallery
-                <i class="fas fa-arrow-right ml-2"></i>
-            </a>
-        </div>
     </div>
 </section>
 
-<!-- Life at Shanti Yuwa Club Section -->
-<section class="py-24 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Section Header -->
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <div
-                class="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-6">
-                <i class="fas fa-heart mr-2"></i>
-                Life at SYC
-            </div>
-            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-                Experience What It's Like to Be
-                <span class="text-primary-600">Part of Our Family</span>
+<!-- Life at SYC Section -->
+<section class="py-24 lg:py-32 bg-surface-50">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <p class="text-brand-600 text-xs font-bold tracking-widest uppercase mb-4">Life at SYC</p>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-surface-900 tracking-tight">
+                Experience What It's Like to Be Part of Our Family
             </h2>
-            <p class="text-gray-600 text-lg">
-                Join our vibrant community and discover the joy of making a difference together.
-            </p>
         </div>
 
-        <!-- Feature Cards -->
-        <div class="grid md:grid-cols-3 gap-8 mb-16">
-            <div
-                class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                <div class="relative h-48 overflow-hidden">
+        <!-- Bento Grid -->
+        <div class="grid md:grid-cols-3 gap-6 mb-16">
+            <div class="group bg-white rounded-2xl overflow-hidden bento-card">
+                <div class="relative aspect-[16/10] overflow-hidden">
                     <img src="{% static 'images/life-community.jpg' %}?v={% now 'U' %}" alt="Community Meeting"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-primary-600/80 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4">
-                        <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                            <i class="fas fa-users text-2xl text-white"></i>
-                        </div>
-                    </div>
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                 </div>
                 <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Supportive Community</h3>
-                    <p class="text-gray-600">Join a family of like-minded individuals passionate about creating positive
-                        change. We support each other's growth and celebrate our collective achievements.</p>
+                    <h3 class="text-lg font-bold text-surface-900 mb-2">Supportive Community</h3>
+                    <p class="text-surface-500 text-sm leading-relaxed">Join a family of like-minded individuals passionate about creating positive change.</p>
                 </div>
             </div>
 
-            <div
-                class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                <div class="relative h-48 overflow-hidden">
+            <div class="group bg-white rounded-2xl overflow-hidden bento-card">
+                <div class="relative aspect-[16/10] overflow-hidden">
                     <img src="{% static 'images/life-skills.jpg' %}?v={% now 'U' %}" alt="Skills Workshop"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-secondary-600/80 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4">
-                        <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                            <i class="fas fa-lightbulb text-2xl text-white"></i>
-                        </div>
-                    </div>
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                 </div>
                 <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Skills Development</h3>
-                    <p class="text-gray-600">Enhance your leadership, communication, and project management skills
-                        through hands-on experience with community initiatives and training opportunities.</p>
+                    <h3 class="text-lg font-bold text-surface-900 mb-2">Skills Development</h3>
+                    <p class="text-surface-500 text-sm leading-relaxed">Enhance your leadership and communication skills through hands-on experience.</p>
                 </div>
             </div>
 
-            <div
-                class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                <div class="relative h-48 overflow-hidden">
+            <div class="group bg-white rounded-2xl overflow-hidden bento-card">
+                <div class="relative aspect-[16/10] overflow-hidden">
                     <img src="{% static 'images/life-impact.jpg' %}?v={% now 'U' %}" alt="Community Impact"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-accent-600/80 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4">
-                        <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                            <i class="fas fa-handshake text-2xl text-white"></i>
-                        </div>
-                    </div>
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                 </div>
                 <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Meaningful Impact</h3>
-                    <p class="text-gray-600">Experience the fulfillment that comes from making a real difference in
-                        people's lives and contributing to positive change in your community.</p>
+                    <h3 class="text-lg font-bold text-surface-900 mb-2">Meaningful Impact</h3>
+                    <p class="text-surface-500 text-sm leading-relaxed">Experience the fulfillment of making a real difference in people's lives.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Club Life Gallery -->
-        <div class="bg-white rounded-3xl shadow-xl p-8">
-            <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Moments From Club Activities</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="aspect-square rounded-2xl overflow-hidden">
-                    <img src="{% static 'images/club-life-1.jpg' %}?v={% now 'U' %}" alt="Club Activity"
-                        class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
-                </div>
-                <div class="aspect-square rounded-2xl overflow-hidden">
-                    <img src="{% static 'images/club-life-2.jpg' %}?v={% now 'U' %}" alt="Club Activity"
-                        class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
-                </div>
-                <div class="aspect-square rounded-2xl overflow-hidden">
-                    <img src="{% static 'images/club-life-3.jpg' %}?v={% now 'U' %}" alt="Club Activity"
-                        class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
-                </div>
-                <div class="aspect-square rounded-2xl overflow-hidden">
-                    <img src="{% static 'images/club-life-4.jpg' %}?v={% now 'U' %}" alt="Club Activity"
-                        class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
-                </div>
+        <!-- Club Life Gallery Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="aspect-square rounded-xl overflow-hidden">
+                <img src="{% static 'images/club-life-1.jpg' %}?v={% now 'U' %}" alt="Club Activity" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="aspect-square rounded-xl overflow-hidden">
+                <img src="{% static 'images/club-life-2.jpg' %}?v={% now 'U' %}" alt="Club Activity" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="aspect-square rounded-xl overflow-hidden">
+                <img src="{% static 'images/club-life-3.jpg' %}?v={% now 'U' %}" alt="Club Activity" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="aspect-square rounded-xl overflow-hidden">
+                <img src="{% static 'images/club-life-4.jpg' %}?v={% now 'U' %}" alt="Club Activity" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
             </div>
         </div>
 
         <!-- Testimonials -->
-        <div class="mt-16">
-            <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">What Our Members Say</h3>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-2xl shadow-lg p-8">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-quote-left text-3xl text-primary-200"></i>
-                    </div>
-                    <p class="text-gray-600 text-lg italic mb-6">"Being part of Shanti Yuwa Club has been
-                        transformative. I've developed skills I never knew I had and made lifelong friends while serving
-                        our community."</p>
-                    <div class="flex items-center">
-                        <div
-                            class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white font-bold">
-                            RS</div>
-                        <div class="ml-4">
-                            <h4 class="font-bold text-gray-900">Ram Sharma</h4>
-                            <p class="text-gray-500 text-sm">Member since 2021</p>
-                        </div>
+        <div class="mt-16 grid md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-2xl p-8">
+                <div class="flex items-center gap-1 mb-4">
+                    <i class="fas fa-star text-brand-400 text-sm"></i>
+                    <i class="fas fa-star text-brand-400 text-sm"></i>
+                    <i class="fas fa-star text-brand-400 text-sm"></i>
+                    <i class="fas fa-star text-brand-400 text-sm"></i>
+                    <i class="fas fa-star text-brand-400 text-sm"></i>
+                </div>
+                <p class="text-surface-600 text-base leading-relaxed mb-6">"Being part of Shanti Yuwa Club has been transformative. I've developed skills I never knew I had and made lifelong friends while serving our community."</p>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-surface-900 flex items-center justify-center text-white text-sm font-bold">RS</div>
+                    <div>
+                        <h4 class="font-bold text-surface-900 text-sm">Ram Sharma</h4>
+                        <p class="text-surface-400 text-xs">Member since 2021</p>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl shadow-lg p-8">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-quote-left text-3xl text-primary-200"></i>
-                    </div>
-                    <p class="text-gray-600 text-lg italic mb-6">"The support and encouragement I've received at Shanti
-                        Yuwa Club have helped me grow both personally and professionally. The work we do here truly
-                        matters."</p>
-                    <div class="flex items-center">
-                        <div
-                            class="w-12 h-12 rounded-full bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center text-white font-bold">
-                            SP</div>
-                        <div class="ml-4">
-                            <h4 class="font-bold text-gray-900">Sita Poudel</h4>
-                            <p class="text-gray-500 text-sm">Volunteer since 2022</p>
-                        </div>
+            </div>
+            <div class="bg-white rounded-2xl p-8">
+                <div class="flex items-center gap-1 mb-4">
+                    <i class="fas fa-star text-brand-400 text-sm"></i>
+                    <i class="fas fa-star text-brand-400 text-sm"></i>
+                    <i class="fas fa-star text-brand-400 text-sm"></i>
+                    <i class="fas fa-star text-brand-400 text-sm"></i>
+                    <i class="fas fa-star text-brand-400 text-sm"></i>
+                </div>
+                <p class="text-surface-600 text-base leading-relaxed mb-6">"The support and encouragement I've received at Shanti Yuwa Club have helped me grow both personally and professionally. The work we do here truly matters."</p>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-brand-500 flex items-center justify-center text-white text-sm font-bold">SP</div>
+                    <div>
+                        <h4 class="font-bold text-surface-900 text-sm">Sita Poudel</h4>
+                        <p class="text-surface-400 text-xs">Volunteer since 2022</p>
                     </div>
                 </div>
             </div>
@@ -564,74 +389,46 @@
 </section>
 
 <!-- Stats Section -->
-<section class="py-20 bg-gradient-to-r from-primary-600 to-primary-800 rounded-3xl m-4">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+<section class="py-20 bg-surface-900">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-16">
             <div class="text-center">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/10 flex items-center justify-center">
-                    <i class="fas fa-calendar-check text-3xl text-white"></i>
-                </div>
-                <p class="text-4xl font-bold text-white mb-2">5+</p>
-                <p class="text-primary-200">Years Active</p>
+                <p class="text-4xl lg:text-5xl font-extrabold text-white stat-number mb-2">5+</p>
+                <p class="text-surface-400 text-sm tracking-wide">Years Active</p>
             </div>
             <div class="text-center">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/10 flex items-center justify-center">
-                    <i class="fas fa-users text-3xl text-white"></i>
-                </div>
-                <p class="text-4xl font-bold text-white mb-2">100+</p>
-                <p class="text-primary-200">Members</p>
+                <p class="text-4xl lg:text-5xl font-extrabold text-white stat-number mb-2">100+</p>
+                <p class="text-surface-400 text-sm tracking-wide">Members</p>
             </div>
             <div class="text-center">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/10 flex items-center justify-center">
-                    <i class="fas fa-project-diagram text-3xl text-white"></i>
-                </div>
-                <p class="text-4xl font-bold text-white mb-2">20+</p>
-                <p class="text-primary-200">Projects</p>
+                <p class="text-4xl lg:text-5xl font-extrabold text-white stat-number mb-2">20+</p>
+                <p class="text-surface-400 text-sm tracking-wide">Projects</p>
             </div>
             <div class="text-center">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/10 flex items-center justify-center">
-                    <i class="fas fa-heart text-3xl text-white"></i>
-                </div>
-                <p class="text-4xl font-bold text-white mb-2">1000+</p>
-                <p class="text-primary-200">Lives Impacted</p>
+                <p class="text-4xl lg:text-5xl font-extrabold text-white stat-number mb-2">1000+</p>
+                <p class="text-surface-400 text-sm tracking-wide">Lives Impacted</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- CTA Section -->
-<section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl overflow-hidden">
-            <!-- Background Pattern -->
-            <div class="absolute inset-0 opacity-10">
-                <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <defs>
-                        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5" />
-                        </pattern>
-                    </defs>
-                    <rect width="100" height="100" fill="url(#grid)" />
-                </svg>
-            </div>
-
-            <div class="relative px-8 py-16 md:px-16 md:py-20 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+<section class="py-24 lg:py-32 bg-surface-50">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+        <div class="bg-surface-950 rounded-3xl overflow-hidden">
+            <div class="px-8 py-16 md:px-16 lg:px-24 lg:py-24 text-center">
+                <p class="text-brand-400 text-xs font-bold tracking-widest uppercase mb-6">Get Involved</p>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 tracking-tight max-w-2xl mx-auto">
                     Ready to Make a Difference?
                 </h2>
-                <p class="text-gray-300 text-lg max-w-2xl mx-auto mb-10">
-                    Join Shanti Yuwa Club and become part of a movement that's changing lives and building a better
-                    community for everyone.
+                <p class="text-surface-400 text-lg max-w-xl mx-auto mb-10">
+                    Join Shanti Yuwa Club and become part of a movement that's changing lives and building a better community.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{% url 'contact' %}"
-                        class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-lg hover:shadow-primary-500/25 transition-all duration-300 hover:scale-105">
-                        <i class="fas fa-envelope mr-2"></i>
+                    <a href="{% url 'contact' %}" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-brand-500 text-white font-semibold hover:bg-brand-600 transition-all duration-300 text-sm">
                         Contact Us
                     </a>
-                    <a href="{% url 'programs' %}"
-                        class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold hover:bg-white/20 transition-all duration-300">
-                        <i class="fas fa-eye mr-2"></i>
+                    <a href="{% url 'programs' %}" class="inline-flex items-center justify-center px-8 py-4 rounded-full border border-white/20 text-white font-semibold hover:bg-white/10 transition-all duration-300 text-sm">
                         Explore Programs
                     </a>
                 </div>
@@ -647,50 +444,16 @@
         const slideshow = document.getElementById('gallery-slideshow');
         if (!slideshow) return;
 
-        const slidesContainer = document.getElementById('slides-container');
         const slides = document.querySelectorAll('.gallery-slide');
         const indicators = document.querySelectorAll('.slide-indicator');
-        const prevBtn = document.getElementById('prev-slide');
-        const nextBtn = document.getElementById('next-slide');
-        const playPauseBtn = document.getElementById('slideshow-play-pause');
-
         let currentSlide = 0;
-        let isAutoPlaying = true;
         let autoPlayInterval;
-        const SLIDE_INTERVAL = 5000; // 5 seconds
-        const TRANSITION_DURATION = 700; // matches CSS transition
-
-        // Virtualization: Only keep nearby slides in memory
-        const PRELOAD_RANGE = 1; // Preload 1 slide before and after current
-
-        function updateSlideVisibility(index) {
-            slides.forEach((slide, i) => {
-                const distance = Math.abs(i - index);
-                const img = slide.querySelector('img');
-
-                if (distance <= PRELOAD_RANGE) {
-                    // Preload nearby images
-                    if (img.loading === 'lazy') {
-                        img.loading = 'eager';
-                    }
-                } else {
-                    // Lazy load distant images
-                    if (img.loading === 'eager' && i !== 0) {
-                        img.loading = 'lazy';
-                    }
-                }
-            });
-        }
+        const SLIDE_INTERVAL = 5000;
 
         function goToSlide(index) {
-            // Wrap around
-            if (index < 0) {
-                index = slides.length - 1;
-            } else if (index >= slides.length) {
-                index = 0;
-            }
+            if (index < 0) index = slides.length - 1;
+            else if (index >= slides.length) index = 0;
 
-            // Update slides
             slides.forEach((slide, i) => {
                 if (i === index) {
                     slide.classList.add('active', 'opacity-100');
@@ -701,162 +464,41 @@
                 }
             });
 
-            // Update indicators
             indicators.forEach((indicator, i) => {
                 if (i === index) {
                     indicator.classList.add('active', '!w-8', '!bg-white');
-                    indicator.classList.remove('bg-white/50');
+                    indicator.classList.remove('bg-white/40');
                 } else {
                     indicator.classList.remove('active', '!w-8', '!bg-white');
-                    indicator.classList.add('bg-white/50');
+                    indicator.classList.add('bg-white/40');
                 }
             });
-
-            // Update virtualization
-            updateSlideVisibility(index);
 
             currentSlide = index;
         }
 
-        function nextSlide() {
-            goToSlide(currentSlide + 1);
-        }
-
-        function prevSlide() {
-            goToSlide(currentSlide - 1);
-        }
-
         function startAutoPlay() {
             if (slides.length <= 1) return;
-
-            isAutoPlaying = true;
-
-            if (playPauseBtn) {
-                playPauseBtn.querySelector('i').classList.remove('fa-play');
-                playPauseBtn.querySelector('i').classList.add('fa-pause');
-            }
-
-            autoPlayInterval = setInterval(nextSlide, SLIDE_INTERVAL);
+            autoPlayInterval = setInterval(() => goToSlide(currentSlide + 1), SLIDE_INTERVAL);
         }
 
-        function stopAutoPlay() {
-            isAutoPlaying = false;
+        startAutoPlay();
 
-            if (playPauseBtn) {
-                playPauseBtn.querySelector('i').classList.remove('fa-pause');
-                playPauseBtn.querySelector('i').classList.add('fa-play');
-            }
+        // Pause on hover
+        slideshow.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+        slideshow.addEventListener('mouseleave', startAutoPlay);
 
-            if (autoPlayInterval) {
+        // Touch support
+        let touchStartX = 0;
+        slideshow.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        slideshow.addEventListener('touchend', (e) => {
+            const diff = touchStartX - e.changedTouches[0].screenX;
+            if (Math.abs(diff) > 50) {
                 clearInterval(autoPlayInterval);
-            }
-        }
-
-        function toggleAutoPlay() {
-            if (isAutoPlaying) {
-                stopAutoPlay();
-            } else {
+                goToSlide(diff > 0 ? currentSlide + 1 : currentSlide - 1);
                 startAutoPlay();
             }
-        }
-
-        // Event Listeners
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
-                prevSlide();
-                stopAutoPlay();
-            });
-        }
-
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                nextSlide();
-                stopAutoPlay();
-            });
-        }
-
-        if (playPauseBtn) {
-            playPauseBtn.addEventListener('click', toggleAutoPlay);
-        }
-
-        indicators.forEach((indicator, index) => {
-            indicator.addEventListener('click', () => {
-                goToSlide(index);
-                stopAutoPlay();
-            });
-        });
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                prevSlide();
-                stopAutoPlay();
-            } else if (e.key === 'ArrowRight') {
-                nextSlide();
-                stopAutoPlay();
-            }
-        });
-
-        // Touch/Swipe support
-        let touchStartX = 0;
-        let touchEndX = 0;
-        const SWIPE_THRESHOLD = 50;
-
-        slideshow.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
         }, { passive: true });
-
-        slideshow.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
-
-        function handleSwipe() {
-            const swipeDistance = touchEndX - touchStartX;
-
-            if (Math.abs(swipeDistance) > SWIPE_THRESHOLD) {
-                if (swipeDistance > 0) {
-                    prevSlide();
-                } else {
-                    nextSlide();
-                }
-                stopAutoPlay();
-            }
-        }
-
-        // Pause on hover (desktop)
-        if (window.matchMedia('(hover: hover)').matches) {
-            slideshow.addEventListener('mouseenter', () => {
-                if (isAutoPlaying) {
-                    clearInterval(autoPlayInterval);
-                }
-            });
-
-            slideshow.addEventListener('mouseleave', () => {
-                if (isAutoPlaying) {
-                    autoPlayInterval = setInterval(nextSlide, SLIDE_INTERVAL);
-                }
-            });
-        }
-
-        // Pause when tab is not visible (performance optimization)
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                if (autoPlayInterval) {
-                    clearInterval(autoPlayInterval);
-                }
-            } else if (isAutoPlaying) {
-                autoPlayInterval = setInterval(nextSlide, SLIDE_INTERVAL);
-            }
-        });
-
-        // Initialize virtualization
-        updateSlideVisibility(0);
-
-        // Start autoplay
-        if (slides.length > 1) {
-            startAutoPlay();
-        }
     });
 </script>
 {% endblock %}
